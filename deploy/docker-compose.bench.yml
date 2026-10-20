@@ -1,0 +1,15 @@
+# SPDX-License-Identifier: Apache-2.0
+# fakellm only, recording disabled, for the router overhead and throughput benchmarks.
+name: triage-bench
+services:
+  fakellm:
+    image: ${RAYLD_FAKELLM_IMAGE:-ghcr.io/thnhdatle/fakellm:v0.1.0}
+    command: ["--record=false"]
+    ports:
+      - "8090:8090"
+    healthcheck:
+      test: ["CMD", "/fakellm", "healthcheck"]
+      interval: 3s
+      timeout: 3s
+      retries: 20
+      start_period: 2s

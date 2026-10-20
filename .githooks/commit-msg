@@ -1,0 +1,14 @@
+#!/usr/bin/env bash
+# SPDX-License-Identifier: Apache-2.0
+# Validates the one-line Conventional Commit format.
+set -euo pipefail
+body="$(grep -v '^#' "$1" | sed '/^[[:space:]]*$/d')"
+if [ "$(printf '%s\n' "$body" | wc -l | tr -d ' ')" -ne 1 ]; then
+	echo "commit-msg: message must be exactly one line" >&2
+	exit 1
+fi
+re='^(feat|fix|perf|refactor|test|docs|build|ci|chore)(\([a-z0-9-]+\))?!?: [a-z0-9].{0,70}[^.]$'
+if ! printf '%s' "$body" | grep -Eq "$re" || [ "${#body}" -gt 72 ]; then
+	echo "commit-msg: '$body' must match $re and be <= 72 chars" >&2
+	exit 1
+fi

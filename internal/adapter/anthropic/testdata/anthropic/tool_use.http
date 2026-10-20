@@ -1,0 +1,4 @@
+status: 200
+content-type: application/json
+
+{"id":"msg_01ToolFixture","type":"message","role":"assistant","model":"claude-haiku-5-5","content":[{"type":"thinking","thinking":"","signature":"sig"},{"type":"text","text":"Let me check."},{"type":"tool_use","id":"toolu_01A","name":"get_weather","input":{"city": "Hanoi", "unit":"c"}},{"type":"tool_use","id":"toolu_01B","name":"get_time","input":{}}],"stop_reason":"tool_use","stop_sequence":null,"usage":{"input_tokens":310,"output_tokens":64}}

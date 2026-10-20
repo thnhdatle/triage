@@ -1,0 +1,69 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://raw.githubusercontent.com/thnhdatle/triage/main/api/schema/decision.v1.json",
+  "title": "Triage routing decision",
+  "description": "A routing decision as returned by GET /v1/routing-decisions/{id} on the admin listener. It holds counts and names only, never prompt text or finding values.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "id", "route", "time", "operation", "privacy", "oversize", "scoring_latency_ms",
+    "scoring_cost_usd", "reasons", "attempts", "usage", "cost_usd"
+  ],
+  "properties": {
+    "id": {"type": "string"},
+    "route": {"type": "string"},
+    "time": {"type": "string", "format": "date-time"},
+    "operation": {"type": "string", "enum": ["chat", "embeddings"]},
+    "privacy": {"type": "string", "enum": ["off", "mask", "local_only"]},
+    "findings": {
+      "description": "Finding counts by type.",
+      "type": "object",
+      "additionalProperties": {"type": "integer", "minimum": 0}
+    },
+    "oversize": {"type": "boolean"},
+    "strategy": {"type": "string"},
+    "variant": {"type": "string"},
+    "score": {"type": "number"},
+    "threshold": {"type": "number"},
+    "scoring_latency_ms": {"type": "number", "minimum": 0},
+    "scoring_cost_usd": {"type": "number", "minimum": 0},
+    "tier": {"type": "string", "enum": ["weak", "strong"]},
+    "reasons": {"type": "array", "items": {"type": "string"}},
+    "attempts": {"type": "array", "items": {"$ref": "#/$defs/attempt"}},
+    "unmask": {"type": "string", "enum": ["ok", "partial"]},
+    "usage": {"$ref": "#/$defs/usage"},
+    "cost_usd": {"type": "number", "minimum": 0},
+    "error": {"type": "string"}
+  },
+  "$defs": {
+    "usage": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["prompt_tokens", "completion_tokens", "cached_prompt_tokens"],
+      "properties": {
+        "prompt_tokens": {"type": "integer", "minimum": 0},
+        "completion_tokens": {"type": "integer", "minimum": 0},
+        "cached_prompt_tokens": {"type": "integer", "minimum": 0}
+      }
+    },
+    "attempt": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "target", "model", "locality", "masked", "continuation", "status", "latency_ms", "usage", "cost_usd"
+      ],
+      "properties": {
+        "target": {"type": "string"},
+        "model": {"type": "string"},
+        "locality": {"type": "string", "enum": ["local", "cloud"]},
+        "masked": {"type": "boolean"},
+        "continuation": {"type": "boolean"},
+        "status": {"type": "string", "description": "\"ok\" or an error class such as rate_limited, timeout, cut."},
+        "http_status": {"type": "integer"},
+        "latency_ms": {"type": "number", "minimum": 0},
+        "usage": {"$ref": "#/$defs/usage"},
+        "cost_usd": {"type": "number", "minimum": 0}
+      }
+    }
+  }
+}

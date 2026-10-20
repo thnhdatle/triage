@@ -1,0 +1,4 @@
+status: 200
+content-type: application/json
+
+{"id":"msg_01StopSeq","type":"message","role":"assistant","model":"claude-haiku-5-5","content":[{"type":"text","text":"one, two"}],"stop_reason":"stop_sequence","stop_sequence":"three","usage":{"input_tokens":8,"output_tokens":3}}

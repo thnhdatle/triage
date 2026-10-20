@@ -1,0 +1,4 @@
+status: 500
+content-type: application/json
+
+{"type":"error","error":{"type":"api_error","message":"Internal server error"}}

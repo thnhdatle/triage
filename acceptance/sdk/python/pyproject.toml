@@ -1,0 +1,20 @@
+[project]
+name = "triage-acceptance-sdk-python"
+version = "0.1.0"
+description = "TRG-05: runs the official OpenAI Python SDK against Triage."
+requires-python = ">=3.12"
+license = "Apache-2.0"
+dependencies = ["openai==3.35.1"]
+
+[dependency-groups]
+dev = ["ruff", "mypy"]
+
+[tool.uv]
+package = false
+
+[tool.ruff]
+line-length = 100
+target-version = "py312"
+
+[tool.ruff.lint]
+select = ["E", "F", "W", "I", "N", "UP", "B", "A", "C4", "SIM", "RET", "PT", "ARG", "ERA", "PL", "RUF", "S"]

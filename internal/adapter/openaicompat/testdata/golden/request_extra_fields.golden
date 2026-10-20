@@ -1,0 +1,11 @@
+{
+  "logprobs": true,
+  "messages": [
+    {
+      "role": "user",
+      "content": "x"
+    }
+  ],
+  "model": "gpt-x",
+  "n": 1
+}

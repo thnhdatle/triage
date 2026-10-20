@@ -1,0 +1,105 @@
+# golangci-lint v2.14.0 configuration (the version scripts/ci-install-tools.sh installs).
+version: "2"
+run:
+  timeout: 10m
+  build-tags: [integration, acceptance, bench]
+linters:
+  default: none
+  enable:
+    - errcheck
+    - govet
+    - staticcheck
+    - unused
+    - ineffassign
+    - gosec
+    - revive
+    - gocritic
+    - errorlint
+    - wrapcheck
+    - bodyclose
+    - noctx
+    - contextcheck
+    - containedctx
+    - sqlclosecheck
+    - rowserrcheck
+    - nilerr
+    - nilnil
+    - exhaustive
+    - forcetypeassert
+    - misspell
+    - unparam
+    - unconvert
+    - prealloc
+    - predeclared
+    - funlen
+    - gocyclo
+    - gocognit
+    - nestif
+    - lll
+    - godot
+    - dupl
+    - goconst
+    - depguard
+    - testifylint
+    - thelper
+    - tparallel
+    - paralleltest
+    - usestdlibvars
+    - perfsprint
+  settings:
+    govet:
+      enable-all: true
+      disable: [fieldalignment, shadow]
+    funlen:
+      statements: 60
+      lines: -1
+    gocyclo:
+      min-complexity: 15
+    gocognit:
+      min-complexity: 20
+    nestif:
+      min-complexity: 4
+    lll:
+      line-length: 120
+    godot:
+      scope: declarations
+    revive:
+      rules:
+        - name: exported
+        - name: package-comments
+    depguard:
+      rules:
+        domain:
+          files: ["**/internal/domain/**", "!$test"]
+          allow:
+            - $gostd
+            - github.com/thnhdatle/triage/internal/domain
+        app:
+          files: ["**/internal/app/**", "!$test"]
+          allow:
+            - $gostd
+            - github.com/thnhdatle/triage/internal/domain
+            - github.com/thnhdatle/triage/internal/platform
+            # route runs dispatch as its last stage; no other app-to-app imports.
+            - github.com/thnhdatle/triage/internal/app/dispatch
+    wrapcheck:
+      # wrapcheck applies to adapters only.
+      ignore-sig-regexps: []
+  exclusions:
+    generated: lax
+    rules:
+      - path: _test\.go
+        linters: [funlen, dupl, goconst, gosec, wrapcheck, errcheck, forcetypeassert]
+      - path: ^(cmd|internal/app|internal/domain|internal/config|internal/platform|internal/wire|models|acceptance|bench)/
+        linters: [wrapcheck]
+formatters:
+  enable:
+    - gofumpt
+    - goimports
+  settings:
+    goimports:
+      local-prefixes:
+        - github.com/thnhdatle/triage
+issues:
+  max-issues-per-linter: 0
+  max-same-issues: 0

@@ -1,0 +1,16 @@
+# SPDX-License-Identifier: Apache-2.0
+# Converter image: pinned research/ environment, no weights inside. Base image pinned by digest.
+FROM python:3.12-slim@sha256:a6e34c598f2467ed0e9a8d349809fcd8b5c603269512df273a0bb1784edc11b1
+ENV PYTHONDONTWRITEBYTECODE=1 \
+    PYTHONUNBUFFERED=1 \
+    UV_LINK_MODE=copy \
+    UV_PROJECT_ENVIRONMENT=/opt/venv \
+    PATH="/opt/venv/bin:${PATH}"
+RUN pip install --no-cache-dir uv==0.11.21
+WORKDIR /app
+COPY research/ /app/research/
+WORKDIR /app/research
+# research/uv.lock is honoured when present (UV_FROZEN=1 would fail while the lock is partial).
+RUN uv sync --no-dev && useradd --uid 65532 --no-create-home --shell /usr/sbin/nologin triage
+USER 65532:65532
+ENTRYPOINT ["python", "-m", "triage_research.export_bert"]

@@ -1,0 +1,49 @@
+{
+  "ID": "msg_01ToolFixture",
+  "Model": "claude-haiku-5-5",
+  "Created": 1792411200,
+  "Choices": [
+    {
+      "Index": 0,
+      "Message": {
+        "Role": "assistant",
+        "Content": [
+          {
+            "Type": "text",
+            "Text": "Let me check.",
+            "ImageURL": "",
+            "ImageDetail": ""
+          }
+        ],
+        "ContentIsString": true,
+        "Name": "",
+        "ToolCalls": [
+          {
+            "ID": "toolu_01A",
+            "Type": "function",
+            "Function": {
+              "Name": "get_weather",
+              "Arguments": "{\"city\":\"Hanoi\",\"unit\":\"c\"}"
+            }
+          },
+          {
+            "ID": "toolu_01B",
+            "Type": "function",
+            "Function": {
+              "Name": "get_time",
+              "Arguments": "{}"
+            }
+          }
+        ],
+        "ToolCallID": ""
+      },
+      "FinishReason": "tool_calls"
+    }
+  ],
+  "Usage": {
+    "PromptTokens": 310,
+    "CompletionTokens": 64,
+    "CachedPromptTokens": 0
+  },
+  "SystemFingerprint": ""
+}

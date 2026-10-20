@@ -1,0 +1,44 @@
+# SPDX-License-Identifier: Apache-2.0
+# Quickstart config: Triage in front of fakellm, no model downloads, no API keys.
+# Listeners bind 0.0.0.0 because loopback inside a container is unreachable; the compose file
+# publishes the admin port on host loopback only.
+server:
+  listen: "0.0.0.0:8080"
+  allow_unauthenticated: true
+admin:
+  listen: "0.0.0.0:9091"
+auth:
+  enabled: false
+api:
+  expose_decision_detail: true
+providers:
+  fakellm: { type: openaicompat, base_url: "http://fakellm:8090/v1" }
+targets:
+  - name: local-small
+    provider: fakellm
+    model: fake-small
+    locality: local
+    tier: weak
+    context_window: 32768
+    capabilities: [tools, json_mode]
+    pricing: { input_per_mtok: 0, output_per_mtok: 0 }
+  - name: cloud-strong
+    provider: fakellm
+    model: fake-strong
+    locality: cloud
+    tier: strong
+    context_window: 200000
+    capabilities: [tools, vision, json_mode]
+    pricing: { input_per_mtok: 1.25, output_per_mtok: 10.0 }
+routes:
+  - name: triage-auto
+    pool: [local-small, cloud-strong]
+    privacy: { mode: mask, max_client_mode: local_only }
+    strategy: length
+    threshold: 0.5
+    on_tier_unavailable: escalate
+    fallback: [tier:strong, tier:weak]
+difficulty:
+  length: { midpoint_tokens: 2048, slope: 0.004 }
+decisions:
+  buffer_size: 10000

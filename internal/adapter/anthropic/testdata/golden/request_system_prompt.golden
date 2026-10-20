@@ -1,0 +1,16 @@
+{
+  "model": "claude-haiku-5-5",
+  "system": "Be brief.",
+  "messages": [
+    {
+      "role": "user",
+      "content": [
+        {
+          "type": "text",
+          "text": "hi"
+        }
+      ]
+    }
+  ],
+  "max_tokens": 4096
+}

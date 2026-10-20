@@ -1,0 +1,2 @@
+go test fuzz v1
+string("SĐT: 0912 345 678")

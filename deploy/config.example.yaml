@@ -1,0 +1,160 @@
+# SPDX-License-Identifier: Apache-2.0
+# Triage configuration reference: every option, with its default. Keys left out of a real config
+# take the default shown. Durations are Go durations plus a "d" suffix ("30s", "14d"); sizes are
+# bytes with a suffix ("8MiB", "256KiB"). Secrets only via env vars or *_file keys, never inline.
+# A test keeps this file in sync with internal/config: it must load, validate and mention every option.
+
+server:
+  listen: "127.0.0.1:8080"          # data-plane address (default: 127.0.0.1:8080); container deployments bind 0.0.0.0
+  allow_unauthenticated: false      # required (true) to bind a non-loopback address while auth.enabled is false (default: false)
+
+admin:
+  listen: "127.0.0.1:9091"          # admin listener: decisions, reload, /metrics, /healthz, /readyz (default: 127.0.0.1:9091)
+
+auth:
+  enabled: true                     # require "Authorization: Bearer <key>" on the data plane (default: true)
+  keys_file: /run/secrets/triage_keys # file with one API key per line; exclusive with keys_env (default: unset)
+  keys_env: ""                      # env var holding comma-separated API keys; exclusive with keys_file (default: unset)
+
+api:
+  max_body_bytes: 8MiB              # request body limit, 413 request_too_large beyond it (default: 8MiB)
+  expose_targets: false             # list targets, not only routes, in GET /v1/models (default: false)
+  expose_decision_detail: false     # add the X-Triage-Route-Reason header to responses (default: false)
+
+onnx:
+  library_path: ""                  # path to libonnxruntime; empty uses the default lookup order (default: empty)
+
+models:
+  cache_dir: ~/.cache/rayld/triage/models # where "triage models pull" stores artifacts (default: ~/.cache/rayld/triage/models)
+
+providers:                          # upstream endpoints, referenced by targets[].provider and difficulty.mf.provider
+  lmstudio:
+    type: openaicompat              # openaicompat | anthropic
+    base_url: "http://localhost:1234/v1" # required for openaicompat (an API key is optional)
+  openai:
+    type: openaicompat              # openaicompat | anthropic
+    base_url: "https://api.openai.com/v1" # required for openaicompat
+    api_key_env: OPENAI_API_KEY     # env var holding the API key; exclusive with api_key_file (default: unset)
+    max_idle_conns_per_host: 64     # HTTP connection pool size per host (default: 0, Go's default of 2)
+  anthropic:
+    type: anthropic                 # openaicompat | anthropic
+    api_key_file: /run/secrets/anthropic_key # file holding the API key; exclusive with api_key_env (default: unset)
+
+health:
+  probe: models                     # models (GET /v1/models) | completion (opt-in; forces LM Studio JIT loads) (default: models)
+  interval: 10s                     # active probe period (default: 10s)
+  failure_threshold: 3              # consecutive failures that mark a target unhealthy (default: 3)
+  cooldown: 30s                     # how long an unhealthy target is skipped (default: 30s)
+
+selection:
+  mode: priority                    # priority | round_robin | least_inflight (default: priority)
+  tokenizer: estimate               # estimate | bert | path to a tokenizer.json, used to count prompt tokens (default: estimate)
+
+targets:                            # a provider + model with routing attributes; at least one is required
+  - name: local-small               # unique name, referenced by routes
+    provider: lmstudio              # key of providers
+    model: qwen/qwen3-vl-4b         # model id sent upstream (the weak model of the reference weak/strong pair)
+    locality: local                 # local | cloud
+    tier: weak                      # weak | strong; empty for embedding targets
+    context_window: 32768           # max prompt + output tokens
+    capabilities: [tools, json_mode] # tools | vision | json_mode | embeddings (embeddings excludes the others)
+    pricing:                        # USD per million tokens (default: all 0)
+      input_per_mtok: 0             # price of uncached input tokens
+      output_per_mtok: 0            # price of output tokens
+      cached_input_per_mtok: 0      # price of cached input tokens (default: 0)
+  - name: cloud-strong
+    provider: openai
+    model: gpt-5
+    locality: cloud
+    tier: strong
+    context_window: 200000
+    capabilities: [tools, vision, json_mode]
+    extra_headers: {}               # extra HTTP headers on every request to this target (default: none)
+    attempt_timeout: 90s            # overrides dispatch.attempt_timeout for this target (default: unset)
+    pricing:
+      input_per_mtok: 1.25
+      output_per_mtok: 10.0
+      cached_input_per_mtok: 0.125
+  - name: cloud-embed
+    provider: openai
+    model: text-embedding-3-small
+    locality: cloud
+    capabilities: [embeddings]
+    context_window: 8191
+    pricing:
+      input_per_mtok: 0.02
+      output_per_mtok: 0
+
+routes:                             # virtual models chosen by the request's model field; at least one is required
+  - name: triage-auto               # unique route (virtual model) name
+    pool: [local-small, cloud-strong] # target names in priority order (default: all targets)
+    privacy:
+      mode: mask                    # off | mask | local_only (default: mask)
+      max_client_mode: local_only   # strictest mode a client may request via header (default: local_only)
+    rules:
+      allow_client_override: false  # honour the X-Triage-Tier header (default: false)
+      match:                        # evaluated in order before the strategy, first match wins
+        - min_prompt_tokens: 16000  # estimated prompt tokens at or above this choose the tier
+          tier: strong              # weak | strong
+        - last_user_regex: "(?i)\\b(prove|derive)\\b" # regex on the last user message chooses the tier
+          tier: strong
+    strategy: bert                  # none | random | length | bert | mf (default: none)
+    threshold: 0.62                 # p_strong at or above this routes to the strong tier, in [0, 1] (default: 0.5)
+    default_tier: weak              # tier used with strategy: none and no rule match (default: weak)
+    on_tier_unavailable: escalate   # escalate | degrade | fail (default: escalate)
+    fallback: [tier:strong, tier:weak] # fallback chain after a failed attempt: target names or tier:weak|tier:strong
+  - name: triage-embed
+    pool: [cloud-embed]
+    privacy:
+      mode: mask                    # findings force local_only for embeddings (503 without a local embedding target)
+
+privacy:
+  scan_system: false                # also scan system messages (default: false)
+  max_scan_bytes: 256KiB            # text above this is not scanned and on_oversize applies (default: 256KiB)
+  on_oversize: local_only           # local_only | reject (413 privacy_scan_limit) (default: local_only)
+  detectors:                        # detector id -> enabled; ids: credit_card, iban, email, ip, us_ssn, secret, kr_rrn, phone, vn_cccd, street_address (default: street_address false, all others on)
+    street_address: false           # street-address heuristic, off by default
+    # email: false                  # example: disable the email detector
+  ner:
+    enabled: false                  # NER detector for PER, LOC, ORG; English only (default: false)
+    min_score: 0.8                  # minimum entity score, in [0, 1] (default: 0.8)
+    max_tokens: 2048                # text beyond this many tokens counts as ner_unavailable (default: 2048)
+    timeout: 200ms                  # scan time limit; exceeding it counts as ner_unavailable (default: 200ms)
+
+difficulty:
+  timeout: 50ms                     # scoring time limit for random and length (default: 50ms)
+  on_error: strong                  # tier used when scoring fails: weak | strong (default: strong)
+  missing_artifact: error           # error | fallback (route uses length) when model files are absent (default: error)
+  length:
+    midpoint_tokens: 2048           # prompt length with p_strong 0.5 (default: 2048)
+    slope: 0.004                    # logistic slope per token (default: 0.004)
+  bert:
+    variant: auto                   # auto | int8 | fp32 (default: auto)
+    timeout: 300ms                  # scoring time limit (default: 300ms)
+    max_input_tokens: 512           # input is truncated to this many tokens (default: 512)
+    intra_op_threads: 4             # ONNX Runtime threads per inference (default: 4)
+    max_concurrency: 0              # parallel inferences; 0 = physical cores / intra_op_threads (default: 0)
+    queue_size: 64                  # waiting requests before rejecting (default: 64)
+  mf:
+    allow_external_embedding: false # true sends scored text of zero-finding requests to the embedding provider (default: false)
+    provider: openai                # provider used for embeddings (default: openai)
+    timeout: 1s                     # scoring time limit (default: 1s)
+    fallback: bert                  # bert if its artifacts exist, else length (default: bert)
+    cache_size: 10000               # embedding cache entries (default: 10000)
+
+dispatch:
+  max_attempts: 3                   # attempts per request including the first (default: 3)
+  attempt_timeout: 60s              # time limit per attempt (default: 60s)
+  total_timeout: 120s               # time limit per request across attempts (default: 120s)
+  backoff:
+    base: 100ms                     # first retry delay, doubled per attempt with jitter (default: 100ms)
+    max: 2s                         # retry delay cap (default: 2s)
+  max_retry_after: 10s              # longest upstream Retry-After honoured (default: 10s)
+  stream_failure: continue          # continue | error: on a mid-stream failure continue on the next target (default: continue)
+  context_length_fallback: false    # on a context-length error retry once on an eligible larger-context target (default: false)
+
+decisions:
+  buffer_size: 10000                # routing decisions kept in memory for the admin API (default: 10000)
+
+tracing:
+  capture_content: false            # record prompt and response text (what each upstream got and returned) on chat spans (default: false)

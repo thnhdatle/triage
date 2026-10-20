@@ -1,0 +1,4 @@
+status: 400
+content-type: application/json
+
+{"type":"error","error":{"type":"invalid_request_error","message":"prompt is too long: 215034 tokens > 200000 maximum"}}

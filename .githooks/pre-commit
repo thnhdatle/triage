@@ -1,0 +1,18 @@
+#!/usr/bin/env bash
+# SPDX-License-Identifier: Apache-2.0
+# Repo-local pre-commit checks.
+set -euo pipefail
+cd "$(git rev-parse --show-toplevel)"
+if git diff --cached --name-only --diff-filter=ACM | grep -q '\.go$'; then
+	unfmt="$(git diff --cached --name-only --diff-filter=ACM | grep '\.go$' | xargs go tool gofumpt -l || true)"
+	if [ -n "$unfmt" ]; then
+		echo "pre-commit: gofumpt needed on:" >&2
+		echo "$unfmt" >&2
+		exit 1
+	fi
+	golangci-lint run --new-from-rev=HEAD
+fi
+if git diff --cached --name-only --diff-filter=ACM | grep -q '^research/.*\.py$'; then
+	(cd research && uv run ruff format --check . && uv run ruff check .)
+fi
+gitleaks protect --staged --no-banner

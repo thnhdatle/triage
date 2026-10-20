@@ -1,0 +1,4 @@
+status: 200
+content-type: application/json
+
+{"id":"msg_01ToolOnly","type":"message","role":"assistant","model":"claude-haiku-5-5","content":[{"type":"tool_use","id":"toolu_01C","name":"noop"}],"stop_reason":"tool_use","usage":{"input_tokens":5,"output_tokens":3}}

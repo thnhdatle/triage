@@ -1,0 +1,936 @@
+# SPDX-License-Identifier: Apache-2.0
+#
+# Source of truth for the Triage HTTP API. A test in
+# internal/adapter/httpapi checks that every registered route is listed here
+# and vice versa.
+#
+# Triage serves two listeners from one path map: the data plane (api.listen)
+# and the admin plane (admin.listen). The x-triage-listener extension of an
+# operation says where it is served: data, admin or both.
+openapi: 3.1.0
+info:
+  title: Triage
+  version: 0.1.0
+  summary: OpenAI-compatible routing gateway with privacy-aware routing.
+  description: |
+    Triage accepts OpenAI chat and embedding requests, scans them for sensitive
+    content, picks a target and forwards the request. Every error uses the
+    OpenAI error shape; codes are listed in docs/guides/errors.md.
+  license:
+    name: Apache-2.0
+    identifier: Apache-2.0
+servers:
+  - url: http://localhost:8080
+    description: Data plane (api.listen)
+  - url: http://localhost:8081
+    description: Admin plane (admin.listen)
+tags:
+  - name: data
+    description: OpenAI-compatible data plane.
+  - name: admin
+    description: Admin plane, bound to a separate listener.
+  - name: standard
+    description: Endpoints every server has, served on both listeners.
+security: []
+paths:
+  /v1/chat/completions:
+    post:
+      operationId: createChatCompletion
+      summary: Create a chat completion.
+      description: |
+        Non-streaming requests answer with application/json; with `stream: true`
+        the answer is text/event-stream of `chat.completion.chunk` events ending
+        with `data: [DONE]`. A failure after the first byte arrives as one SSE
+        event with the error body and the stream ends without `[DONE]`.
+      tags: [data]
+      x-triage-listener: data
+      security:
+        - bearer: []
+      parameters:
+        - $ref: "#/components/parameters/RequestId"
+        - $ref: "#/components/parameters/TriagePrivacy"
+        - $ref: "#/components/parameters/TriageTier"
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/ChatCompletionRequest"
+      responses:
+        "200":
+          description: The completion, or an event stream when `stream` is true.
+          headers:
+            X-Request-Id:
+              $ref: "#/components/headers/RequestId"
+            X-Triage-Decision:
+              $ref: "#/components/headers/TriageDecision"
+            X-Triage-Route:
+              $ref: "#/components/headers/TriageRoute"
+            X-Triage-Target:
+              $ref: "#/components/headers/TriageTarget"
+            X-Triage-Route-Reason:
+              $ref: "#/components/headers/TriageRouteReason"
+            X-Triage-Unmask:
+              $ref: "#/components/headers/TriageUnmask"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ChatCompletion"
+            text/event-stream:
+              schema:
+                type: string
+                description: |
+                  Server-sent events. Each `data:` line holds a
+                  ChatCompletionChunk JSON object, the last one is `[DONE]`.
+        "400": {$ref: "#/components/responses/BadRequest"}
+        "401": {$ref: "#/components/responses/Unauthorized"}
+        "404": {$ref: "#/components/responses/NotFound"}
+        "405": {$ref: "#/components/responses/MethodNotAllowed"}
+        "413": {$ref: "#/components/responses/TooLarge"}
+        "429": {$ref: "#/components/responses/RateLimited"}
+        "499": {$ref: "#/components/responses/Canceled"}
+        "500": {$ref: "#/components/responses/Internal"}
+        "502": {$ref: "#/components/responses/BadGateway"}
+        "503": {$ref: "#/components/responses/Unavailable"}
+        "504": {$ref: "#/components/responses/GatewayTimeout"}
+  /v1/embeddings:
+    post:
+      operationId: createEmbedding
+      summary: Create embeddings.
+      tags: [data]
+      x-triage-listener: data
+      security:
+        - bearer: []
+      parameters:
+        - $ref: "#/components/parameters/RequestId"
+        - $ref: "#/components/parameters/TriagePrivacy"
+        - $ref: "#/components/parameters/TriageTier"
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/EmbeddingRequest"
+      responses:
+        "200":
+          description: The embeddings.
+          headers:
+            X-Request-Id:
+              $ref: "#/components/headers/RequestId"
+            X-Triage-Decision:
+              $ref: "#/components/headers/TriageDecision"
+            X-Triage-Route:
+              $ref: "#/components/headers/TriageRoute"
+            X-Triage-Target:
+              $ref: "#/components/headers/TriageTarget"
+            X-Triage-Route-Reason:
+              $ref: "#/components/headers/TriageRouteReason"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/EmbeddingResponse"
+        "400": {$ref: "#/components/responses/BadRequest"}
+        "401": {$ref: "#/components/responses/Unauthorized"}
+        "404": {$ref: "#/components/responses/NotFound"}
+        "405": {$ref: "#/components/responses/MethodNotAllowed"}
+        "413": {$ref: "#/components/responses/TooLarge"}
+        "429": {$ref: "#/components/responses/RateLimited"}
+        "499": {$ref: "#/components/responses/Canceled"}
+        "500": {$ref: "#/components/responses/Internal"}
+        "502": {$ref: "#/components/responses/BadGateway"}
+        "503": {$ref: "#/components/responses/Unavailable"}
+        "504": {$ref: "#/components/responses/GatewayTimeout"}
+  /v1/models:
+    get:
+      operationId: listModels
+      summary: List the routes (virtual models) and, with api.expose_targets, the targets.
+      tags: [data]
+      x-triage-listener: data
+      security:
+        - bearer: []
+      parameters:
+        - $ref: "#/components/parameters/RequestId"
+      responses:
+        "200":
+          description: The model list.
+          headers:
+            X-Request-Id:
+              $ref: "#/components/headers/RequestId"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ModelList"
+        "401": {$ref: "#/components/responses/Unauthorized"}
+        "405": {$ref: "#/components/responses/MethodNotAllowed"}
+        "500": {$ref: "#/components/responses/Internal"}
+  /healthz:
+    get:
+      operationId: getHealthz
+      summary: Liveness; 200 unless the process is shutting down.
+      tags: [standard]
+      x-triage-listener: both
+      responses:
+        "200":
+          description: Alive.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Status"
+        "503":
+          description: Shutting down.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Status"
+  /readyz:
+    get:
+      operationId: getReadyz
+      summary: Readiness; dependencies reachable and configuration loaded.
+      tags: [standard]
+      x-triage-listener: both
+      responses:
+        "200":
+          description: Ready.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Status"
+        "503":
+          description: Not ready; `reason` says why.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Status"
+  /v1/version:
+    get:
+      operationId: getVersion
+      summary: Build information.
+      tags: [standard]
+      x-triage-listener: both
+      responses:
+        "200":
+          description: The build information.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Version"
+  /metrics:
+    get:
+      operationId: getMetrics
+      summary: Prometheus exposition. Served only when metrics are enabled.
+      tags: [admin]
+      x-triage-listener: admin
+      responses:
+        "200":
+          description: Metrics in the Prometheus text format.
+          content:
+            text/plain:
+              schema:
+                type: string
+  /v1/routing-decisions:
+    get:
+      operationId: listRoutingDecisions
+      summary: List routing decisions, newest first.
+      tags: [admin]
+      x-triage-listener: admin
+      parameters:
+        - $ref: "#/components/parameters/RequestId"
+        - name: limit
+          in: query
+          description: Page size.
+          schema:
+            type: integer
+            minimum: 1
+            maximum: 500
+            default: 50
+        - name: cursor
+          in: query
+          description: The `next_cursor` of the previous page.
+          schema:
+            type: string
+      responses:
+        "200":
+          description: One page of decisions.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/DecisionList"
+        "400": {$ref: "#/components/responses/BadRequest"}
+        "405": {$ref: "#/components/responses/MethodNotAllowed"}
+        "500": {$ref: "#/components/responses/Internal"}
+  /v1/routing-decisions/{id}:
+    get:
+      operationId: getRoutingDecision
+      summary: Get one routing decision.
+      tags: [admin]
+      x-triage-listener: admin
+      parameters:
+        - $ref: "#/components/parameters/RequestId"
+        - name: id
+          in: path
+          required: true
+          description: The value of the `X-Triage-Decision` header.
+          schema:
+            type: string
+      responses:
+        "200":
+          description: The decision.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Decision"
+        "404": {$ref: "#/components/responses/NotFound"}
+        "405": {$ref: "#/components/responses/MethodNotAllowed"}
+        "500": {$ref: "#/components/responses/Internal"}
+  /v1/admin/config:
+    get:
+      operationId: getAdminConfig
+      summary: The active configuration with secrets redacted.
+      tags: [admin]
+      x-triage-listener: admin
+      parameters:
+        - $ref: "#/components/parameters/RequestId"
+      responses:
+        "200":
+          description: The redacted configuration.
+          content:
+            application/json:
+              schema:
+                type: object
+                additionalProperties: true
+        "405": {$ref: "#/components/responses/MethodNotAllowed"}
+        "500": {$ref: "#/components/responses/Internal"}
+  /v1/admin/reload:
+    post:
+      operationId: reloadAdminConfig
+      summary: Reload the configuration.
+      tags: [admin]
+      x-triage-listener: admin
+      parameters:
+        - $ref: "#/components/parameters/RequestId"
+      responses:
+        "200":
+          description: The new configuration is active.
+          content:
+            application/json:
+              schema:
+                type: object
+                required: [status]
+                properties:
+                  status:
+                    type: string
+                    enum: [reloaded]
+        "405": {$ref: "#/components/responses/MethodNotAllowed"}
+        "422":
+          description: >-
+            The new configuration was rejected (`config_invalid`); the previous
+            one stays active.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+        "500": {$ref: "#/components/responses/Internal"}
+  /v1/admin/models:
+    get:
+      operationId: listAdminModels
+      summary: Routes and targets with their health.
+      tags: [admin]
+      x-triage-listener: admin
+      parameters:
+        - $ref: "#/components/parameters/RequestId"
+      responses:
+        "200":
+          description: The routes and targets.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/AdminModels"
+        "405": {$ref: "#/components/responses/MethodNotAllowed"}
+        "500": {$ref: "#/components/responses/Internal"}
+components:
+  securitySchemes:
+    bearer:
+      type: http
+      scheme: bearer
+      description: >-
+        API key from api.keys. Required on the data-plane /v1 endpoints when
+        keys are configured; the admin plane is not authenticated.
+  parameters:
+    RequestId:
+      name: X-Request-Id
+      in: header
+      required: false
+      description: Accepted if valid, generated (ULID) otherwise, echoed in the response.
+      schema:
+        type: string
+    TriagePrivacy:
+      name: X-Triage-Privacy
+      in: header
+      required: false
+      description: >-
+        Requests a stricter privacy mode than the route's; a looser or equal
+        value is ignored, one the route does not allow is `privacy_mode_not_allowed`.
+      schema:
+        type: string
+        enum: [off, mask, local_only]
+    TriageTier:
+      name: X-Triage-Tier
+      in: header
+      required: false
+      description: Requests a tier when the route allows client overrides.
+      schema:
+        type: string
+        enum: [weak, strong]
+  headers:
+    RequestId:
+      description: The request id.
+      schema:
+        type: string
+    TriageDecision:
+      description: Id of the routing decision, see GET /v1/routing-decisions/{id} on the admin listener.
+      schema:
+        type: string
+    TriageRoute:
+      description: Name of the route that served the request.
+      schema:
+        type: string
+    TriageTarget:
+      description: Name of the target that served the request.
+      schema:
+        type: string
+    TriageRouteReason:
+      description: >-
+        Reasons for the routing choice, ASCII, joined with "; ". Present on
+        non-streamed responses when api.expose_decision_detail is on.
+      schema:
+        type: string
+    TriageUnmask:
+      description: >-
+        "partial" when the non-streamed output of a masked attempt kept a
+        placeholder-like token that is not a placeholder of this request.
+        Streams signal it with the SSE comment ": triage-unmask=partial"
+        before [DONE].
+      schema:
+        type: string
+        enum: [partial]
+  responses:
+    BadRequest:
+      description: >-
+        Malformed request (`invalid_request`, `invalid_cursor`), a privacy mode
+        the route does not allow (`privacy_mode_not_allowed`), or an upstream
+        rejection (`context_length_exceeded`, `upstream_bad_request`).
+      content:
+        application/json:
+          schema: {$ref: "#/components/schemas/ErrorResponse"}
+    Unauthorized:
+      description: Missing or invalid API key (`invalid_api_key`).
+      headers:
+        WWW-Authenticate:
+          schema:
+            type: string
+            const: Bearer
+      content:
+        application/json:
+          schema: {$ref: "#/components/schemas/ErrorResponse"}
+    NotFound:
+      description: >-
+        `model_not_found`, `decision_not_found` or `not_found` (no such endpoint).
+      content:
+        application/json:
+          schema: {$ref: "#/components/schemas/ErrorResponse"}
+    MethodNotAllowed:
+      description: The path exists but not for this method (`method_not_allowed`).
+      headers:
+        Allow:
+          schema:
+            type: string
+      content:
+        application/json:
+          schema: {$ref: "#/components/schemas/ErrorResponse"}
+    TooLarge:
+      description: >-
+        The body exceeds api.max_body_bytes (`request_too_large`) or the privacy
+        scan limit (`privacy_scan_limit`).
+      content:
+        application/json:
+          schema: {$ref: "#/components/schemas/ErrorResponse"}
+    RateLimited:
+      description: Upstream rate limit and the fallback chain is exhausted (`rate_limit_exceeded`).
+      content:
+        application/json:
+          schema: {$ref: "#/components/schemas/ErrorResponse"}
+    Canceled:
+      description: The client closed the connection (`request_canceled`).
+      content:
+        application/json:
+          schema: {$ref: "#/components/schemas/ErrorResponse"}
+    Internal:
+      description: Unclassified failure (`internal_error`).
+      content:
+        application/json:
+          schema: {$ref: "#/components/schemas/ErrorResponse"}
+    BadGateway:
+      description: The upstream was unreachable or answered 5xx on every attempt (`upstream_unavailable`).
+      content:
+        application/json:
+          schema: {$ref: "#/components/schemas/ErrorResponse"}
+    Unavailable:
+      description: >-
+        No eligible target (`no_eligible_target`) or no local target for a
+        request that must stay local (`privacy_no_local_target`).
+      content:
+        application/json:
+          schema: {$ref: "#/components/schemas/ErrorResponse"}
+    GatewayTimeout:
+      description: An attempt or the dispatch budget timed out (`upstream_timeout`).
+      content:
+        application/json:
+          schema: {$ref: "#/components/schemas/ErrorResponse"}
+  schemas:
+    ErrorResponse:
+      type: object
+      required: [error]
+      properties:
+        error:
+          type: object
+          required: [message, type, param, code]
+          properties:
+            message:
+              type: string
+              maxLength: 1000
+            type:
+              type: string
+              enum: [invalid_request_error, authentication_error, rate_limit_error, server_error]
+            param:
+              type: [string, "null"]
+              description: The offending request field, if any.
+            code:
+              $ref: "#/components/schemas/ErrorCode"
+    ErrorCode:
+      type: string
+      enum:
+        - invalid_request
+        - invalid_api_key
+        - request_too_large
+        - not_found
+        - method_not_allowed
+        - invalid_cursor
+        - decision_not_found
+        - config_invalid
+        - model_not_found
+        - privacy_mode_not_allowed
+        - privacy_scan_limit
+        - privacy_no_local_target
+        - no_eligible_target
+        - context_length_exceeded
+        - upstream_bad_request
+        - rate_limit_exceeded
+        - upstream_timeout
+        - upstream_unavailable
+        - request_canceled
+        - internal_error
+    Status:
+      type: object
+      required: [status]
+      properties:
+        status:
+          type: string
+          enum: [ok, unavailable, shutting_down]
+        reason:
+          type: string
+    Version:
+      type: object
+      required: [version, commit, build_date, go_version]
+      properties:
+        version: {type: string}
+        commit: {type: string}
+        build_date: {type: string}
+        go_version: {type: string}
+    ChatCompletionRequest:
+      type: object
+      required: [model, messages]
+      additionalProperties: true
+      description: >-
+        OpenAI chat request. Fields not listed here are passed through to the
+        upstream unchanged.
+      properties:
+        model:
+          type: string
+          description: A route name, see GET /v1/models.
+        messages:
+          type: array
+          minItems: 1
+          items: {$ref: "#/components/schemas/ChatMessage"}
+        stream:
+          type: boolean
+          default: false
+        stream_options:
+          type: object
+          properties:
+            include_usage:
+              type: boolean
+        tools:
+          type: array
+          items: {$ref: "#/components/schemas/Tool"}
+        tool_choice:
+          description: '"none", "auto", "required" or an object naming a function.'
+          oneOf:
+            - type: string
+            - type: object
+              additionalProperties: true
+        response_format:
+          type: object
+          additionalProperties: true
+        temperature: {type: number}
+        top_p: {type: number}
+        max_tokens: {type: integer}
+        max_completion_tokens: {type: integer}
+        stop:
+          oneOf:
+            - type: string
+            - type: array
+              items: {type: string}
+        seed: {type: integer, format: int64}
+        user: {type: string}
+    ChatMessage:
+      type: object
+      required: [role]
+      additionalProperties: true
+      properties:
+        role:
+          type: string
+          enum: [system, user, assistant, tool]
+        content:
+          description: Text, or an array of text and image_url parts. May be null on assistant tool-call messages.
+          oneOf:
+            - type: string
+            - type: array
+              items: {$ref: "#/components/schemas/ContentPart"}
+            - type: "null"
+        name: {type: string}
+        tool_calls:
+          type: array
+          items: {$ref: "#/components/schemas/ToolCall"}
+        tool_call_id: {type: string}
+    ContentPart:
+      type: object
+      required: [type]
+      properties:
+        type:
+          type: string
+          enum: [text, image_url]
+        text: {type: string}
+        image_url:
+          type: object
+          required: [url]
+          properties:
+            url: {type: string}
+            detail: {type: string}
+    Tool:
+      type: object
+      required: [type, function]
+      properties:
+        type:
+          type: string
+          enum: [function]
+        function:
+          type: object
+          required: [name]
+          properties:
+            name: {type: string}
+            description: {type: string}
+            parameters:
+              type: object
+              additionalProperties: true
+              description: JSON Schema of the arguments.
+            strict: {type: boolean}
+    ToolCall:
+      type: object
+      required: [id, type, function]
+      properties:
+        id: {type: string}
+        type: {type: string}
+        function:
+          type: object
+          required: [name, arguments]
+          properties:
+            name: {type: string}
+            arguments:
+              type: string
+              description: JSON-encoded arguments.
+    Usage:
+      type: object
+      required: [prompt_tokens, completion_tokens, total_tokens]
+      properties:
+        prompt_tokens: {type: integer}
+        completion_tokens: {type: integer}
+        total_tokens: {type: integer}
+        prompt_tokens_details:
+          type: object
+          required: [cached_tokens]
+          properties:
+            cached_tokens: {type: integer}
+    ChatCompletion:
+      type: object
+      required: [id, object, created, model, choices, usage]
+      properties:
+        id: {type: string}
+        object:
+          type: string
+          enum: [chat.completion]
+        created: {type: integer, format: int64}
+        model: {type: string}
+        system_fingerprint: {type: string}
+        usage:
+          oneOf:
+            - $ref: "#/components/schemas/Usage"
+            - type: "null"
+        choices:
+          type: array
+          items:
+            type: object
+            required: [index, message, finish_reason]
+            properties:
+              index: {type: integer}
+              message:
+                type: object
+                required: [role, content]
+                properties:
+                  role: {type: string}
+                  content: {type: [string, "null"]}
+                  tool_calls:
+                    type: array
+                    items: {$ref: "#/components/schemas/ToolCall"}
+              finish_reason: {type: [string, "null"]}
+    ChatCompletionChunk:
+      type: object
+      required: [id, object, created, model, choices]
+      description: One `data:` event of a streamed completion.
+      properties:
+        id: {type: string}
+        object:
+          type: string
+          enum: [chat.completion.chunk]
+        created: {type: integer, format: int64}
+        model: {type: string}
+        usage: {$ref: "#/components/schemas/Usage"}
+        choices:
+          type: array
+          items:
+            type: object
+            required: [index, delta, finish_reason]
+            properties:
+              index: {type: integer}
+              delta:
+                type: object
+                properties:
+                  role: {type: string}
+                  content: {type: string}
+                  tool_calls:
+                    type: array
+                    items:
+                      type: object
+                      required: [index, function]
+                      properties:
+                        index: {type: integer}
+                        id: {type: string}
+                        type: {type: string}
+                        function:
+                          type: object
+                          required: [arguments]
+                          properties:
+                            name: {type: string}
+                            arguments: {type: string}
+              finish_reason: {type: [string, "null"]}
+    EmbeddingRequest:
+      type: object
+      required: [model, input]
+      additionalProperties: true
+      properties:
+        model: {type: string}
+        input:
+          oneOf:
+            - type: string
+            - type: array
+              minItems: 1
+              items: {type: string}
+        dimensions:
+          type: integer
+          minimum: 0
+        user: {type: string}
+        encoding_format:
+          type: string
+          enum: [float, base64]
+          default: float
+    EmbeddingResponse:
+      type: object
+      required: [object, data, model, usage]
+      properties:
+        object:
+          type: string
+          enum: [list]
+        model: {type: string}
+        data:
+          type: array
+          items:
+            type: object
+            required: [object, index, embedding]
+            properties:
+              object:
+                type: string
+                enum: [embedding]
+              index: {type: integer}
+              embedding:
+                description: Floats, or base64 of little-endian float32 values for `encoding_format` base64.
+                oneOf:
+                  - type: array
+                    items: {type: number}
+                  - type: string
+        usage:
+          type: object
+          required: [prompt_tokens, total_tokens]
+          properties:
+            prompt_tokens: {type: integer}
+            total_tokens: {type: integer}
+    ModelList:
+      type: object
+      required: [object, data]
+      properties:
+        object:
+          type: string
+          enum: [list]
+        data:
+          type: array
+          items:
+            type: object
+            required: [id, object, created, owned_by]
+            properties:
+              id: {type: string}
+              object:
+                type: string
+                enum: [model]
+              created: {type: integer, format: int64}
+              owned_by: {type: string}
+    DecisionList:
+      type: object
+      required: [data]
+      properties:
+        data:
+          type: array
+          items: {$ref: "#/components/schemas/Decision"}
+        next_cursor:
+          type: string
+          description: Absent on the last page.
+    DecisionUsage:
+      type: object
+      required: [prompt_tokens, completion_tokens, cached_prompt_tokens]
+      properties:
+        prompt_tokens: {type: integer}
+        completion_tokens: {type: integer}
+        cached_prompt_tokens: {type: integer}
+    DecisionAttempt:
+      type: object
+      required: [target, model, locality, masked, continuation, status, latency_ms, usage, cost_usd]
+      properties:
+        target: {type: string}
+        model: {type: string}
+        locality:
+          type: string
+          enum: [local, cloud]
+        masked: {type: boolean}
+        continuation: {type: boolean}
+        status:
+          type: string
+          description: '"ok" or an error class such as rate_limited, timeout, cut.'
+        http_status:
+          type: integer
+          description: Upstream status, when one was received.
+        latency_ms: {type: number}
+        usage: {$ref: "#/components/schemas/DecisionUsage"}
+        cost_usd: {type: number}
+    Decision:
+      type: object
+      description: >-
+        A routing decision. It holds counts and names only, never prompt text or
+        finding values. The same shape is published as JSON Schema in
+        api/schema/decision.v1.json.
+      required:
+        - id
+        - route
+        - time
+        - operation
+        - privacy
+        - oversize
+        - scoring_latency_ms
+        - scoring_cost_usd
+        - reasons
+        - attempts
+        - usage
+        - cost_usd
+      properties:
+        id: {type: string}
+        route: {type: string}
+        time: {type: string, format: date-time}
+        operation:
+          type: string
+          enum: [chat, embeddings]
+        privacy:
+          type: string
+          enum: [off, mask, local_only]
+        findings:
+          type: object
+          description: Finding counts by type.
+          additionalProperties: {type: integer}
+        oversize: {type: boolean}
+        strategy: {type: string}
+        variant: {type: string}
+        score: {type: number}
+        threshold: {type: number}
+        scoring_latency_ms: {type: number}
+        scoring_cost_usd: {type: number}
+        tier:
+          type: string
+          enum: [weak, strong]
+        reasons:
+          type: array
+          items: {type: string}
+        attempts:
+          type: array
+          items: {$ref: "#/components/schemas/DecisionAttempt"}
+        unmask:
+          type: string
+          enum: [ok, partial]
+        usage: {$ref: "#/components/schemas/DecisionUsage"}
+        cost_usd: {type: number}
+        error: {type: string}
+    AdminModels:
+      type: object
+      required: [routes, targets]
+      properties:
+        routes:
+          type: array
+          items: {type: string}
+        targets:
+          type: array
+          items:
+            type: object
+            required: [name, provider, model, locality, tier, context_window, capabilities]
+            properties:
+              name: {type: string}
+              provider: {type: string}
+              model: {type: string}
+              locality:
+                type: string
+                enum: [local, cloud]
+              tier:
+                type: string
+                enum: [weak, strong]
+              context_window: {type: integer}
+              capabilities:
+                type: array
+                items:
+                  type: string
+                  enum: [tools, vision, json_mode, embeddings]
+              healthy:
+                type: boolean
+                description: Present when a health reader is configured.

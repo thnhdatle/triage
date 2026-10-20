@@ -1,0 +1,12 @@
+mode: live                                # live | labels
+config: deploy/config.example.yaml        # providers, privacy, difficulty options and the route below
+route: triage-auto                        # the routing pass runs its pipeline; strategy and threshold replaced per run
+dataset: { sets: [eval/sets/trg03_cal.txt, eval/sets/trg03_eval.txt], prompts: eval/prompts/ }
+targets:                                  # reference weak/strong pair (the acceptance test overrides the ids with TRIAGE_TRG03_WEAK_MODEL / TRIAGE_TRG03_STRONG_MODEL), strong priced as cloud-strong
+  weak:   { provider: lmstudio, model: qwen/qwen3-vl-4b, pricing: { input_per_mtok: 0, output_per_mtok: 0 } }
+  strong: { provider: lmstudio, model: gemma-4-26b-a4b-it-qat-mlx, pricing: { input_per_mtok: 1.25, output_per_mtok: 10.0 } }
+generation: { temperature: 0, seed: 7, max_tokens: 1024 }
+strategies: [random, length, bert, mf]    # mf only when OPENAI_API_KEY is set (informational)
+threshold_rule: { calibration: eval/sets/trg03_cal.txt, min_accuracy_of_all_strong: 0.96 }
+bootstrap: { resamples: 10000, seed: 7 }
+cache_dir: ~/.cache/rayld/triage/eval

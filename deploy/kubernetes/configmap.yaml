@@ -1,0 +1,32 @@
+# SPDX-License-Identifier: Apache-2.0
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: triage-config
+  labels:
+    app.kubernetes.io/name: triage
+data:
+  config.yaml: |
+    server:
+      listen: "0.0.0.0:8080"
+      allow_unauthenticated: false
+    admin:
+      listen: "0.0.0.0:9091"
+    auth:
+      enabled: true
+      keys_env: TRIAGE_API_KEYS
+    providers:
+      openai: { type: openaicompat, base_url: "https://api.openai.com/v1", api_key_env: OPENAI_API_KEY }
+    targets:
+      - name: cloud-strong
+        provider: openai
+        model: gpt-5
+        locality: cloud
+        tier: strong
+        context_window: 200000
+        pricing: { input_per_mtok: 1.25, output_per_mtok: 10.0 }
+    routes:
+      - name: triage-auto
+        pool: [cloud-strong]
+        strategy: none
+        default_tier: strong

@@ -1,0 +1,4 @@
+status: 401
+content-type: application/json
+
+{"type":"error","error":{"type":"authentication_error","message":"invalid x-api-key"}}

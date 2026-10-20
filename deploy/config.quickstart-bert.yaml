@@ -1,0 +1,46 @@
+# SPDX-License-Identifier: Apache-2.0
+# Quickstart step 2: the quickstart config with the route switched to the learned `bert`
+# strategy. Needs `triage models pull bert` first (docs/guides/quickstart.md).
+# Listeners bind 0.0.0.0 because loopback inside a container is unreachable; the compose file
+# publishes the admin port on host loopback only.
+server:
+  listen: "0.0.0.0:8080"
+  allow_unauthenticated: true
+admin:
+  listen: "0.0.0.0:9091"
+auth:
+  enabled: false
+api:
+  expose_decision_detail: true
+providers:
+  fakellm: { type: openaicompat, base_url: "http://fakellm:8090/v1" }
+targets:
+  - name: local-small
+    provider: fakellm
+    model: fake-small
+    locality: local
+    tier: weak
+    context_window: 32768
+    capabilities: [tools, json_mode]
+    pricing: { input_per_mtok: 0, output_per_mtok: 0 }
+  - name: cloud-strong
+    provider: fakellm
+    model: fake-strong
+    locality: cloud
+    tier: strong
+    context_window: 200000
+    capabilities: [tools, vision, json_mode]
+    pricing: { input_per_mtok: 1.25, output_per_mtok: 10.0 }
+routes:
+  - name: triage-auto
+    pool: [local-small, cloud-strong]
+    privacy: { mode: mask, max_client_mode: local_only }
+    strategy: bert
+    threshold: 0.5
+    on_tier_unavailable: escalate
+    fallback: [tier:strong, tier:weak]
+difficulty:
+  # FP32 from the weight-free graph (no --int8 build); 1s leaves room for a slow CPU.
+  bert: { variant: fp32, timeout: 1s }
+decisions:
+  buffer_size: 10000

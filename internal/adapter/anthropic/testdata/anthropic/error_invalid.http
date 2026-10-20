@@ -1,0 +1,4 @@
+status: 400
+content-type: application/json
+
+{"type":"error","error":{"type":"invalid_request_error","message":"messages.1.content: secret user text echoed here"}}

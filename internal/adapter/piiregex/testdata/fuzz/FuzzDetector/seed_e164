@@ -1,0 +1,2 @@
+go test fuzz v1
+string("+84 912 345 678")

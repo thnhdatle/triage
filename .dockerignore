@@ -1,0 +1,16 @@
+# Build context: sources only. Hidden files and directories (VCS data, editor
+# and tool state) and local outputs never enter the image build.
+.*
+**/.venv
+**/__pycache__
+**/.mypy_cache
+**/.ruff_cache
+**/node_modules
+bin
+dist
+coverage.*
+acceptance/logs
+acceptance/.build
+out
+paper
+*.local.yaml

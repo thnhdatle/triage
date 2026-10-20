@@ -1,0 +1,22 @@
+{
+  "model": "gpt-x",
+  "messages": [
+    {
+      "role": "user",
+      "content": [
+        {
+          "type": "text",
+          "text": "what is this?"
+        },
+        {
+          "type": "image_url",
+          "image_url": {
+            "url": "https://example.com/a.png",
+            "detail": "low"
+          }
+        }
+      ],
+      "name": "alice"
+    }
+  ]
+}

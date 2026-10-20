@@ -1,0 +1,10 @@
+# TRG-10, GSM8K part: 1,319 test items minus RouteLLM's contaminated prompts, published labels.
+mode: labels
+config: deploy/config.example.yaml
+route: triage-auto
+dataset:
+  sets: [eval/sets/trg10_gsm8k.txt]
+  labels: { weak: mistralai/Mixtral-8x7B-Instruct-v0.1, strong: gpt-4-1106-preview }
+strategies: [random, bert, mf]
+bootstrap: { resamples: 10000, seed: 7 }
+cache_dir: ~/.cache/rayld/triage/eval

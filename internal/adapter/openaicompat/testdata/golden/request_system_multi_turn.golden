@@ -1,0 +1,21 @@
+{
+  "model": "gpt-x",
+  "messages": [
+    {
+      "role": "system",
+      "content": "be brief"
+    },
+    {
+      "role": "user",
+      "content": "hi"
+    },
+    {
+      "role": "assistant",
+      "content": "hello"
+    },
+    {
+      "role": "user",
+      "content": "how are you?"
+    }
+  ]
+}

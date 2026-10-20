@@ -1,0 +1,13 @@
+{
+  "model": "gpt-x",
+  "messages": [
+    {
+      "role": "user",
+      "content": "x"
+    }
+  ],
+  "stream": true,
+  "stream_options": {
+    "include_usage": true
+  }
+}

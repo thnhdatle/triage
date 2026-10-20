@@ -1,0 +1,5 @@
+status: 200
+content-type: application/json
+request-id: req_011CTextFixture
+
+{"id":"msg_01TextFixture","type":"message","role":"assistant","model":"claude-haiku-5-5","content":[{"type":"text","text":"Hanoi is the capital of Vietnam."}],"stop_reason":"end_turn","stop_sequence":null,"usage":{"input_tokens":21,"cache_creation_input_tokens":100,"cache_read_input_tokens":2048,"output_tokens":9}}

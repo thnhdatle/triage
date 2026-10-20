@@ -1,0 +1,22 @@
+{
+  "model": "gpt-x",
+  "messages": [
+    {
+      "role": "user",
+      "content": "x"
+    }
+  ],
+  "response_format": {
+    "type": "json_object"
+  },
+  "temperature": 0,
+  "top_p": 0.9,
+  "max_tokens": 10,
+  "max_completion_tokens": 20,
+  "stop": [
+    "END",
+    "\n\n"
+  ],
+  "seed": 7,
+  "user": "u-1"
+}

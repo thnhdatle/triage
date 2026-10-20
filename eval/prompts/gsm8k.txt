@@ -1,0 +1,3 @@
+Solve the following math problem. Reason step by step, then finish your reply with the final answer in the form "The answer is N", where N is a number.
+
+Question: {{.Question}}

@@ -1,0 +1,82 @@
+# SPDX-License-Identifier: Apache-2.0
+# Pinned model artifacts. Values read from the
+# Hugging Face API (?blobs=true) at the pinned revisions; non-LFS files hashed
+# locally. optimizer.pt and every file not listed here are never downloaded.
+schema_version: 1
+entries:
+  - name: bert
+    hf_repo: routellm/bert_gpt4_augmented
+    revision: 86237e3df400762178ea98379477b8296e66d5e4
+    base_model: xlm-roberta-base  # config.json _name_or_path; the repo has no model card
+    training_data: >-
+      not stated in the repo (no model card); the RouteLLM paper (arXiv:2406.18665)
+      describes the gpt4_augmented set as Chatbot Arena preference data augmented
+      with GPT-4-judged data
+    files:
+      - path: config.json
+        sha256: 937704625fe4fb59b9c08ec80292dfd759d5efc75788b45e35ea6e54a3181f91
+        size: 924
+      - path: tokenizer.json
+        sha256: 8373f9cd3d27591e1924426bcc1c8799bc5a9affc4fc857982c5d66668dd1f41
+        size: 17082832
+      - path: model.safetensors
+        sha256: e2a92240bad1c7fb9befbf021a62fad5feb1e2a3990d53a28d160a39bb1cac7b
+        size: 1112208084
+      - path: LICENSE
+        sha256: 43070e2d4e532684de521b885f385d0841030efa2b1a20bafb76133a5e1379c1
+        size: 11356
+    license_file: yes (Apache-2.0)
+    derived:
+      - kind: onnx-fp32
+        built_by: models/bert/graph.onnx (committed weight-free graph, external data into model.safetensors)
+        converter_version: build_bert_graph.py (triage-research 0.1.0)
+      - kind: onnx-int8
+        built_by: research/export_bert.py --scheme blockwise (MatMulNBits 8-bit, block 32, accuracy level 4; embedding Gathers by quantize_dynamic)
+        converter_version: triage-research 0.1.0
+  - name: mf
+    hf_repo: routellm/mf_gpt4_augmented
+    revision: 5eb3dc745cbe7cb16ca342ceb83b7f6ecf8c77c5
+    base_model: none stated (the repo has no model card)
+    training_data: >-
+      not stated in the repo (no model card); the RouteLLM paper (arXiv:2406.18665)
+      describes the gpt4_augmented set as Chatbot Arena preference data augmented
+      with GPT-4-judged data
+    files:
+      # The repo has no config.json (see models/NOTES.md).
+      - path: model.safetensors
+        sha256: bfc93d473b48f8b85ce719f0d7e8bb86a139fa052e8b0c3ac387eabf45e47293
+        size: 819960
+    license_file: no
+    derived:
+      - kind: mf-vector
+        built_by: triage models pull mf (pure Go, reads safetensors, writes the 1536-float vector u)
+        converter_version: triage (Go) at the release that pulled it
+  - name: ner
+    hf_repo: dslim/bert-base-NER
+    revision: d1a3e8f13f8c3566299d95fcfc9a8d2382a9affc  # main head on 2026-10-19
+    base_model: bert-base-cased (model card)
+    training_data: CoNLL-2003 English NER dataset (model card; Reuters news stories)
+    files:
+      # The repo root has no tokenizer.json; the onnx/ copies are used (see models/NOTES.md).
+      - path: onnx/model.onnx
+        sha256: 963039b81eec5b33e23d84826ccdf1e8f8ada776f320e692113034cfae384617
+        size: 431172619
+      - path: onnx/tokenizer.json
+        sha256: 343989712a36cd8b253efeaf8baf6a08b9d2583f78e395e83832e8ee9f8d8ee1
+        size: 668923
+      - path: onnx/config.json
+        sha256: bdc92243c070947117ec86391a257f5767a2bada249e57277269a5adcc39bd6a
+        size: 999
+    license_file: no (model card metadata states MIT; the repo has no LICENSE file)
+    derived: []
+# XLM-R tokenizer.json used by the fixtures: identical to bert's tokenizer.json.
+fixtures:
+  xlmr_tokenizer_sha256: 8373f9cd3d27591e1924426bcc1c8799bc5a9affc4fc857982c5d66668dd1f41
+onnxruntime:
+  version: 1.31.0
+  linux_aarch64:
+    url: https://github.com/microsoft/onnxruntime/releases/download/v1.31.0/onnxruntime-linux-aarch64-1.31.0.tgz
+    sha256: c5b8b3cca31f3d643a3b313b8f42e2d0f16a4fcefd02cda343d97bd5306afaab
+  linux_x64:
+    url: https://github.com/microsoft/onnxruntime/releases/download/v1.31.0/onnxruntime-linux-x64-1.31.0.tgz
+    sha256: cc5c72baf5ae5c8238a6841f0897227be2d02826b9cf98eaf02fdefaeeb03a57

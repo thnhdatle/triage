@@ -1,0 +1,81 @@
+[
+  {
+    "ID": "msg_01StreamText",
+    "Model": "claude-haiku-5-5",
+    "Created": 1792411200,
+    "Choices": [
+      {
+        "Index": 0,
+        "Delta": {
+          "Role": "assistant",
+          "Content": "",
+          "ToolCalls": null
+        },
+        "FinishReason": ""
+      }
+    ],
+    "Usage": null
+  },
+  {
+    "ID": "msg_01StreamText",
+    "Model": "claude-haiku-5-5",
+    "Created": 1792411200,
+    "Choices": [
+      {
+        "Index": 0,
+        "Delta": {
+          "Role": "",
+          "Content": "Hanoi is",
+          "ToolCalls": null
+        },
+        "FinishReason": ""
+      }
+    ],
+    "Usage": null
+  },
+  {
+    "ID": "msg_01StreamText",
+    "Model": "claude-haiku-5-5",
+    "Created": 1792411200,
+    "Choices": [
+      {
+        "Index": 0,
+        "Delta": {
+          "Role": "",
+          "Content": " the capital.",
+          "ToolCalls": null
+        },
+        "FinishReason": ""
+      }
+    ],
+    "Usage": null
+  },
+  {
+    "ID": "msg_01StreamText",
+    "Model": "claude-haiku-5-5",
+    "Created": 1792411200,
+    "Choices": [
+      {
+        "Index": 0,
+        "Delta": {
+          "Role": "",
+          "Content": "",
+          "ToolCalls": null
+        },
+        "FinishReason": "stop"
+      }
+    ],
+    "Usage": null
+  },
+  {
+    "ID": "msg_01StreamText",
+    "Model": "claude-haiku-5-5",
+    "Created": 1792411200,
+    "Choices": [],
+    "Usage": {
+      "PromptTokens": 1049,
+      "CompletionTokens": 7,
+      "CachedPromptTokens": 1024
+    }
+  }
+]

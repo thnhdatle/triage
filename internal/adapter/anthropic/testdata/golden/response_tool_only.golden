@@ -1,0 +1,34 @@
+{
+  "ID": "msg_01ToolOnly",
+  "Model": "claude-haiku-5-5",
+  "Created": 1792411200,
+  "Choices": [
+    {
+      "Index": 0,
+      "Message": {
+        "Role": "assistant",
+        "Content": null,
+        "ContentIsString": true,
+        "Name": "",
+        "ToolCalls": [
+          {
+            "ID": "toolu_01C",
+            "Type": "function",
+            "Function": {
+              "Name": "noop",
+              "Arguments": "{}"
+            }
+          }
+        ],
+        "ToolCallID": ""
+      },
+      "FinishReason": "tool_calls"
+    }
+  ],
+  "Usage": {
+    "PromptTokens": 5,
+    "CompletionTokens": 3,
+    "CachedPromptTokens": 0
+  },
+  "SystemFingerprint": ""
+}

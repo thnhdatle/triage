@@ -1,0 +1,2 @@
+go test fuzz v1
+string("서울특별시 강남구 테헤란로 123")

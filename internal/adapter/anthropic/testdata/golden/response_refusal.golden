@@ -1,0 +1,32 @@
+{
+  "ID": "msg_01Refusal",
+  "Model": "claude-haiku-5-5",
+  "Created": 1792411200,
+  "Choices": [
+    {
+      "Index": 0,
+      "Message": {
+        "Role": "assistant",
+        "Content": [
+          {
+            "Type": "text",
+            "Text": "",
+            "ImageURL": "",
+            "ImageDetail": ""
+          }
+        ],
+        "ContentIsString": true,
+        "Name": "",
+        "ToolCalls": null,
+        "ToolCallID": ""
+      },
+      "FinishReason": "content_filter"
+    }
+  ],
+  "Usage": {
+    "PromptTokens": 30,
+    "CompletionTokens": 0,
+    "CachedPromptTokens": 0
+  },
+  "SystemFingerprint": ""
+}

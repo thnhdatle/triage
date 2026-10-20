@@ -1,0 +1,10 @@
+# SPDX-License-Identifier: Apache-2.0
+# Release image for fakellm, built by scripts/release-build.sh: copies the prebuilt per-arch static
+# binary (linux/<arch>/fakellm).
+FROM gcr.io/distroless/static-debian12:nonroot@sha256:afa5c872c891853ca7fcf1f12c3edb23f7eeef36189728842dd51042ff57f7ab
+ARG TARGETPLATFORM
+COPY ${TARGETPLATFORM}/fakellm /fakellm
+USER 65532:65532
+EXPOSE 8090
+HEALTHCHECK --interval=5s --timeout=3s --start-period=2s --retries=3 CMD ["/fakellm","healthcheck"]
+ENTRYPOINT ["/fakellm"]

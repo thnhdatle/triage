@@ -1,0 +1,6 @@
+status: 200
+content-type: text/event-stream
+
+event: message_start
+data: {"type":"message_start","message":{"id":"msg_01Bad"
+

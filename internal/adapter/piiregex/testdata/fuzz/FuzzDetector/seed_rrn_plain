@@ -1,0 +1,2 @@
+go test fuzz v1
+string("RRN 9001011234567")

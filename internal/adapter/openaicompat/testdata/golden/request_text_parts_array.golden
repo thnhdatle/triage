@@ -1,0 +1,18 @@
+{
+  "model": "gpt-x",
+  "messages": [
+    {
+      "role": "user",
+      "content": [
+        {
+          "type": "text",
+          "text": "a"
+        },
+        {
+          "type": "text",
+          "text": "b"
+        }
+      ]
+    }
+  ]
+}

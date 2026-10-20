@@ -1,0 +1,13 @@
+# SPDX-License-Identifier: Apache-2.0
+# Quickstart step 2 (docs/guides/quickstart.md): use with docker-compose.yml. Serves the
+# quickstart route with `strategy: bert` and keeps the model files of `triage models pull`
+# in a volume mounted as the container user's home, where the default models.cache_dir
+# (~/.cache/rayld/triage/models) lives. TRIAGE_MODELS_VOLUME may name a host directory instead.
+services:
+  triage:
+    volumes:
+      - ./config.quickstart-bert.yaml:/etc/triage/config.yaml:ro
+      - ${TRIAGE_MODELS_VOLUME:-triage-models}:/home/nonroot
+
+volumes:
+  triage-models:

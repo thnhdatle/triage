@@ -1,0 +1,32 @@
+{
+  "ID": "msg_01StopSeq",
+  "Model": "claude-haiku-5-5",
+  "Created": 1792411200,
+  "Choices": [
+    {
+      "Index": 0,
+      "Message": {
+        "Role": "assistant",
+        "Content": [
+          {
+            "Type": "text",
+            "Text": "one, two",
+            "ImageURL": "",
+            "ImageDetail": ""
+          }
+        ],
+        "ContentIsString": true,
+        "Name": "",
+        "ToolCalls": null,
+        "ToolCallID": ""
+      },
+      "FinishReason": "stop"
+    }
+  ],
+  "Usage": {
+    "PromptTokens": 8,
+    "CompletionTokens": 3,
+    "CachedPromptTokens": 0
+  },
+  "SystemFingerprint": ""
+}

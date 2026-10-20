@@ -1,0 +1,1367 @@
+{"text":"Here it is: 6011970060496831\nLet me know if that works.","spans":[{"start":12,"end":28,"type":"credit_card"}],"lang":"en"}
+{"text":"The customer entered PL18044249925550305470542370, thanks.","spans":[{"start":21,"end":49,"type":"iban"}],"lang":"en"}
+{"text":"My details: dev+test@corp.co.kr","spans":[{"start":12,"end":31,"type":"email"}],"lang":"en"}
+{"text":"The customer entered 105.181.86.213.","spans":[{"start":21,"end":35,"type":"ip"}],"lang":"en"}
+{"text":"My details: 478 04 7388.","spans":[{"start":12,"end":23,"type":"us_ssn"}],"lang":"en"}
+{"text":"export TOKEN=AKIAV5BAZYNWH0QXKRIU","spans":[{"start":13,"end":33,"type":"secret"}],"lang":"en"}
+{"text":"resident registration number: 2503234747703.","spans":[{"start":30,"end":43,"type":"kr_rrn"}],"lang":"en"}
+{"text":"mobile (793) 322-7530.","spans":[{"start":7,"end":21,"type":"phone"}],"lang":"en"}
+{"text":"citizen ID (CCCD) 062076299270 , thanks","spans":[{"start":18,"end":30,"type":"vn_cccd"}],"lang":"en"}
+{"text":"Ship it to 8439 Fifth St, thanks.","spans":[{"start":11,"end":24,"type":"street_address"}],"lang":"en"}
+{"text":"요청하신 값은 4479 8844 6414 6704입니다.","spans":[{"start":20,"end":39,"type":"credit_card"}],"lang":"ko"}
+{"text":"메모: FR22 0906 2039 3831 8859 6429 234이고 확인했습니다.","spans":[{"start":8,"end":41,"type":"iban"}],"lang":"ko"}
+{"text":"메모: support@gmail.com입니다.","spans":[{"start":8,"end":25,"type":"email"}],"lang":"ko"}
+{"text":"요청하신 값은 161.202.225.46이고 확인했습니다.","spans":[{"start":20,"end":34,"type":"ip"}],"lang":"ko"}
+{"text":"아래 내용을 봐 주세요. 707-46-3774 로 처리해 주세요.","spans":[{"start":32,"end":43,"type":"us_ssn"}],"lang":"ko"}
+{"text":"아래 내용을 봐 주세요. AKIA9HE0LW1E3XO8FQ45 로 처리해 주세요.","spans":[{"start":32,"end":52,"type":"secret"}],"lang":"ko"}
+{"text":"140326-7281900 로 처리해 주세요.","spans":[{"start":0,"end":14,"type":"kr_rrn"}],"lang":"ko"}
+{"text":"제 전화는 +82 10-7823-7351입니다.","spans":[{"start":14,"end":30,"type":"phone"}],"lang":"ko"}
+{"text":"CCCD 번호 001290315377\n고객 정보: 2502094516056.","spans":[{"start":12,"end":24,"type":"vn_cccd"},{"start":40,"end":53,"type":"kr_rrn"}],"lang":"ko"}
+{"text":"위치가 부산광역시 해운대구 해운대해변로 264 로 보내주세요.","spans":[{"start":10,"end":61,"type":"street_address"}],"lang":"ko"}
+{"text":"Mình gửi 5520387904571859 nhé.","spans":[{"start":12,"end":28,"type":"credit_card"}],"lang":"vi"}
+{"text":"Ghi chú: CH76394684FA3CR4K3T56 nhé.\nMình gửi ::1. Cảm ơn bạn.","spans":[{"start":10,"end":31,"type":"iban"},{"start":50,"end":53,"type":"ip"}],"lang":"vi"}
+{"text":"Ghi chú: nguyen.van.a@corp.co.kr. Cảm ơn bạn.","spans":[{"start":10,"end":33,"type":"email"}],"lang":"vi"}
+{"text":"Xin vui lòng kiểm tra 188.229.100.229. Cảm ơn bạn.","spans":[{"start":25,"end":40,"type":"ip"}],"lang":"vi"}
+{"text":"876-46-0400. Cảm ơn bạn.","spans":[{"start":0,"end":11,"type":"us_ssn"}],"lang":"vi"}
+{"text":"Thông tin: 250605-4998888. Cảm ơn bạn.","spans":[{"start":12,"end":26,"type":"kr_rrn"}],"lang":"vi"}
+{"text":"Thông tin: +49 30 7411198 nhé.","spans":[{"start":12,"end":26,"type":"phone"}],"lang":"vi"}
+{"text":"số căn cước công dân: 024184756939","spans":[{"start":30,"end":42,"type":"vn_cccd"}],"lang":"vi"}
+{"text":"Giao hàng tới 121 hẻm Cầu Giấy.","spans":[{"start":17,"end":39,"type":"street_address"}],"lang":"vi"}
+{"text":"The customer entered 5570143310245763\nLet me know if that works.","spans":[{"start":21,"end":37,"type":"credit_card"}],"lang":"en"}
+{"text":"The customer entered CH8740660W6K8SPHP3FBP","spans":[{"start":21,"end":42,"type":"iban"}],"lang":"en"}
+{"text":"The customer entered alice3@naver.com, thanks.","spans":[{"start":21,"end":37,"type":"email"}],"lang":"en"}
+{"text":"The customer entered b36c:eecf:d732:edce:b6d:c263:aded:639f.\nOPENAI_API_KEY=AKIAU1WSCC1PLNMZDVID","spans":[{"start":21,"end":59,"type":"ip"},{"start":76,"end":96,"type":"secret"}],"lang":"en"}
+{"text":"Please check 310-94-1304\nLet me know if that works.","spans":[{"start":13,"end":24,"type":"us_ssn"}],"lang":"en"}
+{"text":"Please check sk-FOSpi1mFsddEkLqLZEqdOSPDOp5YG09phau0C6W3ZlavBte\nLet me know if that works.","spans":[{"start":13,"end":63,"type":"secret"}],"lang":"en"}
+{"text":"221123 3930429, thanks.","spans":[{"start":0,"end":14,"type":"kr_rrn"}],"lang":"en"}
+{"text":"CMND 029027980884.","spans":[{"start":5,"end":17,"type":"vn_cccd"}],"lang":"en"}
+{"text":"Address: 8383 Baker Road, thanks.","spans":[{"start":9,"end":24,"type":"street_address"}],"lang":"en"}
+{"text":"아래 내용을 봐 주세요. 6298658895091711입니다.","spans":[{"start":32,"end":48,"type":"credit_card"}],"lang":"ko"}
+{"text":"NL59 YWXR 0966 8121 21","spans":[{"start":0,"end":22,"type":"iban"}],"lang":"ko"}
+{"text":"고객 정보: support84@vnu.edu.vn 로 처리해 주세요.","spans":[{"start":15,"end":35,"type":"email"}],"lang":"ko"}
+{"text":"45.209.149.163 로 처리해 주세요.","spans":[{"start":0,"end":14,"type":"ip"}],"lang":"ko"}
+{"text":"166 32 7527이고 확인했습니다.\n제 전화는 02-3542-2943","spans":[{"start":0,"end":11,"type":"us_ssn"},{"start":52,"end":64,"type":"phone"}],"lang":"ko"}
+{"text":"요청하신 값은 230419-4363869이고 확인했습니다.","spans":[{"start":20,"end":34,"type":"kr_rrn"}],"lang":"ko"}
+{"text":"전화번호: +49 30 1109388 로 처리해 주세요.","spans":[{"start":14,"end":28,"type":"phone"}],"lang":"ko"}
+{"text":"CCCD: 049102876496.\n고객 정보: 3530 5495 6855 1179","spans":[{"start":6,"end":18,"type":"vn_cccd"},{"start":35,"end":54,"type":"credit_card"}],"lang":"ko"}
+{"text":"주소: 경기도 성남시 판교로 235","spans":[{"start":8,"end":41,"type":"street_address"}],"lang":"ko"}
+{"text":"Ghi chú: 377064025556581 nhé.","spans":[{"start":10,"end":25,"type":"credit_card"}],"lang":"vi"}
+{"text":"Mình gửi PL64 8409 6137 9934 0675 1806 9892 nhé.","spans":[{"start":12,"end":46,"type":"iban"}],"lang":"vi"}
+{"text":"Mình gửi bob3@sub.io. Cảm ơn bạn.\n6.245.3.73. Cảm ơn bạn.","spans":[{"start":12,"end":23,"type":"email"},{"start":42,"end":52,"type":"ip"}],"lang":"vi"}
+{"text":"Thông tin: ::1 nhé.\nHotline 0881822136.","spans":[{"start":12,"end":15,"type":"ip"},{"start":30,"end":40,"type":"phone"}],"lang":"vi"}
+{"text":"Mình gửi 238-48-5387. Cảm ơn bạn.\nSĐT: 0902-671-897.","spans":[{"start":12,"end":23,"type":"us_ssn"},{"start":48,"end":60,"type":"phone"}],"lang":"vi"}
+{"text":"Xin vui lòng kiểm tra eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxOTEwNDQ1NjgzIiwiaWF0Ijo5MjIyOTEyMjU1fQ.uBW6YLqr8muHRiMhrs31F49Vci1tjvbq7z6OW8cmNuv. Cảm ơn bạn.","spans":[{"start":25,"end":156,"type":"secret"}],"lang":"vi"}
+{"text":"Thông tin: 841127-1267151","spans":[{"start":12,"end":26,"type":"kr_rrn"}],"lang":"vi"}
+{"text":"Hotline 0797078037.","spans":[{"start":8,"end":18,"type":"phone"}],"lang":"vi"}
+{"text":"số định danh cá nhân: 059135972022 , thanks","spans":[{"start":29,"end":41,"type":"vn_cccd"}],"lang":"vi"}
+{"text":"Nhà mình ở 307 hẻm Trần Hưng Đạo","spans":[{"start":15,"end":44,"type":"street_address"}],"lang":"vi"}
+{"text":"5561 5878 4076 2781\nLet me know if that works.","spans":[{"start":0,"end":19,"type":"credit_card"}],"lang":"en"}
+{"text":"The customer entered BE54 4890 7157 2381","spans":[{"start":21,"end":40,"type":"iban"}],"lang":"en"}
+{"text":"park_jihoon@vnu.edu.vn","spans":[{"start":0,"end":22,"type":"email"}],"lang":"en"}
+{"text":"Here it is: 93.252.136.120.","spans":[{"start":12,"end":26,"type":"ip"}],"lang":"en"}
+{"text":"The customer entered 840-62-0620.","spans":[{"start":21,"end":32,"type":"us_ssn"}],"lang":"en"}
+{"text":"Note: 030316-3856316\nLet me know if that works.","spans":[{"start":6,"end":20,"type":"kr_rrn"}],"lang":"en"}
+{"text":"Call my mobile: 903.735.0222","spans":[{"start":16,"end":28,"type":"phone"}],"lang":"en"}
+{"text":"citizen ID (CCCD) 002212105427 , thanks\n5175-5319-6556-9298","spans":[{"start":18,"end":30,"type":"vn_cccd"},{"start":40,"end":59,"type":"credit_card"}],"lang":"en"}
+{"text":"Deliver to 265 Market Way, Springfield","spans":[{"start":11,"end":25,"type":"street_address"}],"lang":"en"}
+{"text":"메모: 3771 613860 58510입니다.","spans":[{"start":8,"end":25,"type":"credit_card"}],"lang":"ko"}
+{"text":"고객 정보: PL68857709230870596141393306 로 처리해 주세요.","spans":[{"start":15,"end":43,"type":"iban"}],"lang":"ko"}
+{"text":"고객 정보: dev+test048@company.vn이고 확인했습니다.","spans":[{"start":15,"end":37,"type":"email"}],"lang":"ko"}
+{"text":"아래 내용을 봐 주세요. 2001:db8::b080 로 처리해 주세요.","spans":[{"start":32,"end":46,"type":"ip"}],"lang":"ko"}
+{"text":"메모: 277-97-9838 로 처리해 주세요.","spans":[{"start":8,"end":19,"type":"us_ssn"}],"lang":"ko"}
+{"text":"주민등록번호: 7604252943717","spans":[{"start":20,"end":33,"type":"kr_rrn"}],"lang":"ko"}
+{"text":"휴대폰 010-6001-9327.","spans":[{"start":10,"end":23,"type":"phone"}],"lang":"ko"}
+{"text":"CCCD 번호 072088824538.","spans":[{"start":12,"end":24,"type":"vn_cccd"}],"lang":"ko"}
+{"text":"주소: 서울특별시 강남구 테헤란로 123","spans":[{"start":8,"end":50,"type":"street_address"}],"lang":"ko"}
+{"text":"Ghi chú: 3416-328454-53487 nhé.","spans":[{"start":10,"end":27,"type":"credit_card"}],"lang":"vi"}
+{"text":"Ghi chú: PL04 0728 4639 5400 0304 9905 9953 giúp mình nhé.","spans":[{"start":10,"end":44,"type":"iban"}],"lang":"vi"}
+{"text":"Mình gửi john.smith@example.com giúp mình nhé.","spans":[{"start":12,"end":34,"type":"email"}],"lang":"vi"}
+{"text":"Xin vui lòng kiểm tra 2001:db8::61fc","spans":[{"start":25,"end":39,"type":"ip"}],"lang":"vi"}
+{"text":"Thông tin: 594-56-5490 giúp mình nhé.","spans":[{"start":12,"end":23,"type":"us_ssn"}],"lang":"vi"}
+{"text":"OPENAI_API_KEY=AKIA2A69XBJ5BRBP2E4C nhé.","spans":[{"start":15,"end":35,"type":"secret"}],"lang":"vi"}
+{"text":"RRN: 7807051281683입니다.","spans":[{"start":5,"end":18,"type":"kr_rrn"}],"lang":"vi"}
+{"text":"điện thoại: 0962.553.754.\nGhi chú: PL37 2832 4564 4652 4200 8230 5880. Cảm ơn bạn.","spans":[{"start":17,"end":29,"type":"phone"},{"start":41,"end":75,"type":"iban"}],"lang":"vi"}
+{"text":"CMND/CCCD 011283489058","spans":[{"start":10,"end":22,"type":"vn_cccd"}],"lang":"vi"}
+{"text":"Giao hàng tới 355/1 phố Lê Lợi.","spans":[{"start":17,"end":38,"type":"street_address"}],"lang":"vi"}
+{"text":"The customer entered 5143-3931-5038-4077","spans":[{"start":21,"end":40,"type":"credit_card"}],"lang":"en"}
+{"text":"The customer entered IT07 S270 6672 7534 6502 7296 164\nLet me know if that works.","spans":[{"start":21,"end":54,"type":"iban"}],"lang":"en"}
+{"text":"kim.minsu@vnu.edu.vn, thanks.","spans":[{"start":0,"end":20,"type":"email"}],"lang":"en"}
+{"text":"Here it is: 2001:db8::cbbc, thanks.","spans":[{"start":12,"end":26,"type":"ip"}],"lang":"en"}
+{"text":"667-06-3476\nLet me know if that works.","spans":[{"start":0,"end":11,"type":"us_ssn"}],"lang":"en"}
+{"text":"export TOKEN=AKIAVI3QR9XW41QZUCFM\nOPENAI_API_KEY=AKIAVZ5E2W46OPPP6NBV.","spans":[{"start":13,"end":33,"type":"secret"},{"start":49,"end":69,"type":"secret"}],"lang":"en"}
+{"text":"1201177937928.","spans":[{"start":0,"end":13,"type":"kr_rrn"}],"lang":"en"}
+{"text":"Phone: 799-406-6892\nHere it is: fe80::71c0:6746:aab8:9576\nLet me know if that works.","spans":[{"start":7,"end":19,"type":"phone"},{"start":32,"end":57,"type":"ip"}],"lang":"en"}
+{"text":"citizen ID (CCCD) 049165708077.","spans":[{"start":18,"end":30,"type":"vn_cccd"}],"lang":"en"}
+{"text":"Deliver to 6069 Park Lane Road.","spans":[{"start":11,"end":30,"type":"street_address"}],"lang":"en"}
+{"text":"요청하신 값은 36487421267532 로 처리해 주세요.","spans":[{"start":20,"end":34,"type":"credit_card"}],"lang":"ko"}
+{"text":"확인 부탁드립니다. PL43 8014 9194 6868 7445 2644 5582","spans":[{"start":27,"end":61,"type":"iban"}],"lang":"ko"}
+{"text":"park_jihoon60@company.vn이고 확인했습니다.","spans":[{"start":0,"end":24,"type":"email"}],"lang":"ko"}
+{"text":"확인 부탁드립니다. 50.253.80.120","spans":[{"start":27,"end":40,"type":"ip"}],"lang":"ko"}
+{"text":"요청하신 값은 632-01-3085 로 처리해 주세요.","spans":[{"start":20,"end":31,"type":"us_ssn"}],"lang":"ko"}
+{"text":"요청하신 값은 eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI0NTc5OTA4ODA4IiwiaWF0Ijo2MTcyODg2NjA0fQ.t6B2kW0TYbZOuby8gJ-CPZdSkZxbZNn-djteHye0veq입니다.\nCCCD 번호 014015699706 , thanks","spans":[{"start":20,"end":151,"type":"secret"},{"start":174,"end":186,"type":"vn_cccd"}],"lang":"ko"}
+{"text":"주민등록번호: 1408158510963입니다.\n아래 내용을 봐 주세요. kim.minsu095@company.vn 로 처리해 주세요.","spans":[{"start":20,"end":33,"type":"kr_rrn"},{"start":76,"end":99,"type":"email"}],"lang":"ko"}
+{"text":"제 전화는 010 9997 5377.\n아래 내용을 봐 주세요. 5108029795261709 로 처리해 주세요.","spans":[{"start":14,"end":27,"type":"phone"},{"start":61,"end":77,"type":"credit_card"}],"lang":"ko"}
+{"text":"CCCD: 089387719074.","spans":[{"start":6,"end":18,"type":"vn_cccd"}],"lang":"ko"}
+{"text":"배송지는 서울특별시 강남구 테헤란로 123 로 보내주세요.","spans":[{"start":13,"end":55,"type":"street_address"}],"lang":"ko"}
+{"text":"Thông tin: 3691 560329 5871. Cảm ơn bạn.","spans":[{"start":12,"end":28,"type":"credit_card"}],"lang":"vi"}
+{"text":"Thông tin: CH67 7495 46KV V5T9 MNTD E. Cảm ơn bạn.","spans":[{"start":12,"end":38,"type":"iban"}],"lang":"vi"}
+{"text":"Xin vui lòng kiểm tra park_jihoon623@company.vn giúp mình nhé.","spans":[{"start":25,"end":50,"type":"email"}],"lang":"vi"}
+{"text":"Xin vui lòng kiểm tra fe80::38e2:bba9:9706:4ff8 nhé.","spans":[{"start":25,"end":50,"type":"ip"}],"lang":"vi"}
+{"text":"Xin vui lòng kiểm tra 847-50-7250 nhé.","spans":[{"start":25,"end":36,"type":"us_ssn"}],"lang":"vi"}
+{"text":"Ghi chú: sk-proj-6va2i3BC9z3Yx4DI4jMQQf3UJif22W7dIanfG3nNSQwQyIy\nThông tin: lee.soyeon@gmail.com giúp mình nhé.","spans":[{"start":10,"end":65,"type":"secret"},{"start":78,"end":98,"type":"email"}],"lang":"vi"}
+{"text":"Mình gửi 210627-4357907 giúp mình nhé.\nMình gửi 6011 9029 4244 7625","spans":[{"start":12,"end":26,"type":"kr_rrn"},{"start":57,"end":76,"type":"credit_card"}],"lang":"vi"}
+{"text":"điện thoại: 0336.019.887","spans":[{"start":17,"end":29,"type":"phone"}],"lang":"vi"}
+{"text":"CMND/CCCD 061187288445 , thanks","spans":[{"start":10,"end":22,"type":"vn_cccd"}],"lang":"vi"}
+{"text":"Địa chỉ: 113 phố Hai Bà Trưng, quận 1.","spans":[{"start":14,"end":38,"type":"street_address"}],"lang":"vi"}
+{"text":"Here it is: 3689 433308 7652, thanks.","spans":[{"start":12,"end":28,"type":"credit_card"}],"lang":"en"}
+{"text":"CH6052071AOUGYM788949\nLet me know if that works.","spans":[{"start":0,"end":21,"type":"iban"}],"lang":"en"}
+{"text":"Note: bob16@naver.com, thanks.","spans":[{"start":6,"end":21,"type":"email"}],"lang":"en"}
+{"text":"My details: 2001:db8::2288\nLet me know if that works.","spans":[{"start":12,"end":26,"type":"ip"}],"lang":"en"}
+{"text":"My details: 111 08 4343","spans":[{"start":12,"end":23,"type":"us_ssn"}],"lang":"en"}
+{"text":"Note: sk-proj-vLOCq4hPawKpQm6aOSWFJ3fDy4oO2mbKh93ETvmqtJJr2mOKX.\nThe customer entered 330-82-1279","spans":[{"start":6,"end":63,"type":"secret"},{"start":86,"end":97,"type":"us_ssn"}],"lang":"en"}
+{"text":"Here it is: 230807-4341635.","spans":[{"start":12,"end":26,"type":"kr_rrn"}],"lang":"en"}
+{"text":"Phone: +84 382 578 103.","spans":[{"start":7,"end":22,"type":"phone"}],"lang":"en"}
+{"text":"citizen ID (CCCD) 083320937243\nNote: 526 83 9845\nLet me know if that works.","spans":[{"start":18,"end":30,"type":"vn_cccd"},{"start":37,"end":48,"type":"us_ssn"}],"lang":"en"}
+{"text":"Address: 1007 Main Drive.","spans":[{"start":9,"end":24,"type":"street_address"}],"lang":"en"}
+{"text":"고객 정보: 3530-4376-2160-7925입니다.","spans":[{"start":15,"end":34,"type":"credit_card"}],"lang":"ko"}
+{"text":"메모: PL50 4546 8334 5547 7151 1821 5788이고 확인했습니다.","spans":[{"start":8,"end":42,"type":"iban"}],"lang":"ko"}
+{"text":"확인 부탁드립니다. nguyen.van.a@sub.io","spans":[{"start":27,"end":46,"type":"email"}],"lang":"ko"}
+{"text":"확인 부탁드립니다. 51.40.210.254","spans":[{"start":27,"end":40,"type":"ip"}],"lang":"ko"}
+{"text":"아래 내용을 봐 주세요. 113-62-7596 로 처리해 주세요.","spans":[{"start":32,"end":43,"type":"us_ssn"}],"lang":"ko"}
+{"text":"Authorization: Bearer AKIA59ZJNAH54X94O9RG이고 확인했습니다.","spans":[{"start":22,"end":42,"type":"secret"}],"lang":"ko"}
+{"text":"주민등록번호: 0904268154156","spans":[{"start":20,"end":33,"type":"kr_rrn"}],"lang":"ko"}
+{"text":"확인 부탁드립니다. +84 880 261 735 로 처리해 주세요.","spans":[{"start":27,"end":42,"type":"phone"}],"lang":"ko"}
+{"text":"CCCD: 018363120167","spans":[{"start":6,"end":18,"type":"vn_cccd"}],"lang":"ko"}
+{"text":"주소: 제주특별자치도 제주시 첨단로 242입니다.","spans":[{"start":8,"end":53,"type":"street_address"}],"lang":"ko"}
+{"text":"Mình gửi 4690 3884 9514 7437. Cảm ơn bạn.","spans":[{"start":12,"end":31,"type":"credit_card"}],"lang":"vi"}
+{"text":"Ghi chú: BE56595867777721. Cảm ơn bạn.","spans":[{"start":10,"end":26,"type":"iban"}],"lang":"vi"}
+{"text":"alice@sub.io. Cảm ơn bạn.","spans":[{"start":0,"end":12,"type":"email"}],"lang":"vi"}
+{"text":"Xin vui lòng kiểm tra 6.114.224.115. Cảm ơn bạn.","spans":[{"start":25,"end":38,"type":"ip"}],"lang":"vi"}
+{"text":"Mình gửi 581-59-4712 nhé.\nThông tin: 5179 0161 5556 5583. Cảm ơn bạn.","spans":[{"start":12,"end":23,"type":"us_ssn"},{"start":42,"end":61,"type":"credit_card"}],"lang":"vi"}
+{"text":"export TOKEN=ghp_ADR2g9uXcxJT0qaOGVUOs78bRdEvc7TqLbHI. Cảm ơn bạn.","spans":[{"start":13,"end":53,"type":"secret"}],"lang":"vi"}
+{"text":"Mình gửi 211111-3530331. Cảm ơn bạn.","spans":[{"start":12,"end":26,"type":"kr_rrn"}],"lang":"vi"}
+{"text":"số điện thoại của mình là 0812-185-835.\nRRN: 9907121841353입니다.","spans":[{"start":37,"end":49,"type":"phone"},{"start":56,"end":69,"type":"kr_rrn"}],"lang":"vi"}
+{"text":"số căn cước công dân: 041139403956","spans":[{"start":30,"end":42,"type":"vn_cccd"}],"lang":"vi"}
+{"text":"Nhà mình ở 68 ngõ Lê Lợi, quận 1.","spans":[{"start":15,"end":32,"type":"street_address"}],"lang":"vi"}
+{"text":"36248832129806\nLet me know if that works.","spans":[{"start":0,"end":14,"type":"credit_card"}],"lang":"en"}
+{"text":"My details: CH6261181CCK00K27VRA6, thanks.","spans":[{"start":12,"end":33,"type":"iban"}],"lang":"en"}
+{"text":"Please check support@example.com, thanks.","spans":[{"start":13,"end":32,"type":"email"}],"lang":"en"}
+{"text":"Please check 185.211.105.247, thanks.","spans":[{"start":13,"end":28,"type":"ip"}],"lang":"en"}
+{"text":"Please check 067-19-7295\nLet me know if that works.","spans":[{"start":13,"end":24,"type":"us_ssn"}],"lang":"en"}
+{"text":"Note: ghp_jHe1fuGO4bdEegfZaAizNtDGEKYxN4QNEVcg, thanks.","spans":[{"start":6,"end":46,"type":"secret"}],"lang":"en"}
+{"text":"My details: 231003 4909283, thanks.","spans":[{"start":12,"end":26,"type":"kr_rrn"}],"lang":"en"}
+{"text":"My phone number is 407.762.9730.\nOPENAI_API_KEY=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI4NjExMTg3NDA3IiwiaWF0Ijo2NTQzMzA2OTQxfQ.60QGxGrAlDDUSK0R8OE6HD4Di4MTaNtenr59SbbWk36\nLet me know if that works.","spans":[{"start":19,"end":31,"type":"phone"},{"start":48,"end":179,"type":"secret"}],"lang":"en"}
+{"text":"citizen ID (CCCD) 043145713746.","spans":[{"start":18,"end":30,"type":"vn_cccd"}],"lang":"en"}
+{"text":"Our office is at 642 Washington Blvd, thanks.","spans":[{"start":17,"end":36,"type":"street_address"}],"lang":"en"}
+{"text":"아래 내용을 봐 주세요. 5108532186920742입니다.","spans":[{"start":32,"end":48,"type":"credit_card"}],"lang":"ko"}
+{"text":"아래 내용을 봐 주세요. IT86E4004509274502547407211이고 확인했습니다.","spans":[{"start":32,"end":59,"type":"iban"}],"lang":"ko"}
+{"text":"아래 내용을 봐 주세요. lee.soyeon003@naver.com","spans":[{"start":32,"end":55,"type":"email"}],"lang":"ko"}
+{"text":"40.224.78.228이고 확인했습니다.","spans":[{"start":0,"end":13,"type":"ip"}],"lang":"ko"}
+{"text":"고객 정보: 129 80 4630 로 처리해 주세요.","spans":[{"start":15,"end":26,"type":"us_ssn"}],"lang":"ko"}
+{"text":"OPENAI_API_KEY=sk-proj-C8ayf4vtUHOWZLKanLbGxhBBxINMaCD9XwzSagRn7Q2dFlTdD","spans":[{"start":15,"end":72,"type":"secret"}],"lang":"ko"}
+{"text":"요청하신 값은 010921-3131416이고 확인했습니다.","spans":[{"start":20,"end":34,"type":"kr_rrn"}],"lang":"ko"}
+{"text":"전화번호: +44 20 4621 7518이고 확인했습니다.","spans":[{"start":14,"end":30,"type":"phone"}],"lang":"ko"}
+{"text":"CCCD 번호 010033772032","spans":[{"start":12,"end":24,"type":"vn_cccd"}],"lang":"ko"}
+{"text":"주소: 서울특별시 강남구 테헤란로 123 로 보내주세요.","spans":[{"start":8,"end":50,"type":"street_address"}],"lang":"ko"}
+{"text":"Ghi chú: 3530875582310742","spans":[{"start":10,"end":26,"type":"credit_card"}],"lang":"vi"}
+{"text":"Ghi chú: ES58 1556 2408 9465 4387 4836","spans":[{"start":10,"end":39,"type":"iban"}],"lang":"vi"}
+{"text":"Xin vui lòng kiểm tra support@vnu.edu.vn giúp mình nhé.","spans":[{"start":25,"end":43,"type":"email"}],"lang":"vi"}
+{"text":"Mình gửi a0e8:e096::8aa9:1138 nhé.","spans":[{"start":12,"end":32,"type":"ip"}],"lang":"vi"}
+{"text":"Thông tin: 062 19 5514 giúp mình nhé.","spans":[{"start":12,"end":23,"type":"us_ssn"}],"lang":"vi"}
+{"text":"Thông tin: 220612-4090547 giúp mình nhé.","spans":[{"start":12,"end":26,"type":"kr_rrn"}],"lang":"vi"}
+{"text":"số điện thoại của mình là 0817000563\nMình gửi john.smith@corp.co.kr","spans":[{"start":37,"end":47,"type":"phone"},{"start":60,"end":81,"type":"email"}],"lang":"vi"}
+{"text":"CCCD: 041374510310","spans":[{"start":6,"end":18,"type":"vn_cccd"}],"lang":"vi"}
+{"text":"Nhà mình ở 87 phố Láng, quận 1.","spans":[{"start":15,"end":29,"type":"street_address"}],"lang":"vi"}
+{"text":"My details: 3700 995931 26190, thanks.","spans":[{"start":12,"end":29,"type":"credit_card"}],"lang":"en"}
+{"text":"Please check NL21XLSI7415836734.","spans":[{"start":13,"end":31,"type":"iban"}],"lang":"en"}
+{"text":"My details: tran.thi.b@example.com","spans":[{"start":12,"end":34,"type":"email"}],"lang":"en"}
+{"text":"Note: 178.154.25.226, thanks.","spans":[{"start":6,"end":20,"type":"ip"}],"lang":"en"}
+{"text":"226-33-0619.","spans":[{"start":0,"end":11,"type":"us_ssn"}],"lang":"en"}
+{"text":"export TOKEN=AKIA0J58VXOGV8REFEOA, thanks.","spans":[{"start":13,"end":33,"type":"secret"}],"lang":"en"}
+{"text":"Here it is: 850411-6623423","spans":[{"start":12,"end":26,"type":"kr_rrn"}],"lang":"en"}
+{"text":"My phone number is (860) 831-6229, thanks","spans":[{"start":19,"end":33,"type":"phone"}],"lang":"en"}
+{"text":"CCCD: 045075056668 , thanks\nmobile 586 929 8425, thanks","spans":[{"start":6,"end":18,"type":"vn_cccd"},{"start":35,"end":47,"type":"phone"}],"lang":"en"}
+{"text":"Deliver to 3302 Main Boulevard, thanks.","spans":[{"start":11,"end":30,"type":"street_address"}],"lang":"en"}
+{"text":"확인 부탁드립니다. 5582-8124-8946-0579입니다.","spans":[{"start":27,"end":46,"type":"credit_card"}],"lang":"ko"}
+{"text":"AT307333717095610917","spans":[{"start":0,"end":20,"type":"iban"}],"lang":"ko"}
+{"text":"john.smith@example.com이고 확인했습니다.","spans":[{"start":0,"end":22,"type":"email"}],"lang":"ko"}
+{"text":"아래 내용을 봐 주세요. 191.89.7.16 로 처리해 주세요.","spans":[{"start":32,"end":43,"type":"ip"}],"lang":"ko"}
+{"text":"고객 정보: 742-87-5781입니다.","spans":[{"start":15,"end":26,"type":"us_ssn"}],"lang":"ko"}
+{"text":"고객 정보: sk-proj-pCVWM9IB7WtcqKluyP75w1hZf66s7Pk2HD8Yz0bX1JI62Ah입니다.","spans":[{"start":15,"end":70,"type":"secret"}],"lang":"ko"}
+{"text":"주민번호 9702241683523.","spans":[{"start":13,"end":26,"type":"kr_rrn"}],"lang":"ko"}
+{"text":"요청하신 값은 +84316708011입니다.\n주민등록번호는 0103243604235입니다.","spans":[{"start":20,"end":32,"type":"phone"},{"start":65,"end":78,"type":"kr_rrn"}],"lang":"ko"}
+{"text":"CCCD: 068292836433.","spans":[{"start":6,"end":18,"type":"vn_cccd"}],"lang":"ko"}
+{"text":"주소: 제주특별자치도 제주시 첨단로 242입니다.","spans":[{"start":8,"end":53,"type":"street_address"}],"lang":"ko"}
+{"text":"Thông tin: 3784-445696-42584","spans":[{"start":12,"end":29,"type":"credit_card"}],"lang":"vi"}
+{"text":"Xin vui lòng kiểm tra BE91577257182491 nhé.\nThông tin: PL73293187424901335102978305. Cảm ơn bạn.","spans":[{"start":25,"end":41,"type":"iban"},{"start":60,"end":88,"type":"iban"}],"lang":"vi"}
+{"text":"Mình gửi john.smith@mail.example.org nhé.","spans":[{"start":12,"end":39,"type":"email"}],"lang":"vi"}
+{"text":"Xin vui lòng kiểm tra ::1 giúp mình nhé.\nalice@gmail.com nhé.","spans":[{"start":25,"end":28,"type":"ip"},{"start":47,"end":62,"type":"email"}],"lang":"vi"}
+{"text":"Thông tin: 614 80 3053 giúp mình nhé.","spans":[{"start":12,"end":23,"type":"us_ssn"}],"lang":"vi"}
+{"text":"Ghi chú: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI2NDA1NjI2ODU5IiwiaWF0Ijo2NDMyNzAxMTM0fQ.fo2ctZJ6BgPE_vVAsV4ZOrhbbQHe_e6DHGGWeGZfdEp nhé.","spans":[{"start":10,"end":141,"type":"secret"}],"lang":"vi"}
+{"text":"RRN: 2303028205824","spans":[{"start":5,"end":18,"type":"kr_rrn"}],"lang":"vi"}
+{"text":"SĐT: +44 20 4456 2860 giúp mình nhé.\nMình gửi 875-54-1921 giúp mình nhé.","spans":[{"start":6,"end":22,"type":"phone"},{"start":53,"end":64,"type":"us_ssn"}],"lang":"vi"}
+{"text":"số định danh cá nhân: 050305457742","spans":[{"start":29,"end":41,"type":"vn_cccd"}],"lang":"vi"}
+{"text":"Địa chỉ: 241/16 phố Lê Lợi, quận 1.","spans":[{"start":14,"end":36,"type":"street_address"}],"lang":"vi"}
+{"text":"Here it is: 5530-4212-7773-4717.\nDeliver to 6258 Market St.","spans":[{"start":12,"end":31,"type":"credit_card"},{"start":44,"end":58,"type":"street_address"}],"lang":"en"}
+{"text":"My details: NL80 CPPA 7363 2275 11, thanks.","spans":[{"start":12,"end":34,"type":"iban"}],"lang":"en"}
+{"text":"support@example.com\nLet me know if that works.","spans":[{"start":0,"end":19,"type":"email"}],"lang":"en"}
+{"text":"Please check 50.50.197.191.","spans":[{"start":13,"end":26,"type":"ip"}],"lang":"en"}
+{"text":"Note: 075-56-3500.","spans":[{"start":6,"end":17,"type":"us_ssn"}],"lang":"en"}
+{"text":"OPENAI_API_KEY=AKIAEHGXEUQ84ZS6SRCG.","spans":[{"start":15,"end":35,"type":"secret"}],"lang":"en"}
+{"text":"Please check 180405-3706784.","spans":[{"start":13,"end":27,"type":"kr_rrn"}],"lang":"en"}
+{"text":"Call my mobile: 306-881-8422, thanks","spans":[{"start":16,"end":28,"type":"phone"}],"lang":"en"}
+{"text":"CCCD: 066047892745","spans":[{"start":6,"end":18,"type":"vn_cccd"}],"lang":"en"}
+{"text":"Ship it to 4995 Maple Court","spans":[{"start":11,"end":27,"type":"street_address"}],"lang":"en"}
+{"text":"요청하신 값은 5170-5416-4689-9332입니다.\n메모: alice7@naver.com입니다.","spans":[{"start":20,"end":39,"type":"credit_card"},{"start":58,"end":74,"type":"email"}],"lang":"ko"}
+{"text":"메모: CH93 0290 0075 Z4LV CVKL 3","spans":[{"start":8,"end":34,"type":"iban"}],"lang":"ko"}
+{"text":"고객 정보: dev+test@sub.io입니다.","spans":[{"start":15,"end":30,"type":"email"}],"lang":"ko"}
+{"text":"확인 부탁드립니다. 130.133.140.253입니다.","spans":[{"start":27,"end":42,"type":"ip"}],"lang":"ko"}
+{"text":"메모: 020 71 6178","spans":[{"start":8,"end":19,"type":"us_ssn"}],"lang":"ko"}
+{"text":"아래 내용을 봐 주세요. eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI2Nzg4Mzc0OTU1IiwiaWF0Ijo4NzU0NDUxOTk5fQ.hHgARi3uBRimuj8YVSUyJnGTM66APY4O72FlEoTod_q입니다.","spans":[{"start":32,"end":163,"type":"secret"}],"lang":"ko"}
+{"text":"주민등록번호는 6905102632434.","spans":[{"start":22,"end":35,"type":"kr_rrn"}],"lang":"ko"}
+{"text":"제 전화는 010-0284-0153.","spans":[{"start":14,"end":27,"type":"phone"}],"lang":"ko"}
+{"text":"CCCD 번호 093126716639.","spans":[{"start":12,"end":24,"type":"vn_cccd"}],"lang":"ko"}
+{"text":"본사는 봉은사로 524입니다.\n요청하신 값은 650721-2201373입니다.","spans":[{"start":10,"end":26,"type":"street_address"},{"start":57,"end":71,"type":"kr_rrn"}],"lang":"ko"}
+{"text":"Mình gửi 3666 790553 6094","spans":[{"start":12,"end":28,"type":"credit_card"}],"lang":"vi"}
+{"text":"Xin vui lòng kiểm tra DE48 0957 2488 6063 5632 22 nhé.","spans":[{"start":25,"end":52,"type":"iban"}],"lang":"vi"}
+{"text":"lee.soyeon875@naver.com","spans":[{"start":0,"end":23,"type":"email"}],"lang":"vi"}
+{"text":"Ghi chú: 2001:db8::ec01. Cảm ơn bạn.","spans":[{"start":10,"end":24,"type":"ip"}],"lang":"vi"}
+{"text":"809-76-2251 nhé.","spans":[{"start":0,"end":11,"type":"us_ssn"}],"lang":"vi"}
+{"text":"Xin vui lòng kiểm tra AKIAB52E86BD52ODM6MX giúp mình nhé.","spans":[{"start":25,"end":45,"type":"secret"}],"lang":"vi"}
+{"text":"230117-4049721","spans":[{"start":0,"end":14,"type":"kr_rrn"}],"lang":"vi"}
+{"text":"Hotline 0813071662","spans":[{"start":8,"end":18,"type":"phone"}],"lang":"vi"}
+{"text":"CCCD: 059174560512","spans":[{"start":6,"end":18,"type":"vn_cccd"}],"lang":"vi"}
+{"text":"Địa chỉ: 213 Đường Hai Bà Trưng, Hà Nội","spans":[{"start":14,"end":42,"type":"street_address"}],"lang":"vi"}
+{"text":"Please check 5189-1023-5071-5385\nLet me know if that works.","spans":[{"start":13,"end":32,"type":"credit_card"}],"lang":"en"}
+{"text":"My details: ES8030618644223846033614","spans":[{"start":12,"end":36,"type":"iban"}],"lang":"en"}
+{"text":"My details: john.smith2@vnu.edu.vn\nLet me know if that works.","spans":[{"start":12,"end":34,"type":"email"}],"lang":"en"}
+{"text":"The customer entered 16.52.40.166, thanks.","spans":[{"start":21,"end":33,"type":"ip"}],"lang":"en"}
+{"text":"The customer entered 269-19-8464.","spans":[{"start":21,"end":32,"type":"us_ssn"}],"lang":"en"}
+{"text":"Please check 520405-1958506.","spans":[{"start":13,"end":27,"type":"kr_rrn"}],"lang":"en"}
+{"text":"Tel: 702-709-7269.","spans":[{"start":5,"end":17,"type":"phone"}],"lang":"en"}
+{"text":"CCCD: 078211043667","spans":[{"start":6,"end":18,"type":"vn_cccd"}],"lang":"en"}
+{"text":"Address: 2786 Maple Rd.","spans":[{"start":9,"end":22,"type":"street_address"}],"lang":"en"}
+{"text":"고객 정보: 3530179030579416입니다.","spans":[{"start":15,"end":31,"type":"credit_card"}],"lang":"ko"}
+{"text":"메모: AT678888352948162204","spans":[{"start":8,"end":28,"type":"iban"}],"lang":"ko"}
+{"text":"lee.soyeon@corp.co.kr 로 처리해 주세요.","spans":[{"start":0,"end":21,"type":"email"}],"lang":"ko"}
+{"text":"아래 내용을 봐 주세요. a3d:958b:fb2e:87be:77d7:1c36:9a21:8a7e 로 처리해 주세요.\n요청하신 값은 102.197.142.96입니다.","spans":[{"start":32,"end":70,"type":"ip"},{"start":116,"end":130,"type":"ip"}],"lang":"ko"}
+{"text":"요청하신 값은 493-48-8463","spans":[{"start":20,"end":31,"type":"us_ssn"}],"lang":"ko"}
+{"text":"Authorization: Bearer ghp_yiOHY0XZfdnUYYm32ah48yr5YrLGvGJAuOnN이고 확인했습니다.\n요청하신 값은 FR4348434923387182132528501","spans":[{"start":22,"end":62,"type":"secret"},{"start":109,"end":136,"type":"iban"}],"lang":"ko"}
+{"text":"주민번호 1801253116658입니다.","spans":[{"start":13,"end":26,"type":"kr_rrn"}],"lang":"ko"}
+{"text":"확인 부탁드립니다. +84 771 151 718 로 처리해 주세요.","spans":[{"start":27,"end":42,"type":"phone"}],"lang":"ko"}
+{"text":"CCCD 번호 085243921379 , thanks","spans":[{"start":12,"end":24,"type":"vn_cccd"}],"lang":"ko"}
+{"text":"주소: 제주특별자치도 제주시 첨단로 242입니다.","spans":[{"start":8,"end":53,"type":"street_address"}],"lang":"ko"}
+{"text":"6208-7296-5877-7447\nOPENAI_API_KEY=sk-j1AY14bQmhY3xpSixRPYbxS1tQ0l8i3Na0OCTFq4O giúp mình nhé.","spans":[{"start":0,"end":19,"type":"credit_card"},{"start":35,"end":79,"type":"secret"}],"lang":"vi"}
+{"text":"Thông tin: IT58G1695580438618191986903 nhé.","spans":[{"start":12,"end":39,"type":"iban"}],"lang":"vi"}
+{"text":"Thông tin: dev+test930@corp.co.kr giúp mình nhé.","spans":[{"start":12,"end":34,"type":"email"}],"lang":"vi"}
+{"text":"Thông tin: 147.197.227.122 giúp mình nhé.","spans":[{"start":12,"end":27,"type":"ip"}],"lang":"vi"}
+{"text":"Thông tin: 789-56-7229","spans":[{"start":12,"end":23,"type":"us_ssn"}],"lang":"vi"}
+{"text":"RRN: 5107142401576\nGhi chú: ES4108939738408034882386 nhé.","spans":[{"start":5,"end":18,"type":"kr_rrn"},{"start":29,"end":53,"type":"iban"}],"lang":"vi"}
+{"text":"số điện thoại của mình là 0565101479, thanks","spans":[{"start":37,"end":47,"type":"phone"}],"lang":"vi"}
+{"text":"số định danh cá nhân: 056014687827","spans":[{"start":29,"end":41,"type":"vn_cccd"}],"lang":"vi"}
+{"text":"Nhà mình ở 83 hẻm Hai Bà Trưng.","spans":[{"start":15,"end":38,"type":"street_address"}],"lang":"vi"}
+{"text":"The customer entered 5504104018164582, thanks.\nThe customer entered 47.210.62.127\nLet me know if that works.","spans":[{"start":21,"end":37,"type":"credit_card"},{"start":68,"end":81,"type":"ip"}],"lang":"en"}
+{"text":"Here it is: BE40 5105 8129 3145.","spans":[{"start":12,"end":31,"type":"iban"}],"lang":"en"}
+{"text":"dev+test9@naver.com, thanks.\nThe customer entered DE14 7363 6699 0366 5752 19\nLet me know if that works.","spans":[{"start":0,"end":19,"type":"email"},{"start":50,"end":77,"type":"iban"}],"lang":"en"}
+{"text":"Note: 148.58.243.229, thanks.","spans":[{"start":6,"end":20,"type":"ip"}],"lang":"en"}
+{"text":"My details: 463-66-2052, thanks.","spans":[{"start":12,"end":23,"type":"us_ssn"}],"lang":"en"}
+{"text":"ghp_aJ8IVS6iBQ01OCcMANYIgNVYKgiJVhfAQzq0\nLet me know if that works.","spans":[{"start":0,"end":40,"type":"secret"}],"lang":"en"}
+{"text":"Note: 250621-4281033.","spans":[{"start":6,"end":20,"type":"kr_rrn"}],"lang":"en"}
+{"text":"Phone: 360.934.3254\n4798-8123-1835-6504.","spans":[{"start":7,"end":19,"type":"phone"},{"start":20,"end":39,"type":"credit_card"}],"lang":"en"}
+{"text":"CCCD: 055299803017","spans":[{"start":6,"end":18,"type":"vn_cccd"}],"lang":"en"}
+{"text":"Our office is at 9983 Fifth Way, Springfield","spans":[{"start":17,"end":31,"type":"street_address"}],"lang":"en"}
+{"text":"요청하신 값은 5103852042470764","spans":[{"start":20,"end":36,"type":"credit_card"}],"lang":"ko"}
+{"text":"아래 내용을 봐 주세요. BE93154517947678 로 처리해 주세요.\n주소: 부산광역시 해운대구 해운대해변로 264입니다.","spans":[{"start":32,"end":48,"type":"iban"},{"start":82,"end":133,"type":"street_address"}],"lang":"ko"}
+{"text":"메모: nguyen.van.a8@gmail.com입니다.","spans":[{"start":8,"end":31,"type":"email"}],"lang":"ko"}
+{"text":"::1이고 확인했습니다.\n주민등록번호: 2307273837772.","spans":[{"start":0,"end":3,"type":"ip"},{"start":50,"end":63,"type":"kr_rrn"}],"lang":"ko"}
+{"text":"메모: 175-84-4966이고 확인했습니다.","spans":[{"start":8,"end":19,"type":"us_ssn"}],"lang":"ko"}
+{"text":"확인 부탁드립니다. eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI1MzkwNDkyNzgwIiwiaWF0Ijo3OTY1ODMyMDMxfQ.yQsHY2kwsKw26w7CCxxvCVE9IDLIF4dWObjNaGLO2Fw이고 확인했습니다.","spans":[{"start":27,"end":158,"type":"secret"}],"lang":"ko"}
+{"text":"주민번호 2209223536921","spans":[{"start":13,"end":26,"type":"kr_rrn"}],"lang":"ko"}
+{"text":"전화 +82 10 8858 5290입니다.\n요청하신 값은 3530 1113 4351 7064이고 확인했습니다.","spans":[{"start":7,"end":23,"type":"phone"},{"start":54,"end":73,"type":"credit_card"}],"lang":"ko"}
+{"text":"CCCD 번호 002177890694 , thanks","spans":[{"start":12,"end":24,"type":"vn_cccd"}],"lang":"ko"}
+{"text":"주소: 부산광역시 해운대구 해운대해변로 264","spans":[{"start":8,"end":59,"type":"street_address"}],"lang":"ko"}
+{"text":"Xin vui lòng kiểm tra 3530 1381 4908 3579. Cảm ơn bạn.","spans":[{"start":25,"end":44,"type":"credit_card"}],"lang":"vi"}
+{"text":"Mình gửi BE43176310183627\nRRN: 1806063941171.","spans":[{"start":12,"end":28,"type":"iban"},{"start":34,"end":47,"type":"kr_rrn"}],"lang":"vi"}
+{"text":"dev+test2@vnu.edu.vn\n227-58-7890","spans":[{"start":0,"end":20,"type":"email"},{"start":21,"end":32,"type":"us_ssn"}],"lang":"vi"}
+{"text":"56.69.169.138 giúp mình nhé.","spans":[{"start":0,"end":13,"type":"ip"}],"lang":"vi"}
+{"text":"037-96-1939\nNhà mình ở 306 Đường Láng, quận 1.","spans":[{"start":0,"end":11,"type":"us_ssn"},{"start":27,"end":46,"type":"street_address"}],"lang":"vi"}
+{"text":"Mình gửi sk-ant-api03-Hljax0M0JAZYYcQ2Kjtj3dStnpzYiomn358gyZaPJwW giúp mình nhé.","spans":[{"start":12,"end":68,"type":"secret"}],"lang":"vi"}
+{"text":"RRN: 0604154193486.","spans":[{"start":5,"end":18,"type":"kr_rrn"}],"lang":"vi"}
+{"text":"điện thoại: 0852983733.","spans":[{"start":17,"end":27,"type":"phone"}],"lang":"vi"}
+{"text":"CMND/CCCD 025175217410 , thanks","spans":[{"start":10,"end":22,"type":"vn_cccd"}],"lang":"vi"}
+{"text":"Nhà mình ở 139 Đường Lê Lợi, Hà Nội","spans":[{"start":15,"end":38,"type":"street_address"}],"lang":"vi"}
+{"text":"Here it is: 348610365886099.","spans":[{"start":12,"end":27,"type":"credit_card"}],"lang":"en"}
+{"text":"Please check IT05Z7953260310574873633540\nLet me know if that works.\nCCCD: 089269111096","spans":[{"start":13,"end":40,"type":"iban"},{"start":74,"end":86,"type":"vn_cccd"}],"lang":"en"}
+{"text":"Here it is: dev+test8@mail.example.org, thanks.","spans":[{"start":12,"end":38,"type":"email"}],"lang":"en"}
+{"text":"Please check 9e9d:b46f::5ff8:4f27.","spans":[{"start":13,"end":33,"type":"ip"}],"lang":"en"}
+{"text":"Note: 648 22 1802, thanks.","spans":[{"start":6,"end":17,"type":"us_ssn"}],"lang":"en"}
+{"text":"Here it is: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIyNTMzNzE0NDkyIiwiaWF0Ijo0ODMxNTYwMTU3fQ.Cje55ahOHB-cR1EP8EUM_jm7eN3N1KruQLNjO80DY0A.","spans":[{"start":12,"end":143,"type":"secret"}],"lang":"en"}
+{"text":"Here it is: 240317-4060624.\nTel: (348) 668-1870, thanks","spans":[{"start":12,"end":26,"type":"kr_rrn"},{"start":33,"end":47,"type":"phone"}],"lang":"en"}
+{"text":"Note: +44 20 9413 9262\nLet me know if that works.\nMy phone number is 708 977 7914.","spans":[{"start":6,"end":22,"type":"phone"},{"start":69,"end":81,"type":"phone"}],"lang":"en"}
+{"text":"CMND 063385689224","spans":[{"start":5,"end":17,"type":"vn_cccd"}],"lang":"en"}
+{"text":"Our office is at 2681 Fifth Court, Springfield","spans":[{"start":17,"end":33,"type":"street_address"}],"lang":"en"}
+{"text":"아래 내용을 봐 주세요. 3776-540094-69841이고 확인했습니다.","spans":[{"start":32,"end":49,"type":"credit_card"}],"lang":"ko"}
+{"text":"고객 정보: ES3058940870502958050079","spans":[{"start":15,"end":39,"type":"iban"}],"lang":"ko"}
+{"text":"아래 내용을 봐 주세요. nguyen.van.a62@example.com입니다.\n3405-361294-25346","spans":[{"start":32,"end":58,"type":"email"},{"start":69,"end":86,"type":"credit_card"}],"lang":"ko"}
+{"text":"확인 부탁드립니다. 97.208.246.36이고 확인했습니다.","spans":[{"start":27,"end":40,"type":"ip"}],"lang":"ko"}
+{"text":"아래 내용을 봐 주세요. 377 97 5226입니다.","spans":[{"start":32,"end":43,"type":"us_ssn"}],"lang":"ko"}
+{"text":"OPENAI_API_KEY=AKIAJ62C6YP6U2QE8VGC 로 처리해 주세요.","spans":[{"start":15,"end":35,"type":"secret"}],"lang":"ko"}
+{"text":"요청하신 값은 900616-2078293","spans":[{"start":20,"end":34,"type":"kr_rrn"}],"lang":"ko"}
+{"text":"전화 010-4734-2582.","spans":[{"start":7,"end":20,"type":"phone"}],"lang":"ko"}
+{"text":"CCCD 번호 026302323029.","spans":[{"start":12,"end":24,"type":"vn_cccd"}],"lang":"ko"}
+{"text":"배송지는 경기도 성남시 판교로 235 로 보내주세요.\n고객 정보: fe80::20ca:b4af:c54f:9513이고 확인했습니다.","spans":[{"start":13,"end":46,"type":"street_address"},{"start":83,"end":108,"type":"ip"}],"lang":"ko"}
+{"text":"Thông tin: 3625 487688 0015 giúp mình nhé.","spans":[{"start":12,"end":28,"type":"credit_card"}],"lang":"vi"}
+{"text":"Mình gửi CH22 7116 1825 9ZOX BZ83 T. Cảm ơn bạn.","spans":[{"start":12,"end":38,"type":"iban"}],"lang":"vi"}
+{"text":"Mình gửi kim.minsu9@example.com","spans":[{"start":12,"end":34,"type":"email"}],"lang":"vi"}
+{"text":"Ghi chú: 111.165.5.64","spans":[{"start":10,"end":22,"type":"ip"}],"lang":"vi"}
+{"text":"Thông tin: 226-44-7393. Cảm ơn bạn.\nMình gửi e3d2:7a94:d15a:8459:b50:24b:50b3:c1b4. Cảm ơn bạn.","spans":[{"start":12,"end":23,"type":"us_ssn"},{"start":54,"end":91,"type":"ip"}],"lang":"vi"}
+{"text":"Mình gửi 221125-3693917 giúp mình nhé.","spans":[{"start":12,"end":26,"type":"kr_rrn"}],"lang":"vi"}
+{"text":"số điện thoại của mình là +82 10-7859-7347 nhé.","spans":[{"start":37,"end":53,"type":"phone"}],"lang":"vi"}
+{"text":"CMND/CCCD 027227528089","spans":[{"start":10,"end":22,"type":"vn_cccd"}],"lang":"vi"}
+{"text":"Nhà mình ở 194/4 hẻm Hàng Bông, quận 1.","spans":[{"start":15,"end":38,"type":"street_address"}],"lang":"vi"}
+{"text":"Here it is: 6298 5121 5552 8013\nLet me know if that works.","spans":[{"start":12,"end":31,"type":"credit_card"}],"lang":"en"}
+{"text":"My details: BE49 5184 6046 6989.","spans":[{"start":12,"end":31,"type":"iban"}],"lang":"en"}
+{"text":"Note: lee.soyeon@mail.example.org, thanks.","spans":[{"start":6,"end":33,"type":"email"}],"lang":"en"}
+{"text":"Please check 196.219.49.233, thanks.","spans":[{"start":13,"end":27,"type":"ip"}],"lang":"en"}
+{"text":"013-17-4227.","spans":[{"start":0,"end":11,"type":"us_ssn"}],"lang":"en"}
+{"text":"My details: AKIAO64GUTBOJNAK5017, thanks.","spans":[{"start":12,"end":32,"type":"secret"}],"lang":"en"}
+{"text":"Please check 041221-4040454.","spans":[{"start":13,"end":27,"type":"kr_rrn"}],"lang":"en"}
+{"text":"+84833418247\nLet me know if that works.","spans":[{"start":0,"end":12,"type":"phone"}],"lang":"en"}
+{"text":"CMND 025360155164 , thanks\nPhone: (594) 934-3652, thanks","spans":[{"start":5,"end":17,"type":"vn_cccd"},{"start":34,"end":48,"type":"phone"}],"lang":"en"}
+{"text":"Address: 3960 Lincoln St, thanks.","spans":[{"start":9,"end":24,"type":"street_address"}],"lang":"en"}
+{"text":"확인 부탁드립니다. 3474-030836-99007이고 확인했습니다.","spans":[{"start":27,"end":44,"type":"credit_card"}],"lang":"ko"}
+{"text":"CH4787791UYFALEXNKWGO 로 처리해 주세요.","spans":[{"start":0,"end":21,"type":"iban"}],"lang":"ko"}
+{"text":"고객 정보: park_jihoon2@example.com이고 확인했습니다.","spans":[{"start":15,"end":39,"type":"email"}],"lang":"ko"}
+{"text":"메모: 62.22.29.246\nAuthorization: Bearer ghp_6TCXOQf2ZPb24rivYIjyQLkXf0a7iZWFZu24 로 처리해 주세요.","spans":[{"start":8,"end":20,"type":"ip"},{"start":43,"end":83,"type":"secret"}],"lang":"ko"}
+{"text":"고객 정보: 858-58-8538 로 처리해 주세요.","spans":[{"start":15,"end":26,"type":"us_ssn"}],"lang":"ko"}
+{"text":"OPENAI_API_KEY=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIzNTY4NjAyMTc2IiwiaWF0Ijo3NjczMTU4NDgwfQ.Je_Th8cT2xbWLGj5MkCj9YN5fERKoooebaCDIqt6nDb 로 처리해 주세요.","spans":[{"start":15,"end":146,"type":"secret"}],"lang":"ko"}
+{"text":"주민등록번호는 8003011744173","spans":[{"start":22,"end":35,"type":"kr_rrn"}],"lang":"ko"}
+{"text":"연락처: +1 930 236 0429 로 처리해 주세요.\nkim.minsu4@example.com 로 처리해 주세요.","spans":[{"start":11,"end":26,"type":"phone"},{"start":52,"end":74,"type":"email"}],"lang":"ko"}
+{"text":"CCCD: 093048088458","spans":[{"start":6,"end":18,"type":"vn_cccd"}],"lang":"ko"}
+{"text":"위치가 제주특별자치도 제주시 첨단로 242입니다.","spans":[{"start":10,"end":55,"type":"street_address"}],"lang":"ko"}
+{"text":"Mình gửi 6211 5439 5305 7800","spans":[{"start":12,"end":31,"type":"credit_card"}],"lang":"vi"}
+{"text":"Mình gửi FR02 7717 6534 3288 3671 8643 408 nhé.","spans":[{"start":12,"end":45,"type":"iban"}],"lang":"vi"}
+{"text":"Xin vui lòng kiểm tra nguyen.van.a066@gmail.com giúp mình nhé.","spans":[{"start":25,"end":50,"type":"email"}],"lang":"vi"}
+{"text":"Xin vui lòng kiểm tra 206.242.83.243. Cảm ơn bạn.","spans":[{"start":25,"end":39,"type":"ip"}],"lang":"vi"}
+{"text":"392-99-7210. Cảm ơn bạn.","spans":[{"start":0,"end":11,"type":"us_ssn"}],"lang":"vi"}
+{"text":"Thông tin: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI3MDkwNTc3MjAxIiwiaWF0Ijo3MDM1OTYyNTQ5fQ.rl239qD49_sD-HiUS1LmhMcnfd7ZYPD7E_TyqZC2zV0 giúp mình nhé.\n76.9.243.98","spans":[{"start":12,"end":143,"type":"secret"},{"start":162,"end":173,"type":"ip"}],"lang":"vi"}
+{"text":"Xin vui lòng kiểm tra 2105028260617입니다.","spans":[{"start":25,"end":38,"type":"kr_rrn"}],"lang":"vi"}
+{"text":"số điện thoại của mình là 0336816749, thanks","spans":[{"start":37,"end":47,"type":"phone"}],"lang":"vi"}
+{"text":"CCCD: 054133058760.","spans":[{"start":6,"end":18,"type":"vn_cccd"}],"lang":"vi"}
+{"text":"Nhà mình ở 378/57 Đường Lê Lợi, quận 1.","spans":[{"start":15,"end":41,"type":"street_address"}],"lang":"vi"}
+{"text":"My details: 3530 9185 5793 8442, thanks.","spans":[{"start":12,"end":31,"type":"credit_card"}],"lang":"en"}
+{"text":"My details: FR12 1229 3916 5420 8287 5504 895, thanks.","spans":[{"start":12,"end":45,"type":"iban"}],"lang":"en"}
+{"text":"Note: tran.thi.b@example.com, thanks.","spans":[{"start":6,"end":28,"type":"email"}],"lang":"en"}
+{"text":"The customer entered 89.186.141.28\nLet me know if that works.","spans":[{"start":21,"end":34,"type":"ip"}],"lang":"en"}
+{"text":"The customer entered 780-99-5841, thanks.","spans":[{"start":21,"end":32,"type":"us_ssn"}],"lang":"en"}
+{"text":"OPENAI_API_KEY=AKIAKJSZOE4IZQFY0YKG\nLet me know if that works.","spans":[{"start":15,"end":35,"type":"secret"}],"lang":"en"}
+{"text":"RRN: 5002272648741.","spans":[{"start":5,"end":18,"type":"kr_rrn"}],"lang":"en"}
+{"text":"Please check +1 (419) 809-6454.","spans":[{"start":13,"end":30,"type":"phone"}],"lang":"en"}
+{"text":"CMND 078328626232 , thanks","spans":[{"start":5,"end":17,"type":"vn_cccd"}],"lang":"en"}
+{"text":"Deliver to 1351 Baker Avenue, thanks.","spans":[{"start":11,"end":28,"type":"street_address"}],"lang":"en"}
+{"text":"아래 내용을 봐 주세요. 3427-526847-14176","spans":[{"start":32,"end":49,"type":"credit_card"}],"lang":"ko"}
+{"text":"아래 내용을 봐 주세요. IT45 X687 0142 0192 6316 0299 859","spans":[{"start":32,"end":65,"type":"iban"}],"lang":"ko"}
+{"text":"아래 내용을 봐 주세요. alice@example.com 로 처리해 주세요.","spans":[{"start":32,"end":49,"type":"email"}],"lang":"ko"}
+{"text":"아래 내용을 봐 주세요. 4d0c:de77:946:3fc:a58b:4a4c:8880:ed4c","spans":[{"start":32,"end":69,"type":"ip"}],"lang":"ko"}
+{"text":"668-45-1214 로 처리해 주세요.","spans":[{"start":0,"end":11,"type":"us_ssn"}],"lang":"ko"}
+{"text":"Authorization: Bearer sk-ant-api03-3Lo3n2N5L4T1j5kJLMiinz0QvUihwfoBZJDj1Cf8QsSXdGfYX입니다.","spans":[{"start":22,"end":84,"type":"secret"}],"lang":"ko"}
+{"text":"510226-1878611 로 처리해 주세요.\n확인 부탁드립니다. 4038-7553-1706-8275이고 확인했습니다.","spans":[{"start":0,"end":14,"type":"kr_rrn"},{"start":67,"end":86,"type":"credit_card"}],"lang":"ko"}
+{"text":"휴대폰 01012819178, thanks","spans":[{"start":10,"end":21,"type":"phone"}],"lang":"ko"}
+{"text":"CCCD: 092385400029 , thanks","spans":[{"start":6,"end":18,"type":"vn_cccd"}],"lang":"ko"}
+{"text":"배송지는 서울특별시 강남구 테헤란로 123 로 보내주세요.","spans":[{"start":13,"end":55,"type":"street_address"}],"lang":"ko"}
+{"text":"Thông tin: 5505 6135 2480 4993 nhé.","spans":[{"start":12,"end":31,"type":"credit_card"}],"lang":"vi"}
+{"text":"Ghi chú: FR31 0784 7111 5011 4200 1612 529 nhé.","spans":[{"start":10,"end":43,"type":"iban"}],"lang":"vi"}
+{"text":"Mình gửi nguyen.van.a@naver.com. Cảm ơn bạn.","spans":[{"start":12,"end":34,"type":"email"}],"lang":"vi"}
+{"text":"Mình gửi 94.124.97.37 nhé.","spans":[{"start":12,"end":24,"type":"ip"}],"lang":"vi"}
+{"text":"Thông tin: 851 24 3050 giúp mình nhé.","spans":[{"start":12,"end":23,"type":"us_ssn"}],"lang":"vi"}
+{"text":"OPENAI_API_KEY=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMzI1NDU3MDk4IiwiaWF0Ijo3NDkxMzM0NDEyfQ.I2AzOnhjAkD4cynnjufYtgXPolxkT-MrMVPFB2eeQvZ. Cảm ơn bạn.","spans":[{"start":15,"end":146,"type":"secret"}],"lang":"vi"}
+{"text":"RRN: 9403182273048","spans":[{"start":5,"end":18,"type":"kr_rrn"}],"lang":"vi"}
+{"text":"số điện thoại của mình là +49 30 4786412","spans":[{"start":37,"end":51,"type":"phone"}],"lang":"vi"}
+{"text":"CMND/CCCD 040136831525 , thanks","spans":[{"start":10,"end":22,"type":"vn_cccd"}],"lang":"vi"}
+{"text":"Giao hàng tới 256 đường Hai Bà Trưng, quận 1.\nMình gửi 2001:db8::7071. Cảm ơn bạn.","spans":[{"start":17,"end":45,"type":"street_address"},{"start":69,"end":83,"type":"ip"}],"lang":"vi"}
+{"text":"Note: 5581030669866488\nLet me know if that works.","spans":[{"start":6,"end":22,"type":"credit_card"}],"lang":"en"}
+{"text":"Note: IT30 X631 9753 5126 8892 5371 722, thanks.","spans":[{"start":6,"end":39,"type":"iban"}],"lang":"en"}
+{"text":"Please check bob075@sub.io\nLet me know if that works.","spans":[{"start":13,"end":26,"type":"email"}],"lang":"en"}
+{"text":"Here it is: 170.6.29.202\nPlease check +84 380 213 475","spans":[{"start":12,"end":24,"type":"ip"},{"start":38,"end":53,"type":"phone"}],"lang":"en"}
+{"text":"Please check 595-21-6470\nLet me know if that works.\nCall my mobile: 303.244.5685.","spans":[{"start":13,"end":24,"type":"us_ssn"},{"start":68,"end":80,"type":"phone"}],"lang":"en"}
+{"text":"export TOKEN=AKIAEXYWU1IH1ULUV8MM\nLet me know if that works.\nPlease check FR55 0075 5258 7043 7177 0438 073.","spans":[{"start":13,"end":33,"type":"secret"},{"start":74,"end":107,"type":"iban"}],"lang":"en"}
+{"text":"Here it is: 220206-4553397.","spans":[{"start":12,"end":26,"type":"kr_rrn"}],"lang":"en"}
+{"text":"mobile 448.739.6201, thanks","spans":[{"start":7,"end":19,"type":"phone"}],"lang":"en"}
+{"text":"CCCD: 013057700854 , thanks","spans":[{"start":6,"end":18,"type":"vn_cccd"}],"lang":"en"}
+{"text":"Deliver to 5335 Pennsylvania Avenue.","spans":[{"start":11,"end":35,"type":"street_address"}],"lang":"en"}
+{"text":"아래 내용을 봐 주세요. 5568-7144-5652-6002입니다.\n메모: sk-proj-wvmYe2R0BY4bau2M9FvriFIu6vN8xNIPohwqeGFxbtEoy 로 처리해 주세요.","spans":[{"start":32,"end":51,"type":"credit_card"},{"start":70,"end":123,"type":"secret"}],"lang":"ko"}
+{"text":"고객 정보: DE36240580052620651829 로 처리해 주세요.","spans":[{"start":15,"end":37,"type":"iban"}],"lang":"ko"}
+{"text":"support47@naver.com이고 확인했습니다.","spans":[{"start":0,"end":19,"type":"email"}],"lang":"ko"}
+{"text":"고객 정보: 6.193.249.35 로 처리해 주세요.\n위치가 서울특별시 강남구 테헤란로 123","spans":[{"start":15,"end":27,"type":"ip"},{"start":63,"end":105,"type":"street_address"}],"lang":"ko"}
+{"text":"고객 정보: 506-20-4747\n500-38-3586 로 처리해 주세요.","spans":[{"start":15,"end":26,"type":"us_ssn"},{"start":27,"end":38,"type":"us_ssn"}],"lang":"ko"}
+{"text":"아래 내용을 봐 주세요. 090414 7673261입니다.","spans":[{"start":32,"end":46,"type":"kr_rrn"}],"lang":"ko"}
+{"text":"휴대폰 010.1756.0712, thanks","spans":[{"start":10,"end":23,"type":"phone"}],"lang":"ko"}
+{"text":"CCCD 번호 096322634689","spans":[{"start":12,"end":24,"type":"vn_cccd"}],"lang":"ko"}
+{"text":"위치가 제주특별자치도 제주시 첨단로 242입니다.","spans":[{"start":10,"end":55,"type":"street_address"}],"lang":"ko"}
+{"text":"3753 695026 56248 giúp mình nhé.","spans":[{"start":0,"end":17,"type":"credit_card"}],"lang":"vi"}
+{"text":"Xin vui lòng kiểm tra PL75174409070264682675114516 nhé.","spans":[{"start":25,"end":53,"type":"iban"}],"lang":"vi"}
+{"text":"Thông tin: support75@sub.io\nRRN: 0012064425489.","spans":[{"start":12,"end":28,"type":"email"},{"start":34,"end":47,"type":"kr_rrn"}],"lang":"vi"}
+{"text":"Xin vui lòng kiểm tra b3a1:d7d3::4f15:95ec","spans":[{"start":25,"end":45,"type":"ip"}],"lang":"vi"}
+{"text":"Xin vui lòng kiểm tra 509-95-1706 nhé.","spans":[{"start":25,"end":36,"type":"us_ssn"}],"lang":"vi"}
+{"text":"Mình gửi 760328 2986734 nhé.","spans":[{"start":12,"end":26,"type":"kr_rrn"}],"lang":"vi"}
+{"text":"điện thoại: 0393 365 679, thanks","spans":[{"start":17,"end":29,"type":"phone"}],"lang":"vi"}
+{"text":"số định danh cá nhân: 027006708883 , thanks","spans":[{"start":29,"end":41,"type":"vn_cccd"}],"lang":"vi"}
+{"text":"Giao hàng tới 163 hẻm Cầu Giấy, Hà Nội","spans":[{"start":17,"end":39,"type":"street_address"}],"lang":"vi"}
+{"text":"My details: 6277538406981458, thanks.","spans":[{"start":12,"end":28,"type":"credit_card"}],"lang":"en"}
+{"text":"The customer entered PL29413046972149137693538967, thanks.","spans":[{"start":21,"end":49,"type":"iban"}],"lang":"en"}
+{"text":"My details: kim.minsu@example.com.","spans":[{"start":12,"end":33,"type":"email"}],"lang":"en"}
+{"text":"160.163.60.16, thanks.","spans":[{"start":0,"end":13,"type":"ip"}],"lang":"en"}
+{"text":"Note: 462-57-4460.","spans":[{"start":6,"end":17,"type":"us_ssn"}],"lang":"en"}
+{"text":"Please check 501101-1431264.","spans":[{"start":13,"end":27,"type":"kr_rrn"}],"lang":"en"}
+{"text":"Call my mobile: +84790328084, thanks.","spans":[{"start":16,"end":28,"type":"phone"}],"lang":"en"}
+{"text":"citizen ID (CCCD) 031299700069.","spans":[{"start":18,"end":30,"type":"vn_cccd"}],"lang":"en"}
+{"text":"Ship it to 7523 Park Lane St, Springfield","spans":[{"start":11,"end":28,"type":"street_address"}],"lang":"en"}
+{"text":"고객 정보: 6011 3576 8357 0863","spans":[{"start":15,"end":34,"type":"credit_card"}],"lang":"ko"}
+{"text":"아래 내용을 봐 주세요. GB16 SOGS 0376 5648 3531 47입니다.","spans":[{"start":32,"end":59,"type":"iban"}],"lang":"ko"}
+{"text":"요청하신 값은 kim.minsu6@vnu.edu.vn입니다.","spans":[{"start":20,"end":41,"type":"email"}],"lang":"ko"}
+{"text":"메모: c323:8ee3:b034:ddfa:9298:f849:4514:f8b9이고 확인했습니다.","spans":[{"start":8,"end":47,"type":"ip"}],"lang":"ko"}
+{"text":"고객 정보: 340-02-1288","spans":[{"start":15,"end":26,"type":"us_ssn"}],"lang":"ko"}
+{"text":"메모: sk-zXRpc6o8RONBHIhcOWzGRatPX3cRZXUbPg42ciFfM7qtGDwg입니다.","spans":[{"start":8,"end":59,"type":"secret"}],"lang":"ko"}
+{"text":"아래 내용을 봐 주세요. 231223-3013691","spans":[{"start":32,"end":46,"type":"kr_rrn"}],"lang":"ko"}
+{"text":"제 전화는 01082295847.","spans":[{"start":14,"end":25,"type":"phone"}],"lang":"ko"}
+{"text":"CCCD 번호 008381776711.\n휴대폰 010-2383-1439.","spans":[{"start":12,"end":24,"type":"vn_cccd"},{"start":36,"end":49,"type":"phone"}],"lang":"ko"}
+{"text":"본사는 제주특별자치도 제주시 첨단로 242입니다.","spans":[{"start":10,"end":55,"type":"street_address"}],"lang":"ko"}
+{"text":"Xin vui lòng kiểm tra 36142846963062. Cảm ơn bạn.","spans":[{"start":25,"end":39,"type":"credit_card"}],"lang":"vi"}
+{"text":"Mình gửi AT35 1198 0400 7619 2365\n159.218.154.83 giúp mình nhé.","spans":[{"start":12,"end":36,"type":"iban"},{"start":37,"end":51,"type":"ip"}],"lang":"vi"}
+{"text":"Thông tin: alice059@corp.co.kr giúp mình nhé.","spans":[{"start":12,"end":31,"type":"email"}],"lang":"vi"}
+{"text":"77ec:ef3a:1adc:e336:85be:48e5:ca96:548d giúp mình nhé.","spans":[{"start":0,"end":39,"type":"ip"}],"lang":"vi"}
+{"text":"Ghi chú: 663-92-7879","spans":[{"start":10,"end":21,"type":"us_ssn"}],"lang":"vi"}
+{"text":"Xin vui lòng kiểm tra 760621-1402478 nhé.","spans":[{"start":25,"end":39,"type":"kr_rrn"}],"lang":"vi"}
+{"text":"Ghi chú: +82 10-8438-6163. Cảm ơn bạn.","spans":[{"start":10,"end":26,"type":"phone"}],"lang":"vi"}
+{"text":"CMND/CCCD 085333964038","spans":[{"start":10,"end":22,"type":"vn_cccd"}],"lang":"vi"}
+{"text":"Địa chỉ: 41 hẻm Trần Hưng Đạo, Hà Nội","spans":[{"start":14,"end":42,"type":"street_address"}],"lang":"vi"}
+{"text":"3495-124425-11238","spans":[{"start":0,"end":17,"type":"credit_card"}],"lang":"en"}
+{"text":"Please check BE15148078478855\nLet me know if that works.\nMy details: dev+test@vnu.edu.vn","spans":[{"start":13,"end":29,"type":"iban"},{"start":69,"end":88,"type":"email"}],"lang":"en"}
+{"text":"Note: john.smith@mail.example.org, thanks.","spans":[{"start":6,"end":33,"type":"email"}],"lang":"en"}
+{"text":"Here it is: 2001:db8::25fc, thanks.","spans":[{"start":12,"end":26,"type":"ip"}],"lang":"en"}
+{"text":"123-08-2002","spans":[{"start":0,"end":11,"type":"us_ssn"}],"lang":"en"}
+{"text":"770609 2320774.","spans":[{"start":0,"end":14,"type":"kr_rrn"}],"lang":"en"}
+{"text":"Call my mobile: +44 20 5873 4052.","spans":[{"start":16,"end":32,"type":"phone"}],"lang":"en"}
+{"text":"CCCD: 038176008502.\nOPENAI_API_KEY=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI0NDgwODE4OTY1IiwiaWF0Ijo4NjA1NjM4MTIxfQ.UuWgZfeofXt2m-SHazFYHi9kAfSKHfn3pBNwGVQC8F3","spans":[{"start":6,"end":18,"type":"vn_cccd"},{"start":35,"end":166,"type":"secret"}],"lang":"en"}
+{"text":"Address: 1131 Main Boulevard, Springfield","spans":[{"start":9,"end":28,"type":"street_address"}],"lang":"en"}
+{"text":"확인 부탁드립니다. 3530 6131 9502 4990입니다.\n요청하신 값은 36.43.181.196입니다.","spans":[{"start":27,"end":46,"type":"credit_card"},{"start":77,"end":90,"type":"ip"}],"lang":"ko"}
+{"text":"BE83595144552898입니다.","spans":[{"start":0,"end":16,"type":"iban"}],"lang":"ko"}
+{"text":"아래 내용을 봐 주세요. kim.minsu789@naver.com","spans":[{"start":32,"end":54,"type":"email"}],"lang":"ko"}
+{"text":"고객 정보: 101.66.19.100이고 확인했습니다.","spans":[{"start":15,"end":28,"type":"ip"}],"lang":"ko"}
+{"text":"요청하신 값은 524 64 7296이고 확인했습니다.","spans":[{"start":20,"end":31,"type":"us_ssn"}],"lang":"ko"}
+{"text":"메모: AKIAQ8IHMQFPQ3BK0VEZ입니다.\n고객 정보: 533-96-8770","spans":[{"start":8,"end":28,"type":"secret"},{"start":54,"end":65,"type":"us_ssn"}],"lang":"ko"}
+{"text":"요청하신 값은 7307285452273입니다.","spans":[{"start":20,"end":33,"type":"kr_rrn"}],"lang":"ko"}
+{"text":"전화번호: 01035070126.","spans":[{"start":14,"end":25,"type":"phone"}],"lang":"ko"}
+{"text":"CCCD 번호 050331691711","spans":[{"start":12,"end":24,"type":"vn_cccd"}],"lang":"ko"}
+{"text":"배송지는 서울특별시 강남구 테헤란로 123 로 보내주세요.","spans":[{"start":13,"end":55,"type":"street_address"}],"lang":"ko"}
+{"text":"Mình gửi 3688-099372-8925 nhé.","spans":[{"start":12,"end":28,"type":"credit_card"}],"lang":"vi"}
+{"text":"Thông tin: CH46580874J61299VY85X","spans":[{"start":12,"end":33,"type":"iban"}],"lang":"vi"}
+{"text":"Mình gửi support9@corp.co.kr. Cảm ơn bạn.","spans":[{"start":12,"end":31,"type":"email"}],"lang":"vi"}
+{"text":"Ghi chú: 3084:215e::ce03:f043 giúp mình nhé.","spans":[{"start":10,"end":30,"type":"ip"}],"lang":"vi"}
+{"text":"796-92-3586 giúp mình nhé.","spans":[{"start":0,"end":11,"type":"us_ssn"}],"lang":"vi"}
+{"text":"export TOKEN=sk-proj-sfzeJ5WBdPoURoRAjLwlMlxy00X0FfK34rTdSq0ki2F9. Cảm ơn bạn.","spans":[{"start":13,"end":65,"type":"secret"}],"lang":"vi"}
+{"text":"Ghi chú: 211213 8526253. Cảm ơn bạn.","spans":[{"start":10,"end":24,"type":"kr_rrn"}],"lang":"vi"}
+{"text":"điện thoại: 0857.024.803.","spans":[{"start":17,"end":29,"type":"phone"}],"lang":"vi"}
+{"text":"số căn cước công dân: 027379361459","spans":[{"start":30,"end":42,"type":"vn_cccd"}],"lang":"vi"}
+{"text":"Địa chỉ: 336 phố Láng, quận 1.","spans":[{"start":14,"end":29,"type":"street_address"}],"lang":"vi"}
+{"text":"Note: 6232 9506 0971 7577.","spans":[{"start":6,"end":25,"type":"credit_card"}],"lang":"en"}
+{"text":"Note: GB83 QYAB 0020 1224 7242 96.","spans":[{"start":6,"end":33,"type":"iban"}],"lang":"en"}
+{"text":"My details: nguyen.van.a27@mail.example.org\nLet me know if that works.","spans":[{"start":12,"end":43,"type":"email"}],"lang":"en"}
+{"text":"Note: 27.173.213.91\nNote: 5530442479195515, thanks.","spans":[{"start":6,"end":19,"type":"ip"},{"start":26,"end":42,"type":"credit_card"}],"lang":"en"}
+{"text":"797-16-6757, thanks.","spans":[{"start":0,"end":11,"type":"us_ssn"}],"lang":"en"}
+{"text":"Authorization: Bearer sk-rLtVR0oSrDmzXhbsujDuUNlK57leey2BOmMk6YIZHxk.","spans":[{"start":22,"end":68,"type":"secret"}],"lang":"en"}
+{"text":"RRN 2504123434407.","spans":[{"start":4,"end":17,"type":"kr_rrn"}],"lang":"en"}
+{"text":"Tel: (297) 311-3902.","spans":[{"start":5,"end":19,"type":"phone"}],"lang":"en"}
+{"text":"citizen ID (CCCD) 071338699689.","spans":[{"start":18,"end":30,"type":"vn_cccd"}],"lang":"en"}
+{"text":"Our office is at 7947 Oak Dr, thanks.","spans":[{"start":17,"end":28,"type":"street_address"}],"lang":"en"}
+{"text":"5598-4364-1740-6868입니다.","spans":[{"start":0,"end":19,"type":"credit_card"}],"lang":"ko"}
+{"text":"고객 정보: NL59 MUTT 1660 7081 99 로 처리해 주세요.","spans":[{"start":15,"end":37,"type":"iban"}],"lang":"ko"}
+{"text":"고객 정보: dev+test@mail.example.org이고 확인했습니다.","spans":[{"start":15,"end":40,"type":"email"}],"lang":"ko"}
+{"text":"아래 내용을 봐 주세요. 206.70.226.152","spans":[{"start":32,"end":46,"type":"ip"}],"lang":"ko"}
+{"text":"메모: 247 93 1342이고 확인했습니다.","spans":[{"start":8,"end":19,"type":"us_ssn"}],"lang":"ko"}
+{"text":"고객 정보: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI1NTI5NDMzMzMxIiwiaWF0IjowMDA2NzI5NTk1fQ.lHeaQ-rH909DNajJf_EtSji1wRHYTQFlscB-sf7zynk\n아래 내용을 봐 주세요. 4976-0921-2144-9028","spans":[{"start":15,"end":146,"type":"secret"},{"start":179,"end":198,"type":"credit_card"}],"lang":"ko"}
+{"text":"요청하신 값은 920307-2896274 로 처리해 주세요.","spans":[{"start":20,"end":34,"type":"kr_rrn"}],"lang":"ko"}
+{"text":"제 전화는 051-657-3080.","spans":[{"start":14,"end":26,"type":"phone"}],"lang":"ko"}
+{"text":"CCCD: 007351115157","spans":[{"start":6,"end":18,"type":"vn_cccd"}],"lang":"ko"}
+{"text":"배송지는 세종대로 110","spans":[{"start":13,"end":29,"type":"street_address"}],"lang":"ko"}
+{"text":"Ghi chú: 374396832203566","spans":[{"start":10,"end":25,"type":"credit_card"}],"lang":"vi"}
+{"text":"IT85D3201956695511032471622","spans":[{"start":0,"end":27,"type":"iban"}],"lang":"vi"}
+{"text":"Ghi chú: support60@corp.co.kr. Cảm ơn bạn.","spans":[{"start":10,"end":30,"type":"email"}],"lang":"vi"}
+{"text":"64.214.211.28","spans":[{"start":0,"end":13,"type":"ip"}],"lang":"vi"}
+{"text":"Xin vui lòng kiểm tra 628 52 0052 giúp mình nhé.","spans":[{"start":25,"end":36,"type":"us_ssn"}],"lang":"vi"}
+{"text":"OPENAI_API_KEY=ghp_I1B4CGGO9zzQRxJhbcwmiVj8msYk90IBqa2b. Cảm ơn bạn.","spans":[{"start":15,"end":55,"type":"secret"}],"lang":"vi"}
+{"text":"RRN: 2104053056117입니다.","spans":[{"start":5,"end":18,"type":"kr_rrn"}],"lang":"vi"}
+{"text":"Ghi chú: +82 10 0382 4759. Cảm ơn bạn.","spans":[{"start":10,"end":26,"type":"phone"}],"lang":"vi"}
+{"text":"số định danh cá nhân: 042025794612 , thanks","spans":[{"start":29,"end":41,"type":"vn_cccd"}],"lang":"vi"}
+{"text":"Giao hàng tới 303/33 hẻm Lê Lợi, quận 1.","spans":[{"start":17,"end":39,"type":"street_address"}],"lang":"vi"}
+{"text":"3530028329517159.","spans":[{"start":0,"end":16,"type":"credit_card"}],"lang":"en"}
+{"text":"Please check CH21 7608 1RHJ KJJ8 FYKP P.","spans":[{"start":13,"end":39,"type":"iban"}],"lang":"en"}
+{"text":"kim.minsu59@naver.com","spans":[{"start":0,"end":21,"type":"email"}],"lang":"en"}
+{"text":"Please check 36b6:199::4483:d30d.","spans":[{"start":13,"end":32,"type":"ip"}],"lang":"en"}
+{"text":"303-03-7217.","spans":[{"start":0,"end":11,"type":"us_ssn"}],"lang":"en"}
+{"text":"Note: ghp_ytPW9rpJu5osuX60mBZh28nGDJffkZBJqbNT.","spans":[{"start":6,"end":46,"type":"secret"}],"lang":"en"}
+{"text":"My details: 220411 3640820.\nCCCD: 003253392378.","spans":[{"start":12,"end":26,"type":"kr_rrn"},{"start":34,"end":46,"type":"vn_cccd"}],"lang":"en"}
+{"text":"Tel: 912-310-5808, thanks","spans":[{"start":5,"end":17,"type":"phone"}],"lang":"en"}
+{"text":"CCCD: 042394197333 , thanks","spans":[{"start":6,"end":18,"type":"vn_cccd"}],"lang":"en"}
+{"text":"Ship it to 6703 Fifth St, Springfield","spans":[{"start":11,"end":24,"type":"street_address"}],"lang":"en"}
+{"text":"요청하신 값은 3442 419392 19585 로 처리해 주세요.","spans":[{"start":20,"end":37,"type":"credit_card"}],"lang":"ko"}
+{"text":"메모: NL21AELE6176046478 로 처리해 주세요.","spans":[{"start":8,"end":26,"type":"iban"}],"lang":"ko"}
+{"text":"요청하신 값은 park_jihoon@example.com입니다.","spans":[{"start":20,"end":43,"type":"email"}],"lang":"ko"}
+{"text":"메모: 49.216.92.197","spans":[{"start":8,"end":21,"type":"ip"}],"lang":"ko"}
+{"text":"확인 부탁드립니다. 202-16-0914이고 확인했습니다.","spans":[{"start":27,"end":38,"type":"us_ssn"}],"lang":"ko"}
+{"text":"아래 내용을 봐 주세요. AKIAQR256FTNOTDN1NMH이고 확인했습니다.","spans":[{"start":32,"end":52,"type":"secret"}],"lang":"ko"}
+{"text":"751120-2910787이고 확인했습니다.","spans":[{"start":0,"end":14,"type":"kr_rrn"}],"lang":"ko"}
+{"text":"휴대폰 010-0790-4096.","spans":[{"start":10,"end":23,"type":"phone"}],"lang":"ko"}
+{"text":"CCCD 번호 034363215280 , thanks","spans":[{"start":12,"end":24,"type":"vn_cccd"}],"lang":"ko"}
+{"text":"주소: 부산광역시 해운대구 해운대해변로 264 로 보내주세요.","spans":[{"start":8,"end":59,"type":"street_address"}],"lang":"ko"}
+{"text":"Xin vui lòng kiểm tra 3771-550984-65963 nhé.","spans":[{"start":25,"end":42,"type":"credit_card"}],"lang":"vi"}
+{"text":"Ghi chú: DE66313956229697645551","spans":[{"start":10,"end":32,"type":"iban"}],"lang":"vi"}
+{"text":"Mình gửi dev+test@corp.co.kr giúp mình nhé.","spans":[{"start":12,"end":31,"type":"email"}],"lang":"vi"}
+{"text":"Ghi chú: 151.223.237.122 giúp mình nhé.","spans":[{"start":10,"end":25,"type":"ip"}],"lang":"vi"}
+{"text":"528-34-4005 giúp mình nhé.\nThông tin: 960701-2668996","spans":[{"start":0,"end":11,"type":"us_ssn"},{"start":42,"end":56,"type":"kr_rrn"}],"lang":"vi"}
+{"text":"Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI1MDEyMjIzOTc0IiwiaWF0IjozMzM4NTUzMTM3fQ.YsH0_gtIwYjeCZctHyIopr-YD2ccB-7FzrXQTz_bQAl. Cảm ơn bạn.\nCMND/CCCD 054313626368.","spans":[{"start":22,"end":153,"type":"secret"},{"start":182,"end":194,"type":"vn_cccd"}],"lang":"vi"}
+{"text":"RRN: 1411204608065","spans":[{"start":5,"end":18,"type":"kr_rrn"}],"lang":"vi"}
+{"text":"điện thoại: 0982978896.","spans":[{"start":17,"end":27,"type":"phone"}],"lang":"vi"}
+{"text":"CCCD: 096193773328 , thanks","spans":[{"start":6,"end":18,"type":"vn_cccd"}],"lang":"vi"}
+{"text":"Giao hàng tới 313 Đường Hai Bà Trưng.\nđiện thoại: 0934.467.367, thanks","spans":[{"start":17,"end":45,"type":"street_address"},{"start":64,"end":76,"type":"phone"}],"lang":"vi"}
+{"text":"Please check 3640-715065-1862\nLet me know if that works.","spans":[{"start":13,"end":29,"type":"credit_card"}],"lang":"en"}
+{"text":"Please check ES63 3466 0506 9478 8955 7743\nLet me know if that works.\nThe customer entered lee.soyeon785@vnu.edu.vn","spans":[{"start":13,"end":42,"type":"iban"},{"start":91,"end":115,"type":"email"}],"lang":"en"}
+{"text":"Note: tran.thi.b@vnu.edu.vn","spans":[{"start":6,"end":27,"type":"email"}],"lang":"en"}
+{"text":"Note: ::1.","spans":[{"start":6,"end":9,"type":"ip"}],"lang":"en"}
+{"text":"Please check 766-73-7798","spans":[{"start":13,"end":24,"type":"us_ssn"}],"lang":"en"}
+{"text":"Authorization: Bearer ghp_2Q23fhiZVLAKEjWWU6CxXdYad5kMUeOxhgt7, thanks.","spans":[{"start":22,"end":62,"type":"secret"}],"lang":"en"}
+{"text":"Please check 860125-1910513.","spans":[{"start":13,"end":27,"type":"kr_rrn"}],"lang":"en"}
+{"text":"mobile 625.983.7730","spans":[{"start":7,"end":19,"type":"phone"}],"lang":"en"}
+{"text":"citizen ID (CCCD) 043179060462.","spans":[{"start":18,"end":30,"type":"vn_cccd"}],"lang":"en"}
+{"text":"Our office is at 893 Elm St\npark_jihoon2@company.vn.","spans":[{"start":17,"end":27,"type":"street_address"},{"start":28,"end":51,"type":"email"}],"lang":"en"}
+{"text":"확인 부탁드립니다. 3668 442206 4880이고 확인했습니다.\nAT440632586156456150입니다.","spans":[{"start":27,"end":43,"type":"credit_card"},{"start":70,"end":90,"type":"iban"}],"lang":"ko"}
+{"text":"메모: BE26543296155052이고 확인했습니다.\n208.91.128.108입니다.","spans":[{"start":8,"end":24,"type":"iban"},{"start":51,"end":65,"type":"ip"}],"lang":"ko"}
+{"text":"메모: tran.thi.b5@gmail.com 로 처리해 주세요.","spans":[{"start":8,"end":29,"type":"email"}],"lang":"ko"}
+{"text":"요청하신 값은 50.112.110.77 로 처리해 주세요.","spans":[{"start":20,"end":33,"type":"ip"}],"lang":"ko"}
+{"text":"요청하신 값은 344-37-6495입니다.","spans":[{"start":20,"end":31,"type":"us_ssn"}],"lang":"ko"}
+{"text":"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxNTQ0NTA5MDg4IiwiaWF0Ijo3NjUwNTc2OTcxfQ.hQT9nj2XqNlpAP6HAddUwnylP_od2GOB2tudXofyoCK입니다.","spans":[{"start":0,"end":131,"type":"secret"}],"lang":"ko"}
+{"text":"주민번호 0707094660556.","spans":[{"start":13,"end":26,"type":"kr_rrn"}],"lang":"ko"}
+{"text":"요청하신 값은 +1 280 837 4121 로 처리해 주세요.\n834-03-1687 로 처리해 주세요.","spans":[{"start":20,"end":35,"type":"phone"},{"start":61,"end":72,"type":"us_ssn"}],"lang":"ko"}
+{"text":"CCCD: 036290096717","spans":[{"start":6,"end":18,"type":"vn_cccd"}],"lang":"ko"}
+{"text":"본사는 서울시 마포구 월드컵북로 396","spans":[{"start":10,"end":49,"type":"street_address"}],"lang":"ko"}
+{"text":"Ghi chú: 3694-498868-0374 giúp mình nhé.","spans":[{"start":10,"end":26,"type":"credit_card"}],"lang":"vi"}
+{"text":"Mình gửi NL98CKAB7678564677. Cảm ơn bạn.","spans":[{"start":12,"end":30,"type":"iban"}],"lang":"vi"}
+{"text":"Thông tin: tran.thi.b103@corp.co.kr. Cảm ơn bạn.","spans":[{"start":12,"end":36,"type":"email"}],"lang":"vi"}
+{"text":"Ghi chú: b930:8613::e8d8:7ac2 nhé.","spans":[{"start":10,"end":30,"type":"ip"}],"lang":"vi"}
+{"text":"Mình gửi 868-25-6222. Cảm ơn bạn.\nAuthorization: Bearer sk-TUZSo8E8197uMeJeQw0G1NcKeOJscrltkMTfZZKYWU","spans":[{"start":12,"end":23,"type":"us_ssn"},{"start":64,"end":109,"type":"secret"}],"lang":"vi"}
+{"text":"Xin vui lòng kiểm tra 701011-2614218 nhé.","spans":[{"start":25,"end":39,"type":"kr_rrn"}],"lang":"vi"}
+{"text":"Thông tin: +84 809 878 319 giúp mình nhé.","spans":[{"start":12,"end":27,"type":"phone"}],"lang":"vi"}
+{"text":"số định danh cá nhân: 069121148941.","spans":[{"start":29,"end":41,"type":"vn_cccd"}],"lang":"vi"}
+{"text":"Giao hàng tới 163 hẻm Cầu Giấy, quận 1.\nXin vui lòng kiểm tra ES21 6466 2480 4364 8788 3639. Cảm ơn bạn.","spans":[{"start":17,"end":39,"type":"street_address"},{"start":76,"end":105,"type":"iban"}],"lang":"vi"}
+{"text":"The customer entered 5553-2473-4330-7168.","spans":[{"start":21,"end":40,"type":"credit_card"}],"lang":"en"}
+{"text":"Note: AT73 7534 6932 5748 5373","spans":[{"start":6,"end":30,"type":"iban"}],"lang":"en"}
+{"text":"Please check alice2@gmail.com","spans":[{"start":13,"end":29,"type":"email"}],"lang":"en"}
+{"text":"Here it is: 2001:db8::d998, thanks.","spans":[{"start":12,"end":26,"type":"ip"}],"lang":"en"}
+{"text":"Here it is: 830-89-9556\nLet me know if that works.","spans":[{"start":12,"end":23,"type":"us_ssn"}],"lang":"en"}
+{"text":"The customer entered AKIAQX8HA3YLA0BHNITP\nLet me know if that works.","spans":[{"start":21,"end":41,"type":"secret"}],"lang":"en"}
+{"text":"Please check 990422 2848005, thanks.","spans":[{"start":13,"end":27,"type":"kr_rrn"}],"lang":"en"}
+{"text":"My phone number is 604 438 8913.","spans":[{"start":19,"end":31,"type":"phone"}],"lang":"en"}
+{"text":"CCCD: 088065555035 , thanks\nHere it is: 409-54-8782\nLet me know if that works.","spans":[{"start":6,"end":18,"type":"vn_cccd"},{"start":40,"end":51,"type":"us_ssn"}],"lang":"en"}
+{"text":"Deliver to 7653 Fifth Rd, thanks.","spans":[{"start":11,"end":24,"type":"street_address"}],"lang":"en"}
+{"text":"확인 부탁드립니다. 6267 0768 3590 8968이고 확인했습니다.\n아래 내용을 봐 주세요. ES96 0929 6100 3028 8986 9893입니다.","spans":[{"start":27,"end":46,"type":"credit_card"},{"start":105,"end":134,"type":"iban"}],"lang":"ko"}
+{"text":"요청하신 값은 NL78JDUR2533364351 로 처리해 주세요.","spans":[{"start":20,"end":38,"type":"iban"}],"lang":"ko"}
+{"text":"메모: kim.minsu@mail.example.org 로 처리해 주세요.","spans":[{"start":8,"end":34,"type":"email"}],"lang":"ko"}
+{"text":"아래 내용을 봐 주세요. 108.48.225.186\n확인 부탁드립니다. 231 86 4576입니다.","spans":[{"start":32,"end":46,"type":"ip"},{"start":74,"end":85,"type":"us_ssn"}],"lang":"ko"}
+{"text":"메모: 066 82 0634입니다.\n고객 정보: 585-78-6915","spans":[{"start":8,"end":19,"type":"us_ssn"},{"start":45,"end":56,"type":"us_ssn"}],"lang":"ko"}
+{"text":"주민등록번호: 1609134908385","spans":[{"start":20,"end":33,"type":"kr_rrn"}],"lang":"ko"}
+{"text":"제 전화는 +84329301823","spans":[{"start":14,"end":26,"type":"phone"}],"lang":"ko"}
+{"text":"CCCD: 031122042468.\n아래 내용을 봐 주세요. 520127-5375528이고 확인했습니다.","spans":[{"start":6,"end":18,"type":"vn_cccd"},{"start":52,"end":66,"type":"kr_rrn"}],"lang":"ko"}
+{"text":"본사는 부산광역시 해운대구 해운대해변로 264","spans":[{"start":10,"end":61,"type":"street_address"}],"lang":"ko"}
+{"text":"Ghi chú: 4206-1326-0097-9434 nhé.","spans":[{"start":10,"end":29,"type":"credit_card"}],"lang":"vi"}
+{"text":"Xin vui lòng kiểm tra FR9143361534524852225611224 nhé.","spans":[{"start":25,"end":52,"type":"iban"}],"lang":"vi"}
+{"text":"Thông tin: bob@mail.example.org","spans":[{"start":12,"end":32,"type":"email"}],"lang":"vi"}
+{"text":"Mình gửi ad4f:196c::36cc:c853","spans":[{"start":12,"end":32,"type":"ip"}],"lang":"vi"}
+{"text":"738-11-2327 nhé.","spans":[{"start":0,"end":11,"type":"us_ssn"}],"lang":"vi"}
+{"text":"sk-7pBjm4sGrJ3uBWhZtvoPzr4d0s8lEEEfqB4yLolST nhé.","spans":[{"start":0,"end":44,"type":"secret"}],"lang":"vi"}
+{"text":"Mình gửi 171005 8055851 nhé.","spans":[{"start":12,"end":26,"type":"kr_rrn"}],"lang":"vi"}
+{"text":"SĐT: 0972-372-249, thanks","spans":[{"start":6,"end":18,"type":"phone"}],"lang":"vi"}
+{"text":"CCCD: 022379350484.","spans":[{"start":6,"end":18,"type":"vn_cccd"}],"lang":"vi"}
+{"text":"Nhà mình ở 166 ngõ Hàng Bông, Hà Nội","spans":[{"start":15,"end":35,"type":"street_address"}],"lang":"vi"}
+{"text":"My details: 5558 3368 2903 2419","spans":[{"start":12,"end":31,"type":"credit_card"}],"lang":"en"}
+{"text":"Here it is: ES9009348347466188789704","spans":[{"start":12,"end":36,"type":"iban"}],"lang":"en"}
+{"text":"Note: lee.soyeon@sub.io.","spans":[{"start":6,"end":23,"type":"email"}],"lang":"en"}
+{"text":"The customer entered 2001:db8::fdc2, thanks.","spans":[{"start":21,"end":35,"type":"ip"}],"lang":"en"}
+{"text":"019-49-7965","spans":[{"start":0,"end":11,"type":"us_ssn"}],"lang":"en"}
+{"text":"Note: ghp_ds3XK8DhZVDLIRvdA7R2oNuQVdoibWXxkFrJ, thanks.\nHere it is: 220119-3753771\nLet me know if that works.","spans":[{"start":6,"end":46,"type":"secret"},{"start":68,"end":82,"type":"kr_rrn"}],"lang":"en"}
+{"text":"Note: 251214 4961529","spans":[{"start":6,"end":20,"type":"kr_rrn"}],"lang":"en"}
+{"text":"Call my mobile: 481 943 8576, thanks","spans":[{"start":16,"end":28,"type":"phone"}],"lang":"en"}
+{"text":"CCCD: 033225057936 , thanks","spans":[{"start":6,"end":18,"type":"vn_cccd"}],"lang":"en"}
+{"text":"Ship it to 6254 Lincoln Avenue, thanks.","spans":[{"start":11,"end":30,"type":"street_address"}],"lang":"en"}
+{"text":"고객 정보: 6256303774348326입니다.","spans":[{"start":15,"end":31,"type":"credit_card"}],"lang":"ko"}
+{"text":"요청하신 값은 GB27NVZV75212700863829입니다.","spans":[{"start":20,"end":42,"type":"iban"}],"lang":"ko"}
+{"text":"확인 부탁드립니다. john.smith@example.com","spans":[{"start":27,"end":49,"type":"email"}],"lang":"ko"}
+{"text":"메모: ::1입니다.","spans":[{"start":8,"end":11,"type":"ip"}],"lang":"ko"}
+{"text":"834-41-0374이고 확인했습니다.","spans":[{"start":0,"end":11,"type":"us_ssn"}],"lang":"ko"}
+{"text":"확인 부탁드립니다. sk-BoBZ75r6xayutVfBfwIBdTJTe4STKFNlP1sEFt8aSKNKzS입니다.","spans":[{"start":27,"end":76,"type":"secret"}],"lang":"ko"}
+{"text":"고객 정보: 580203-6313885이고 확인했습니다.","spans":[{"start":15,"end":29,"type":"kr_rrn"}],"lang":"ko"}
+{"text":"메모: +44 20 8734 4482이고 확인했습니다.","spans":[{"start":8,"end":24,"type":"phone"}],"lang":"ko"}
+{"text":"CCCD: 085342418057 , thanks\n확인 부탁드립니다. 1741:41d2::cf37:d5a8","spans":[{"start":6,"end":18,"type":"vn_cccd"},{"start":55,"end":75,"type":"ip"}],"lang":"ko"}
+{"text":"위치가 서울특별시 강남구 테헤란로 123 로 보내주세요.","spans":[{"start":10,"end":52,"type":"street_address"}],"lang":"ko"}
+{"text":"4904 2072 2320 2441. Cảm ơn bạn.\nCCCD: 037042511534","spans":[{"start":0,"end":19,"type":"credit_card"},{"start":44,"end":56,"type":"vn_cccd"}],"lang":"vi"}
+{"text":"Ghi chú: ES32 7411 6228 4240 6400 5491 giúp mình nhé.","spans":[{"start":10,"end":39,"type":"iban"}],"lang":"vi"}
+{"text":"Mình gửi bob@company.vn. Cảm ơn bạn.","spans":[{"start":12,"end":26,"type":"email"}],"lang":"vi"}
+{"text":"Mình gửi 96.216.60.251. Cảm ơn bạn.","spans":[{"start":12,"end":25,"type":"ip"}],"lang":"vi"}
+{"text":"Xin vui lòng kiểm tra 690-81-1979 nhé.","spans":[{"start":25,"end":36,"type":"us_ssn"}],"lang":"vi"}
+{"text":"export TOKEN=AKIAI5H1QGJ0DZ4DFC0J nhé.","spans":[{"start":13,"end":33,"type":"secret"}],"lang":"vi"}
+{"text":"Thông tin: 221225-4751882. Cảm ơn bạn.","spans":[{"start":12,"end":26,"type":"kr_rrn"}],"lang":"vi"}
+{"text":"điện thoại: +1 350 811 7230. Cảm ơn bạn.","spans":[{"start":17,"end":32,"type":"phone"}],"lang":"vi"}
+{"text":"CMND/CCCD 038361638649.","spans":[{"start":10,"end":22,"type":"vn_cccd"}],"lang":"vi"}
+{"text":"Nhà mình ở 154 hẻm Cầu Giấy, quận 1.","spans":[{"start":15,"end":37,"type":"street_address"}],"lang":"vi"}
+{"text":"My details: 6011 9268 7792 2021","spans":[{"start":12,"end":31,"type":"credit_card"}],"lang":"en"}
+{"text":"CH5430772HCGRNZ56ES3L, thanks.","spans":[{"start":0,"end":21,"type":"iban"}],"lang":"en"}
+{"text":"Note: nguyen.van.a5@example.com\nLet me know if that works.","spans":[{"start":6,"end":31,"type":"email"}],"lang":"en"}
+{"text":"My details: 159.243.65.77, thanks.","spans":[{"start":12,"end":25,"type":"ip"}],"lang":"en"}
+{"text":"Please check 682-27-0391","spans":[{"start":13,"end":24,"type":"us_ssn"}],"lang":"en"}
+{"text":"sk-fHyNu52T0BPOB0RVDZK9YHA8PDRIP5mgo22S1mUU2qGk","spans":[{"start":0,"end":47,"type":"secret"}],"lang":"en"}
+{"text":"My details: 690803-1808549.\nPlease check 618 72 6122\nLet me know if that works.","spans":[{"start":12,"end":26,"type":"kr_rrn"},{"start":41,"end":52,"type":"us_ssn"}],"lang":"en"}
+{"text":"+49 30 2467020\nLet me know if that works.","spans":[{"start":0,"end":14,"type":"phone"}],"lang":"en"}
+{"text":"CCCD: 094307802789.","spans":[{"start":6,"end":18,"type":"vn_cccd"}],"lang":"en"}
+{"text":"Our office is at 4185 Main Boulevard, thanks.","spans":[{"start":17,"end":36,"type":"street_address"}],"lang":"en"}
+{"text":"메모: 3603-514199-2598이고 확인했습니다.","spans":[{"start":8,"end":24,"type":"credit_card"}],"lang":"ko"}
+{"text":"확인 부탁드립니다. CH75 5476 4RHJ HPM6 RT2E J","spans":[{"start":27,"end":53,"type":"iban"}],"lang":"ko"}
+{"text":"아래 내용을 봐 주세요. alice377@naver.com이고 확인했습니다.","spans":[{"start":32,"end":50,"type":"email"}],"lang":"ko"}
+{"text":"fd11:2083::db48:9e6e 로 처리해 주세요.\nghp_BY7Ed0pXf2iMHg6TUPPRD9m7QVjQDd0vZrYo","spans":[{"start":0,"end":20,"type":"ip"},{"start":46,"end":86,"type":"secret"}],"lang":"ko"}
+{"text":"아래 내용을 봐 주세요. 598-75-0163\n4285363128600111 로 처리해 주세요.","spans":[{"start":32,"end":43,"type":"us_ssn"},{"start":44,"end":60,"type":"credit_card"}],"lang":"ko"}
+{"text":"OPENAI_API_KEY=sk-ant-api03-trewH2xKJ9odn8qs8nts6ZgQaPO1ta8OEcOkiyIuvmgX이고 확인했습니다.","spans":[{"start":15,"end":72,"type":"secret"}],"lang":"ko"}
+{"text":"주민등록번호는 9011131461776.","spans":[{"start":22,"end":35,"type":"kr_rrn"}],"lang":"ko"}
+{"text":"전화 +1 849 336 9650","spans":[{"start":7,"end":22,"type":"phone"}],"lang":"ko"}
+{"text":"CCCD 번호 038272147228.","spans":[{"start":12,"end":24,"type":"vn_cccd"}],"lang":"ko"}
+{"text":"배송지는 가로수길 10","spans":[{"start":13,"end":28,"type":"street_address"}],"lang":"ko"}
+{"text":"Mình gửi 5533 3883 3181 0717 giúp mình nhé.","spans":[{"start":12,"end":31,"type":"credit_card"}],"lang":"vi"}
+{"text":"Thông tin: FR7323402217281571973675908. Cảm ơn bạn.","spans":[{"start":12,"end":39,"type":"iban"}],"lang":"vi"}
+{"text":"Xin vui lòng kiểm tra kim.minsu7@corp.co.kr giúp mình nhé.\nThông tin: FR4667457315520582902803042 nhé.","spans":[{"start":25,"end":46,"type":"email"},{"start":77,"end":104,"type":"iban"}],"lang":"vi"}
+{"text":"34.42.149.60 giúp mình nhé.\nGhi chú: PL71 3533 5057 8621 4765 1991 7938 giúp mình nhé.","spans":[{"start":0,"end":12,"type":"ip"},{"start":41,"end":75,"type":"iban"}],"lang":"vi"}
+{"text":"Ghi chú: 467-99-2273. Cảm ơn bạn.","spans":[{"start":10,"end":21,"type":"us_ssn"}],"lang":"vi"}
+{"text":"Mình gửi sk-vQCq99tx27KwKiZHMtddY6HBSBDyB1ovSBcgLHUn15 giúp mình nhé.\nOPENAI_API_KEY=ghp_O9HOTBtcCPAZB7t8IheNkPZFfX8gVexEvQdF giúp mình nhé.","spans":[{"start":12,"end":57,"type":"secret"},{"start":91,"end":131,"type":"secret"}],"lang":"vi"}
+{"text":"Thông tin: 231202-4146867\nXin vui lòng kiểm tra 157-89-3475 giúp mình nhé.","spans":[{"start":12,"end":26,"type":"kr_rrn"},{"start":52,"end":63,"type":"us_ssn"}],"lang":"vi"}
+{"text":"Zalo: 0881068380.","spans":[{"start":6,"end":16,"type":"phone"}],"lang":"vi"}
+{"text":"số căn cước công dân: 022274964851 , thanks","spans":[{"start":30,"end":42,"type":"vn_cccd"}],"lang":"vi"}
+{"text":"Địa chỉ: 159 phố Hàng Bông, Hà Nội\nRRN: 0805073934142입니다.","spans":[{"start":14,"end":35,"type":"street_address"},{"start":52,"end":65,"type":"kr_rrn"}],"lang":"vi"}
+{"text":"Note: 3530 6169 7160 2731","spans":[{"start":6,"end":25,"type":"credit_card"}],"lang":"en"}
+{"text":"Please check IT70Y8655849100089348047973","spans":[{"start":13,"end":40,"type":"iban"}],"lang":"en"}
+{"text":"The customer entered nguyen.van.a@example.com.","spans":[{"start":21,"end":45,"type":"email"}],"lang":"en"}
+{"text":"Here it is: 105.103.38.56\nLet me know if that works.","spans":[{"start":12,"end":25,"type":"ip"}],"lang":"en"}
+{"text":"The customer entered 823 43 6721.\nPlease check 216.62.79.243","spans":[{"start":21,"end":32,"type":"us_ssn"},{"start":47,"end":60,"type":"ip"}],"lang":"en"}
+{"text":"RRN 2501143904697입니다.","spans":[{"start":4,"end":17,"type":"kr_rrn"}],"lang":"en"}
+{"text":"Phone: 298 848 4282\nlee.soyeon831@company.vn\nLet me know if that works.","spans":[{"start":7,"end":19,"type":"phone"},{"start":20,"end":44,"type":"email"}],"lang":"en"}
+{"text":"citizen ID (CCCD) 066067082567.\nHere it is: 108 23 0029, thanks.","spans":[{"start":18,"end":30,"type":"vn_cccd"},{"start":44,"end":55,"type":"us_ssn"}],"lang":"en"}
+{"text":"Deliver to 8678 Market Street, Springfield","spans":[{"start":11,"end":29,"type":"street_address"}],"lang":"en"}
+{"text":"요청하신 값은 5589-1928-6609-7572입니다.","spans":[{"start":20,"end":39,"type":"credit_card"}],"lang":"ko"}
+{"text":"고객 정보: FR6872747351666748532279926","spans":[{"start":15,"end":42,"type":"iban"}],"lang":"ko"}
+{"text":"고객 정보: john.smith@gmail.com 로 처리해 주세요.\nexport TOKEN=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMzc2MjA2NzAzIiwiaWF0IjozOTI3NTAxOTc3fQ.IwrILRy4ez7MxH0iHqrXWZNknPMD-BApNw9jc01bpFj","spans":[{"start":15,"end":35,"type":"email"},{"start":74,"end":205,"type":"secret"}],"lang":"ko"}
+{"text":"고객 정보: 197.202.174.102 로 처리해 주세요.","spans":[{"start":15,"end":30,"type":"ip"}],"lang":"ko"}
+{"text":"요청하신 값은 242-59-3767 로 처리해 주세요.","spans":[{"start":20,"end":31,"type":"us_ssn"}],"lang":"ko"}
+{"text":"OPENAI_API_KEY=ghp_PrYNreSeT8MB0TLdZKKyEkD9g4QrP5aRVDmB\n아래 내용을 봐 주세요. 210127 4966922","spans":[{"start":15,"end":55,"type":"secret"},{"start":88,"end":102,"type":"kr_rrn"}],"lang":"ko"}
+{"text":"주민번호 9106051162474.","spans":[{"start":13,"end":26,"type":"kr_rrn"}],"lang":"ko"}
+{"text":"전화번호: +84 879 662 253 로 처리해 주세요.","spans":[{"start":14,"end":29,"type":"phone"}],"lang":"ko"}
+{"text":"CCCD: 054023102624.","spans":[{"start":6,"end":18,"type":"vn_cccd"}],"lang":"ko"}
+{"text":"위치가 제주특별자치도 제주시 첨단로 242","spans":[{"start":10,"end":55,"type":"street_address"}],"lang":"ko"}
+{"text":"Thông tin: 5166756391496268 nhé.","spans":[{"start":12,"end":28,"type":"credit_card"}],"lang":"vi"}
+{"text":"Xin vui lòng kiểm tra NL53 MUXC 0362 4926 59. Cảm ơn bạn.","spans":[{"start":25,"end":47,"type":"iban"}],"lang":"vi"}
+{"text":"Thông tin: dev+test3@vnu.edu.vn. Cảm ơn bạn.","spans":[{"start":12,"end":32,"type":"email"}],"lang":"vi"}
+{"text":"Xin vui lòng kiểm tra fe80::ce31:1c16:5a01:7c14 giúp mình nhé.","spans":[{"start":25,"end":50,"type":"ip"}],"lang":"vi"}
+{"text":"Xin vui lòng kiểm tra 400-14-8098\nZalo: 0838989575, thanks","spans":[{"start":25,"end":36,"type":"us_ssn"},{"start":43,"end":53,"type":"phone"}],"lang":"vi"}
+{"text":"Ghi chú: ghp_hs7JI6ZD2ueueKtt1uQ84wL5hcPzWqsFcemg. Cảm ơn bạn.\nGhi chú: 2001:db8::d67. Cảm ơn bạn.","spans":[{"start":10,"end":50,"type":"secret"},{"start":79,"end":92,"type":"ip"}],"lang":"vi"}
+{"text":"740417 2247475 nhé.\nHotline 0838909025, thanks","spans":[{"start":0,"end":14,"type":"kr_rrn"},{"start":29,"end":39,"type":"phone"}],"lang":"vi"}
+{"text":"số điện thoại của mình là 0933-555-895","spans":[{"start":37,"end":49,"type":"phone"}],"lang":"vi"}
+{"text":"số căn cước công dân: 084395762080.","spans":[{"start":30,"end":42,"type":"vn_cccd"}],"lang":"vi"}
+{"text":"Nhà mình ở 248/15 Đường Nguyễn Huệ","spans":[{"start":15,"end":46,"type":"street_address"}],"lang":"vi"}
+{"text":"The customer entered 3414-240486-85267","spans":[{"start":21,"end":38,"type":"credit_card"}],"lang":"en"}
+{"text":"Please check NL82XOSW5300613894.","spans":[{"start":13,"end":31,"type":"iban"}],"lang":"en"}
+{"text":"My details: bob@corp.co.kr, thanks.","spans":[{"start":12,"end":26,"type":"email"}],"lang":"en"}
+{"text":"28.179.144.136\nOur office is at 2637 Market Avenue","spans":[{"start":0,"end":14,"type":"ip"},{"start":32,"end":50,"type":"street_address"}],"lang":"en"}
+{"text":"My details: 418-33-9509.","spans":[{"start":12,"end":23,"type":"us_ssn"}],"lang":"en"}
+{"text":"export TOKEN=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI5NzU0OTAwMDc4IiwiaWF0Ijo4NTUxODQ4ODU1fQ.7W60D6uo5P_eJ4476d8JEnnC33L-ZZaI1khEsB7dVfW\nxoxb-965926537396-735203024714-gofxNSJa5O6ZG9BM7kS1KJqh, thanks.","spans":[{"start":13,"end":144,"type":"secret"},{"start":145,"end":200,"type":"secret"}],"lang":"en"}
+{"text":"RRN: 0604253816062입니다.","spans":[{"start":5,"end":18,"type":"kr_rrn"}],"lang":"en"}
+{"text":"My details: +1 543 785 3636","spans":[{"start":12,"end":27,"type":"phone"}],"lang":"en"}
+{"text":"CMND 037036521570.","spans":[{"start":5,"end":17,"type":"vn_cccd"}],"lang":"en"}
+{"text":"Ship it to 43 Market Blvd, Springfield","spans":[{"start":11,"end":25,"type":"street_address"}],"lang":"en"}
+{"text":"3749 949371 40749이고 확인했습니다.","spans":[{"start":0,"end":17,"type":"credit_card"}],"lang":"ko"}
+{"text":"확인 부탁드립니다. IT68B7908435788326366972871\n고객 정보: AKIAJ0R1ML59FITFA4V7입니다.","spans":[{"start":27,"end":54,"type":"iban"},{"start":70,"end":90,"type":"secret"}],"lang":"ko"}
+{"text":"확인 부탁드립니다. dev+test86@example.com이고 확인했습니다.","spans":[{"start":27,"end":49,"type":"email"}],"lang":"ko"}
+{"text":"확인 부탁드립니다. fe80::d49d:5885:5a96:941이고 확인했습니다.","spans":[{"start":27,"end":51,"type":"ip"}],"lang":"ko"}
+{"text":"확인 부탁드립니다. 633-82-1132입니다.","spans":[{"start":27,"end":38,"type":"us_ssn"}],"lang":"ko"}
+{"text":"AKIAJUXBDZSTVYY8MEIS 로 처리해 주세요.\nCCCD: 020261721543","spans":[{"start":0,"end":20,"type":"secret"},{"start":52,"end":64,"type":"vn_cccd"}],"lang":"ko"}
+{"text":"고객 정보: 731219-1428831이고 확인했습니다.\n위치가 서울특별시 강남구 테헤란로 123입니다.","spans":[{"start":15,"end":29,"type":"kr_rrn"},{"start":66,"end":108,"type":"street_address"}],"lang":"ko"}
+{"text":"연락처: +1 364 207 6830이고 확인했습니다.","spans":[{"start":11,"end":26,"type":"phone"}],"lang":"ko"}
+{"text":"CCCD: 070086093765.","spans":[{"start":6,"end":18,"type":"vn_cccd"}],"lang":"ko"}
+{"text":"주소: 대구광역시 수성구 달구벌대로 2500","spans":[{"start":8,"end":54,"type":"street_address"}],"lang":"ko"}
+{"text":"6011323384741286 nhé.","spans":[{"start":0,"end":16,"type":"credit_card"}],"lang":"vi"}
+{"text":"Ghi chú: BE37 4763 3287 5900. Cảm ơn bạn.\nkim.minsu@sub.io","spans":[{"start":10,"end":29,"type":"iban"},{"start":48,"end":64,"type":"email"}],"lang":"vi"}
+{"text":"Mình gửi john.smith@gmail.com nhé.\nCCCD: 090230522148.","spans":[{"start":12,"end":32,"type":"email"},{"start":45,"end":57,"type":"vn_cccd"}],"lang":"vi"}
+{"text":"Mình gửi ::1","spans":[{"start":12,"end":15,"type":"ip"}],"lang":"vi"}
+{"text":"Mình gửi 370-14-0114 giúp mình nhé.\nsố định danh cá nhân: 006310139557","spans":[{"start":12,"end":23,"type":"us_ssn"},{"start":71,"end":83,"type":"vn_cccd"}],"lang":"vi"}
+{"text":"OPENAI_API_KEY=ghp_cSFWPCM8LB0i96CCEf4uibEXahQLud2yRRWI","spans":[{"start":15,"end":55,"type":"secret"}],"lang":"vi"}
+{"text":"Ghi chú: 101204-3157161. Cảm ơn bạn.","spans":[{"start":10,"end":24,"type":"kr_rrn"}],"lang":"vi"}
+{"text":"số điện thoại của mình là 0370.151.712, thanks\n211023-3866742","spans":[{"start":37,"end":49,"type":"phone"},{"start":58,"end":72,"type":"kr_rrn"}],"lang":"vi"}
+{"text":"số định danh cá nhân: 057072907507.","spans":[{"start":29,"end":41,"type":"vn_cccd"}],"lang":"vi"}
+{"text":"Địa chỉ: 249 ngõ Nguyễn Huệ, Hà Nội","spans":[{"start":14,"end":37,"type":"street_address"}],"lang":"vi"}
+{"text":"My details: 5583 9407 0678 7844, thanks.","spans":[{"start":12,"end":31,"type":"credit_card"}],"lang":"en"}
+{"text":"Note: DE87 3672 3840 9941 8959 22\nHere it is: lee.soyeon@gmail.com","spans":[{"start":6,"end":33,"type":"iban"},{"start":46,"end":66,"type":"email"}],"lang":"en"}
+{"text":"support44@corp.co.kr, thanks.","spans":[{"start":0,"end":20,"type":"email"}],"lang":"en"}
+{"text":"Please check 901e:536d:f8c6:d0a5:72a4:909a:4f67:920, thanks.","spans":[{"start":13,"end":51,"type":"ip"}],"lang":"en"}
+{"text":"Please check 501-18-1550.","spans":[{"start":13,"end":24,"type":"us_ssn"}],"lang":"en"}
+{"text":"Here it is: sk-J6qai7BOf4GRpTfA4bzm5tkiErDxgG6IEKkspjuWu, thanks.\nNote: GB75UQFM70120696271261\nLet me know if that works.","spans":[{"start":12,"end":56,"type":"secret"},{"start":72,"end":94,"type":"iban"}],"lang":"en"}
+{"text":"RRN: 5805181256379","spans":[{"start":5,"end":18,"type":"kr_rrn"}],"lang":"en"}
+{"text":"Call my mobile: 599.832.9752.","spans":[{"start":16,"end":28,"type":"phone"}],"lang":"en"}
+{"text":"CCCD: 085115778768 , thanks","spans":[{"start":6,"end":18,"type":"vn_cccd"}],"lang":"en"}
+{"text":"Ship it to 1672 Elm Blvd, Springfield","spans":[{"start":11,"end":24,"type":"street_address"}],"lang":"en"}
+{"text":"아래 내용을 봐 주세요. 5146 8602 1644 2633이고 확인했습니다.","spans":[{"start":32,"end":51,"type":"credit_card"}],"lang":"ko"}
+{"text":"고객 정보: PL74612970126624390019335149","spans":[{"start":15,"end":43,"type":"iban"}],"lang":"ko"}
+{"text":"alice267@gmail.com 로 처리해 주세요.","spans":[{"start":0,"end":18,"type":"email"}],"lang":"ko"}
+{"text":"아래 내용을 봐 주세요. 44.183.172.115입니다.","spans":[{"start":32,"end":46,"type":"ip"}],"lang":"ko"}
+{"text":"고객 정보: 086-14-5596입니다.","spans":[{"start":15,"end":26,"type":"us_ssn"}],"lang":"ko"}
+{"text":"OPENAI_API_KEY=AKIAM9Q9TO783JNPEC17입니다.","spans":[{"start":15,"end":35,"type":"secret"}],"lang":"ko"}
+{"text":"메모: 780223-2610560입니다.","spans":[{"start":8,"end":22,"type":"kr_rrn"}],"lang":"ko"}
+{"text":"연락처: 010-3876-5862, thanks","spans":[{"start":11,"end":24,"type":"phone"}],"lang":"ko"}
+{"text":"CCCD 번호 012047843732","spans":[{"start":12,"end":24,"type":"vn_cccd"}],"lang":"ko"}
+{"text":"본사는 부산광역시 해운대구 해운대해변로 264 로 보내주세요.\n연락처: 010-1134-7944, thanks","spans":[{"start":10,"end":61,"type":"street_address"},{"start":94,"end":107,"type":"phone"}],"lang":"ko"}
+{"text":"Thông tin: 3530573325854049. Cảm ơn bạn.","spans":[{"start":12,"end":28,"type":"credit_card"}],"lang":"vi"}
+{"text":"Mình gửi DE13 7591 9762 4945 6106 00","spans":[{"start":12,"end":39,"type":"iban"}],"lang":"vi"}
+{"text":"nguyen.van.a@mail.example.org","spans":[{"start":0,"end":29,"type":"email"}],"lang":"vi"}
+{"text":"187.161.209.33 nhé.","spans":[{"start":0,"end":14,"type":"ip"}],"lang":"vi"}
+{"text":"Mình gửi 703-47-4468. Cảm ơn bạn.","spans":[{"start":12,"end":23,"type":"us_ssn"}],"lang":"vi"}
+{"text":"OPENAI_API_KEY=ghp_bbPqXY9AuWiH4xHAhOYQHjMyXK7Q7E4N62yD nhé.","spans":[{"start":15,"end":55,"type":"secret"}],"lang":"vi"}
+{"text":"Ghi chú: 211024-3043582 giúp mình nhé.","spans":[{"start":10,"end":24,"type":"kr_rrn"}],"lang":"vi"}
+{"text":"Hotline 0767879061.","spans":[{"start":8,"end":18,"type":"phone"}],"lang":"vi"}
+{"text":"CMND/CCCD 093365348046.","spans":[{"start":10,"end":22,"type":"vn_cccd"}],"lang":"vi"}
+{"text":"Địa chỉ: 289 hẻm Láng, Hà Nội","spans":[{"start":14,"end":29,"type":"street_address"}],"lang":"vi"}
+{"text":"Please check 5175-1113-7173-3281","spans":[{"start":13,"end":32,"type":"credit_card"}],"lang":"en"}
+{"text":"Please check ES09 0349 6740 2305 1922 4959\nLet me know if that works.","spans":[{"start":13,"end":42,"type":"iban"}],"lang":"en"}
+{"text":"Here it is: dev+test@sub.io\nNote: AKIA8SCN85BI416N7XGF.","spans":[{"start":12,"end":27,"type":"email"},{"start":34,"end":54,"type":"secret"}],"lang":"en"}
+{"text":"The customer entered 2001:db8::c202, thanks.","spans":[{"start":21,"end":35,"type":"ip"}],"lang":"en"}
+{"text":"Authorization: Bearer AKIADSW4C6DBJNWSGY6A","spans":[{"start":22,"end":42,"type":"secret"}],"lang":"en"}
+{"text":"RRN 2501188335292.","spans":[{"start":4,"end":17,"type":"kr_rrn"}],"lang":"en"}
+{"text":"Tel: +44 20 4082 6972","spans":[{"start":5,"end":21,"type":"phone"}],"lang":"en"}
+{"text":"CMND 052135040972.","spans":[{"start":5,"end":17,"type":"vn_cccd"}],"lang":"en"}
+{"text":"Deliver to 3331 Baker Way, Springfield","spans":[{"start":11,"end":25,"type":"street_address"}],"lang":"en"}
+{"text":"고객 정보: 3530494175182458","spans":[{"start":15,"end":31,"type":"credit_card"}],"lang":"ko"}
+{"text":"메모: NL90 TXWX 0231 5623 43이고 확인했습니다.","spans":[{"start":8,"end":30,"type":"iban"}],"lang":"ko"}
+{"text":"아래 내용을 봐 주세요. alice367@sub.io 로 처리해 주세요.","spans":[{"start":32,"end":47,"type":"email"}],"lang":"ko"}
+{"text":"128.230.56.67","spans":[{"start":0,"end":13,"type":"ip"}],"lang":"ko"}
+{"text":"고객 정보: 439-37-0770 로 처리해 주세요.","spans":[{"start":15,"end":26,"type":"us_ssn"}],"lang":"ko"}
+{"text":"확인 부탁드립니다. AKIABODCG593FSLC8F67 로 처리해 주세요.","spans":[{"start":27,"end":47,"type":"secret"}],"lang":"ko"}
+{"text":"아래 내용을 봐 주세요. 821016-1985446","spans":[{"start":32,"end":46,"type":"kr_rrn"}],"lang":"ko"}
+{"text":"연락처: 042 1577 4883.\n확인 부탁드립니다. lee.soyeon94@mail.example.org입니다.","spans":[{"start":11,"end":24,"type":"phone"},{"start":53,"end":82,"type":"email"}],"lang":"ko"}
+{"text":"CCCD 번호 030175183553 , thanks","spans":[{"start":12,"end":24,"type":"vn_cccd"}],"lang":"ko"}
+{"text":"위치가 부산광역시 해운대구 해운대해변로 264","spans":[{"start":10,"end":61,"type":"street_address"}],"lang":"ko"}
+{"text":"Thông tin: 3530089210449167","spans":[{"start":12,"end":28,"type":"credit_card"}],"lang":"vi"}
+{"text":"Thông tin: PL63 3780 4893 4432 0406 3306 5773. Cảm ơn bạn.","spans":[{"start":12,"end":46,"type":"iban"}],"lang":"vi"}
+{"text":"Xin vui lòng kiểm tra dev+test990@company.vn. Cảm ơn bạn.\nThông tin: 170.100.102.106 nhé.","spans":[{"start":25,"end":47,"type":"email"},{"start":78,"end":93,"type":"ip"}],"lang":"vi"}
+{"text":"Mình gửi ::1. Cảm ơn bạn.","spans":[{"start":12,"end":15,"type":"ip"}],"lang":"vi"}
+{"text":"Xin vui lòng kiểm tra 068-13-0295","spans":[{"start":25,"end":36,"type":"us_ssn"}],"lang":"vi"}
+{"text":"Xin vui lòng kiểm tra 220318-4155117 nhé.","spans":[{"start":25,"end":39,"type":"kr_rrn"}],"lang":"vi"}
+{"text":"Hotline 0916509603.","spans":[{"start":8,"end":18,"type":"phone"}],"lang":"vi"}
+{"text":"số định danh cá nhân: 025128821797","spans":[{"start":29,"end":41,"type":"vn_cccd"}],"lang":"vi"}
+{"text":"Nhà mình ở 262 phố Hàng Bông","spans":[{"start":15,"end":36,"type":"street_address"}],"lang":"vi"}
+{"text":"The customer entered 3530-0199-3422-2491","spans":[{"start":21,"end":40,"type":"credit_card"}],"lang":"en"}
+{"text":"Please check DE24 7389 5942 9849 9050 91.","spans":[{"start":13,"end":40,"type":"iban"}],"lang":"en"}
+{"text":"The customer entered john.smith46@sub.io.\ncitizen ID (CCCD) 029164397532.","spans":[{"start":21,"end":40,"type":"email"},{"start":60,"end":72,"type":"vn_cccd"}],"lang":"en"}
+{"text":"The customer entered e1ed:c48c:501e:153e:de32:a6e6:f2db:700b, thanks.","spans":[{"start":21,"end":60,"type":"ip"}],"lang":"en"}
+{"text":"Please check 868-14-2918","spans":[{"start":13,"end":24,"type":"us_ssn"}],"lang":"en"}
+{"text":"The customer entered AKIAKNK5BI0UAB73AMCK","spans":[{"start":21,"end":41,"type":"secret"}],"lang":"en"}
+{"text":"Note: 240721-3121362","spans":[{"start":6,"end":20,"type":"kr_rrn"}],"lang":"en"}
+{"text":"Call my mobile: (459) 822-4443","spans":[{"start":16,"end":30,"type":"phone"}],"lang":"en"}
+{"text":"citizen ID (CCCD) 052316566878","spans":[{"start":18,"end":30,"type":"vn_cccd"}],"lang":"en"}
+{"text":"Address: 7534 Pennsylvania Blvd, Springfield","spans":[{"start":9,"end":31,"type":"street_address"}],"lang":"en"}
+{"text":"고객 정보: 36452992748757입니다.","spans":[{"start":15,"end":29,"type":"credit_card"}],"lang":"ko"}
+{"text":"요청하신 값은 BE96940928630831 로 처리해 주세요.","spans":[{"start":20,"end":36,"type":"iban"}],"lang":"ko"}
+{"text":"support68@naver.com","spans":[{"start":0,"end":19,"type":"email"}],"lang":"ko"}
+{"text":"요청하신 값은 119.175.6.95","spans":[{"start":20,"end":32,"type":"ip"}],"lang":"ko"}
+{"text":"확인 부탁드립니다. 561-14-9937이고 확인했습니다.","spans":[{"start":27,"end":38,"type":"us_ssn"}],"lang":"ko"}
+{"text":"Authorization: Bearer sk-proj-au0zk7xSCRHQZLSingAvNPbOQbCSdBW0eCOqqPlQLl5eDxM입니다.","spans":[{"start":22,"end":77,"type":"secret"}],"lang":"ko"}
+{"text":"920105-1157524 로 처리해 주세요.","spans":[{"start":0,"end":14,"type":"kr_rrn"}],"lang":"ko"}
+{"text":"전화번호: +84 303 786 352","spans":[{"start":14,"end":29,"type":"phone"}],"lang":"ko"}
+{"text":"CCCD: 001100122209.","spans":[{"start":6,"end":18,"type":"vn_cccd"}],"lang":"ko"}
+{"text":"위치가 부산광역시 해운대구 해운대해변로 264입니다.","spans":[{"start":10,"end":61,"type":"street_address"}],"lang":"ko"}
+{"text":"3779 198349 27655. Cảm ơn bạn.\nsố định danh cá nhân: 001184739314","spans":[{"start":0,"end":17,"type":"credit_card"},{"start":65,"end":77,"type":"vn_cccd"}],"lang":"vi"}
+{"text":"Xin vui lòng kiểm tra BE55 8095 7900 3500. Cảm ơn bạn.\nGhi chú: fe80::2a29:5b0b:f797:89c6","spans":[{"start":25,"end":44,"type":"iban"},{"start":73,"end":98,"type":"ip"}],"lang":"vi"}
+{"text":"dev+test@sub.io. Cảm ơn bạn.","spans":[{"start":0,"end":15,"type":"email"}],"lang":"vi"}
+{"text":"fe80::6def:4d04:647d:9224. Cảm ơn bạn.","spans":[{"start":0,"end":25,"type":"ip"}],"lang":"vi"}
+{"text":"Mình gửi 225 52 6803. Cảm ơn bạn.\nMình gửi 061-38-8349","spans":[{"start":12,"end":23,"type":"us_ssn"},{"start":54,"end":65,"type":"us_ssn"}],"lang":"vi"}
+{"text":"Thông tin: ghp_AAkpxgThOeCiiBOwSrxZm2StDYwl8JbRz0tB nhé.","spans":[{"start":12,"end":52,"type":"secret"}],"lang":"vi"}
+{"text":"Thông tin: 2109013988442입니다.","spans":[{"start":12,"end":25,"type":"kr_rrn"}],"lang":"vi"}
+{"text":"Hotline +84 834 114 266 nhé.","spans":[{"start":8,"end":23,"type":"phone"}],"lang":"vi"}
+{"text":"số định danh cá nhân: 086208640461.","spans":[{"start":29,"end":41,"type":"vn_cccd"}],"lang":"vi"}
+{"text":"Giao hàng tới 55/1 Đường Cầu Giấy, Hà Nội","spans":[{"start":17,"end":44,"type":"street_address"}],"lang":"vi"}
+{"text":"The customer entered 3477 905100 43746\nLet me know if that works.","spans":[{"start":21,"end":38,"type":"credit_card"}],"lang":"en"}
+{"text":"The customer entered GB62CPLC80763272877898.","spans":[{"start":21,"end":43,"type":"iban"}],"lang":"en"}
+{"text":"Note: nguyen.van.a118@naver.com, thanks.","spans":[{"start":6,"end":31,"type":"email"}],"lang":"en"}
+{"text":"Note: e52b:4529::ebce:770a.","spans":[{"start":6,"end":26,"type":"ip"}],"lang":"en"}
+{"text":"Here it is: 646-54-0681\nLet me know if that works.\nNote: 9022:bbdc:2053:5f79:9048:129d:4ae:4449\nLet me know if that works.","spans":[{"start":12,"end":23,"type":"us_ssn"},{"start":57,"end":95,"type":"ip"}],"lang":"en"}
+{"text":"Here it is: sk-9ixId0CScr2ktJQ4UNdx4klgzlJYnoO1tTZRuCoDM","spans":[{"start":12,"end":56,"type":"secret"}],"lang":"en"}
+{"text":"Please check 190628 4833454.","spans":[{"start":13,"end":27,"type":"kr_rrn"}],"lang":"en"}
+{"text":"My phone number is +49 30 1902080.","spans":[{"start":19,"end":33,"type":"phone"}],"lang":"en"}
+{"text":"CMND 084299318594 , thanks","spans":[{"start":5,"end":17,"type":"vn_cccd"}],"lang":"en"}
+{"text":"Ship it to 7304 Fifth Drive, thanks.","spans":[{"start":11,"end":27,"type":"street_address"}],"lang":"en"}
+{"text":"5594743637446317입니다.","spans":[{"start":0,"end":16,"type":"credit_card"}],"lang":"ko"}
+{"text":"메모: FR8645546382276749690331879입니다.","spans":[{"start":8,"end":35,"type":"iban"}],"lang":"ko"}
+{"text":"요청하신 값은 alice1@vnu.edu.vn입니다.","spans":[{"start":20,"end":37,"type":"email"}],"lang":"ko"}
+{"text":"138.195.184.87 로 처리해 주세요.","spans":[{"start":0,"end":14,"type":"ip"}],"lang":"ko"}
+{"text":"고객 정보: 567-67-7134이고 확인했습니다.","spans":[{"start":15,"end":26,"type":"us_ssn"}],"lang":"ko"}
+{"text":"고객 정보: 2412064775712","spans":[{"start":15,"end":28,"type":"kr_rrn"}],"lang":"ko"}
+{"text":"제 전화는 051 387 1283","spans":[{"start":14,"end":26,"type":"phone"}],"lang":"ko"}
+{"text":"CCCD: 057216390274","spans":[{"start":6,"end":18,"type":"vn_cccd"}],"lang":"ko"}
+{"text":"주소: 세종대로 110 로 보내주세요.","spans":[{"start":8,"end":24,"type":"street_address"}],"lang":"ko"}
+{"text":"Ghi chú: 349749798736320 nhé.","spans":[{"start":10,"end":25,"type":"credit_card"}],"lang":"vi"}
+{"text":"Thông tin: BE76888190445402. Cảm ơn bạn.","spans":[{"start":12,"end":28,"type":"iban"}],"lang":"vi"}
+{"text":"Ghi chú: support@sub.io nhé.\nĐịa chỉ: 212 Đường Trần Hưng Đạo, quận 1.","spans":[{"start":10,"end":24,"type":"email"},{"start":45,"end":78,"type":"street_address"}],"lang":"vi"}
+{"text":"196.101.25.227","spans":[{"start":0,"end":14,"type":"ip"}],"lang":"vi"}
+{"text":"Xin vui lòng kiểm tra 155-11-9222. Cảm ơn bạn.","spans":[{"start":25,"end":36,"type":"us_ssn"}],"lang":"vi"}
+{"text":"Ghi chú: AKIASG1843LNI7NP1HNS. Cảm ơn bạn.","spans":[{"start":10,"end":30,"type":"secret"}],"lang":"vi"}
+{"text":"230611 4095817. Cảm ơn bạn.","spans":[{"start":0,"end":14,"type":"kr_rrn"}],"lang":"vi"}
+{"text":"Zalo: 0590.089.874","spans":[{"start":6,"end":18,"type":"phone"}],"lang":"vi"}
+{"text":"CMND/CCCD 052128805205.","spans":[{"start":10,"end":22,"type":"vn_cccd"}],"lang":"vi"}
+{"text":"Giao hàng tới 400/53 phố Hàng Bông.","spans":[{"start":17,"end":41,"type":"street_address"}],"lang":"vi"}
+{"text":"Please check 36599536916678","spans":[{"start":13,"end":27,"type":"credit_card"}],"lang":"en"}
+{"text":"My details: PL64843986563444195955698762.","spans":[{"start":12,"end":40,"type":"iban"}],"lang":"en"}
+{"text":"dev+test@gmail.com\nLet me know if that works.","spans":[{"start":0,"end":18,"type":"email"}],"lang":"en"}
+{"text":"fe80::e51f:5e50:4331:d558","spans":[{"start":0,"end":25,"type":"ip"}],"lang":"en"}
+{"text":"651 75 5809","spans":[{"start":0,"end":11,"type":"us_ssn"}],"lang":"en"}
+{"text":"Note: ghp_Xan79SKbH7g2K8aImt3v6mwyp18X89kZ2eXk, thanks.","spans":[{"start":6,"end":46,"type":"secret"}],"lang":"en"}
+{"text":"Note: 220317 3804748","spans":[{"start":6,"end":20,"type":"kr_rrn"}],"lang":"en"}
+{"text":"mobile 897.272.9210.","spans":[{"start":7,"end":19,"type":"phone"}],"lang":"en"}
+{"text":"CCCD: 027166649477","spans":[{"start":6,"end":18,"type":"vn_cccd"}],"lang":"en"}
+{"text":"Deliver to 5700 Oak St\nPlease check 50.183.58.153, thanks.","spans":[{"start":11,"end":22,"type":"street_address"},{"start":36,"end":49,"type":"ip"}],"lang":"en"}
+{"text":"메모: 6011 6558 3423 0646","spans":[{"start":8,"end":27,"type":"credit_card"}],"lang":"ko"}
+{"text":"확인 부탁드립니다. PL78 9943 7942 0672 3482 3196 2278이고 확인했습니다.","spans":[{"start":27,"end":61,"type":"iban"}],"lang":"ko"}
+{"text":"확인 부탁드립니다. nguyen.van.a@example.com입니다.","spans":[{"start":27,"end":51,"type":"email"}],"lang":"ko"}
+{"text":"112.153.218.250 로 처리해 주세요.","spans":[{"start":0,"end":15,"type":"ip"}],"lang":"ko"}
+{"text":"요청하신 값은 155-03-4651입니다.","spans":[{"start":20,"end":31,"type":"us_ssn"}],"lang":"ko"}
+{"text":"Authorization: Bearer sk-ant-api03-2xeI55oBb6Sb27b88GfQfa214uUz2H2IoPPNYdm4GrNkzBwuI 로 처리해 주세요.\n주민등록번호: 2105024531887","spans":[{"start":22,"end":84,"type":"secret"},{"start":130,"end":143,"type":"kr_rrn"}],"lang":"ko"}
+{"text":"확인 부탁드립니다. 540121-5651461","spans":[{"start":27,"end":41,"type":"kr_rrn"}],"lang":"ko"}
+{"text":"전화 010-9970-1859","spans":[{"start":7,"end":20,"type":"phone"}],"lang":"ko"}
+{"text":"CCCD 번호 051200150009","spans":[{"start":12,"end":24,"type":"vn_cccd"}],"lang":"ko"}
+{"text":"배송지는 가로수길 10\n확인 부탁드립니다. 5523 0792 2392 9929입니다.","spans":[{"start":13,"end":28,"type":"street_address"},{"start":56,"end":75,"type":"credit_card"}],"lang":"ko"}
+{"text":"Mình gửi 3464-247692-08492. Cảm ơn bạn.","spans":[{"start":12,"end":29,"type":"credit_card"}],"lang":"vi"}
+{"text":"Mình gửi BE44543277957140","spans":[{"start":12,"end":28,"type":"iban"}],"lang":"vi"}
+{"text":"Ghi chú: lee.soyeon@company.vn nhé.","spans":[{"start":10,"end":31,"type":"email"}],"lang":"vi"}
+{"text":"Xin vui lòng kiểm tra fe80::16aa:c7b4:17f7:8ffe. Cảm ơn bạn.","spans":[{"start":25,"end":50,"type":"ip"}],"lang":"vi"}
+{"text":"Mình gửi 095-58-3243 nhé.","spans":[{"start":12,"end":23,"type":"us_ssn"}],"lang":"vi"}
+{"text":"sk-rZEdh3HHJa23n0DtilODntMapTGWdD5woDNFVRl5a7t\nThông tin: dev+test@example.com nhé.","spans":[{"start":0,"end":46,"type":"secret"},{"start":59,"end":79,"type":"email"}],"lang":"vi"}
+{"text":"Thông tin: 941023-2292907 nhé.","spans":[{"start":12,"end":26,"type":"kr_rrn"}],"lang":"vi"}
+{"text":"SĐT: 0864.703.751, thanks","spans":[{"start":6,"end":18,"type":"phone"}],"lang":"vi"}
+{"text":"CMND/CCCD 033184787300\nGhi chú: AKIA6VZIA3B73OJ0GC7C giúp mình nhé.","spans":[{"start":10,"end":22,"type":"vn_cccd"},{"start":33,"end":53,"type":"secret"}],"lang":"vi"}
+{"text":"Địa chỉ: 313 hẻm Hàng Bông, quận 1.","spans":[{"start":14,"end":35,"type":"street_address"}],"lang":"vi"}
+{"text":"The customer entered 3700 111253 25067.","spans":[{"start":21,"end":38,"type":"credit_card"}],"lang":"en"}
+{"text":"Here it is: CH29 8071 7NLP 8JSN YG00 E","spans":[{"start":12,"end":38,"type":"iban"}],"lang":"en"}
+{"text":"Please check support@vnu.edu.vn.","spans":[{"start":13,"end":31,"type":"email"}],"lang":"en"}
+{"text":"My details: ::1.","spans":[{"start":12,"end":15,"type":"ip"}],"lang":"en"}
+{"text":"Please check 832-72-4775, thanks.","spans":[{"start":13,"end":24,"type":"us_ssn"}],"lang":"en"}
+{"text":"Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIyOTgyOTY4MzQzIiwiaWF0Ijo4MjEzOTE3NjE2fQ.BZTR1PRlkmbxmuDOo4NM5DfwrYDv1pVUgy-ZTVLt06m.","spans":[{"start":22,"end":153,"type":"secret"}],"lang":"en"}
+{"text":"resident registration number: 2504224149040입니다.","spans":[{"start":30,"end":43,"type":"kr_rrn"}],"lang":"en"}
+{"text":"Call my mobile: +84 794 351 996.","spans":[{"start":16,"end":31,"type":"phone"}],"lang":"en"}
+{"text":"CMND 005247228208.","spans":[{"start":5,"end":17,"type":"vn_cccd"}],"lang":"en"}
+{"text":"Ship it to 6831 Park Lane St.","spans":[{"start":11,"end":28,"type":"street_address"}],"lang":"en"}
+{"text":"아래 내용을 봐 주세요. 6011-0882-2583-6070입니다.","spans":[{"start":32,"end":51,"type":"credit_card"}],"lang":"ko"}
+{"text":"메모: CH39 8479 8RC2 PGM7 4VGY N 로 처리해 주세요.\n메모: 501-52-8825 로 처리해 주세요.","spans":[{"start":8,"end":34,"type":"iban"},{"start":68,"end":79,"type":"us_ssn"}],"lang":"ko"}
+{"text":"아래 내용을 봐 주세요. park_jihoon@corp.co.kr 로 처리해 주세요.","spans":[{"start":32,"end":54,"type":"email"}],"lang":"ko"}
+{"text":"확인 부탁드립니다. 185.226.25.12","spans":[{"start":27,"end":40,"type":"ip"}],"lang":"ko"}
+{"text":"요청하신 값은 567-07-6561","spans":[{"start":20,"end":31,"type":"us_ssn"}],"lang":"ko"}
+{"text":"Authorization: Bearer sk-DQhHy5wIGDqQEXsP1cQOHnjDXBRhkscPq71qfmWTqSy7QW0S이고 확인했습니다.","spans":[{"start":22,"end":73,"type":"secret"}],"lang":"ko"}
+{"text":"아래 내용을 봐 주세요. 210505-3465966이고 확인했습니다.","spans":[{"start":32,"end":46,"type":"kr_rrn"}],"lang":"ko"}
+{"text":"전화번호: 010 7912 4906, thanks","spans":[{"start":14,"end":27,"type":"phone"}],"lang":"ko"}
+{"text":"CCCD 번호 046035226341 , thanks","spans":[{"start":12,"end":24,"type":"vn_cccd"}],"lang":"ko"}
+{"text":"주소: 봉은사로 524\nexport TOKEN=ghp_Wm9nZ0660PXQnYfw1SWkqkxnc5Ta1LIOoq9e","spans":[{"start":8,"end":24,"type":"street_address"},{"start":38,"end":78,"type":"secret"}],"lang":"ko"}
+{"text":"Ghi chú: 4955-8658-3310-4451 nhé.","spans":[{"start":10,"end":29,"type":"credit_card"}],"lang":"vi"}
+{"text":"Ghi chú: IT96Y1334337049425446166909","spans":[{"start":10,"end":37,"type":"iban"}],"lang":"vi"}
+{"text":"Ghi chú: park_jihoon46@naver.com. Cảm ơn bạn.","spans":[{"start":10,"end":33,"type":"email"}],"lang":"vi"}
+{"text":"2001:db8::b1e2 nhé.\nThông tin: DE60417473449867231303 giúp mình nhé.","spans":[{"start":0,"end":14,"type":"ip"},{"start":33,"end":55,"type":"iban"}],"lang":"vi"}
+{"text":"Xin vui lòng kiểm tra 013 68 9490 nhé.","spans":[{"start":25,"end":36,"type":"us_ssn"}],"lang":"vi"}
+{"text":"Ghi chú: ghp_xKlyNGNe2necGWDiHx9eq1pglZjgiV7HF2ys giúp mình nhé.","spans":[{"start":10,"end":50,"type":"secret"}],"lang":"vi"}
+{"text":"Mình gửi 730912-1444694","spans":[{"start":12,"end":26,"type":"kr_rrn"}],"lang":"vi"}
+{"text":"Zalo: 0390-393-506, thanks","spans":[{"start":6,"end":18,"type":"phone"}],"lang":"vi"}
+{"text":"CMND/CCCD 072099398788 , thanks\nMình gửi john.smith@example.com. Cảm ơn bạn.","spans":[{"start":10,"end":22,"type":"vn_cccd"},{"start":44,"end":66,"type":"email"}],"lang":"vi"}
+{"text":"Giao hàng tới 125/4 phố Lê Lợi.","spans":[{"start":17,"end":38,"type":"street_address"}],"lang":"vi"}
+{"text":"My details: 3530893260175311","spans":[{"start":12,"end":28,"type":"credit_card"}],"lang":"en"}
+{"text":"FR69 3330 1028 1113 4767 4193 450","spans":[{"start":0,"end":33,"type":"iban"}],"lang":"en"}
+{"text":"Please check tran.thi.b@mail.example.org, thanks.\nThe customer entered 378 17 5448.","spans":[{"start":13,"end":40,"type":"email"},{"start":71,"end":82,"type":"us_ssn"}],"lang":"en"}
+{"text":"Here it is: 6db9:3579:29e1:81d8:7f3:b8a3:21ac:12d6.","spans":[{"start":12,"end":50,"type":"ip"}],"lang":"en"}
+{"text":"Note: 570-85-7579","spans":[{"start":6,"end":17,"type":"us_ssn"}],"lang":"en"}
+{"text":"RRN 1904153123124.","spans":[{"start":4,"end":17,"type":"kr_rrn"}],"lang":"en"}
+{"text":"Here it is: +49 30 9742165, thanks.","spans":[{"start":12,"end":26,"type":"phone"}],"lang":"en"}
+{"text":"citizen ID (CCCD) 079218527887 , thanks\nNote: kim.minsu@mail.example.org","spans":[{"start":18,"end":30,"type":"vn_cccd"},{"start":46,"end":72,"type":"email"}],"lang":"en"}
+{"text":"Our office is at 7964 Main Way","spans":[{"start":17,"end":30,"type":"street_address"}],"lang":"en"}
+{"text":"5158 1605 4112 1852 로 처리해 주세요.","spans":[{"start":0,"end":19,"type":"credit_card"}],"lang":"ko"}
+{"text":"확인 부탁드립니다. NL52 JIVH 7383 5394 97입니다.","spans":[{"start":27,"end":49,"type":"iban"}],"lang":"ko"}
+{"text":"확인 부탁드립니다. nguyen.van.a@example.com\nAKIA2Y7UQKA5ROS3N3EL입니다.","spans":[{"start":27,"end":51,"type":"email"},{"start":52,"end":72,"type":"secret"}],"lang":"ko"}
+{"text":"확인 부탁드립니다. ::1입니다.","spans":[{"start":27,"end":30,"type":"ip"}],"lang":"ko"}
+{"text":"확인 부탁드립니다. 812-42-5393이고 확인했습니다.\nCCCD 번호 031384934666.","spans":[{"start":27,"end":38,"type":"us_ssn"},{"start":77,"end":89,"type":"vn_cccd"}],"lang":"ko"}
+{"text":"231226-3704171","spans":[{"start":0,"end":14,"type":"kr_rrn"}],"lang":"ko"}
+{"text":"전화 01078765640.","spans":[{"start":7,"end":18,"type":"phone"}],"lang":"ko"}
+{"text":"CCCD: 046189630164.","spans":[{"start":6,"end":18,"type":"vn_cccd"}],"lang":"ko"}
+{"text":"배송지는 봉은사로 524 로 보내주세요.","spans":[{"start":13,"end":29,"type":"street_address"}],"lang":"ko"}
+{"text":"Ghi chú: 3679-528597-1902\nXin vui lòng kiểm tra john.smith@mail.example.org","spans":[{"start":10,"end":26,"type":"credit_card"},{"start":52,"end":79,"type":"email"}],"lang":"vi"}
+{"text":"Mình gửi PL43 8575 8403 1452 3676 5349 4852. Cảm ơn bạn.","spans":[{"start":12,"end":46,"type":"iban"}],"lang":"vi"}
+{"text":"Mình gửi tran.thi.b36@mail.example.org. Cảm ơn bạn.\nThông tin: CH6298621ZS8TI1B2KHNC nhé.","spans":[{"start":12,"end":41,"type":"email"},{"start":72,"end":93,"type":"iban"}],"lang":"vi"}
+{"text":"10.176.80.110 nhé.","spans":[{"start":0,"end":13,"type":"ip"}],"lang":"vi"}
+{"text":"174-43-2153","spans":[{"start":0,"end":11,"type":"us_ssn"}],"lang":"vi"}
+{"text":"Authorization: Bearer ghp_xElxVgmo9aLs2jzNH2leDWSw8Ls0it9PmuPc","spans":[{"start":22,"end":62,"type":"secret"}],"lang":"vi"}
+{"text":"2305014926033.","spans":[{"start":0,"end":13,"type":"kr_rrn"}],"lang":"vi"}
+{"text":"Hotline +1 389 569 3587\nCCCD: 025111941160.","spans":[{"start":8,"end":23,"type":"phone"},{"start":30,"end":42,"type":"vn_cccd"}],"lang":"vi"}
+{"text":"CMND/CCCD 072296547283","spans":[{"start":10,"end":22,"type":"vn_cccd"}],"lang":"vi"}
+{"text":"Nhà mình ở 126 hẻm Trần Hưng Đạo","spans":[{"start":15,"end":44,"type":"street_address"}],"lang":"vi"}
+{"text":"Here it is: 5571-5870-5382-3724, thanks.","spans":[{"start":12,"end":31,"type":"credit_card"}],"lang":"en"}
+{"text":"Note: ES52 6846 4560 4617 6879 8397, thanks.","spans":[{"start":6,"end":35,"type":"iban"}],"lang":"en"}
+{"text":"The customer entered lee.soyeon@gmail.com.","spans":[{"start":21,"end":41,"type":"email"}],"lang":"en"}
+{"text":"The customer entered ::1","spans":[{"start":21,"end":24,"type":"ip"}],"lang":"en"}
+{"text":"877 97 5854, thanks.","spans":[{"start":0,"end":11,"type":"us_ssn"}],"lang":"en"}
+{"text":"Here it is: sk-snQJU1eO7EF6pI9JvadLg1IRzyGU0uLxB9qwbcQo3HGvj6Ds, thanks.","spans":[{"start":12,"end":63,"type":"secret"}],"lang":"en"}
+{"text":"Note: 970121-2358256, thanks.","spans":[{"start":6,"end":20,"type":"kr_rrn"}],"lang":"en"}
+{"text":"Call my mobile: (524) 939-9935","spans":[{"start":16,"end":30,"type":"phone"}],"lang":"en"}
+{"text":"CCCD: 022230683340.","spans":[{"start":6,"end":18,"type":"vn_cccd"}],"lang":"en"}
+{"text":"Address: 9083 Oak Ave","spans":[{"start":9,"end":21,"type":"street_address"}],"lang":"en"}
+{"text":"메모: 5545433410549921","spans":[{"start":8,"end":24,"type":"credit_card"}],"lang":"ko"}
+{"text":"고객 정보: ES89 3155 4216 6914 9231 7069입니다.","spans":[{"start":15,"end":44,"type":"iban"}],"lang":"ko"}
+{"text":"확인 부탁드립니다. tran.thi.b845@company.vn","spans":[{"start":27,"end":51,"type":"email"}],"lang":"ko"}
+{"text":"요청하신 값은 147.218.90.121 로 처리해 주세요.","spans":[{"start":20,"end":34,"type":"ip"}],"lang":"ko"}
+{"text":"아래 내용을 봐 주세요. 810-12-4256 로 처리해 주세요.","spans":[{"start":32,"end":43,"type":"us_ssn"}],"lang":"ko"}
+{"text":"export TOKEN=sk-proj-uFiTj6vSfFdOGeKLTwXDDLu9sn3cNxHhllTzyf2EsPD9fhp2t 로 처리해 주세요.","spans":[{"start":13,"end":70,"type":"secret"}],"lang":"ko"}
+{"text":"531116-1624578 로 처리해 주세요.","spans":[{"start":0,"end":14,"type":"kr_rrn"}],"lang":"ko"}
+{"text":"전화번호: 010-5397-2338.","spans":[{"start":14,"end":27,"type":"phone"}],"lang":"ko"}
+{"text":"CCCD 번호 052227844902 , thanks","spans":[{"start":12,"end":24,"type":"vn_cccd"}],"lang":"ko"}
+{"text":"본사는 부산광역시 해운대구 해운대해변로 264 로 보내주세요.","spans":[{"start":10,"end":61,"type":"street_address"}],"lang":"ko"}
+{"text":"Mình gửi 3724-746503-82879 giúp mình nhé.","spans":[{"start":12,"end":29,"type":"credit_card"}],"lang":"vi"}
+{"text":"Xin vui lòng kiểm tra FR1165095591030339447769097 nhé.","spans":[{"start":25,"end":52,"type":"iban"}],"lang":"vi"}
+{"text":"nguyen.van.a@vnu.edu.vn","spans":[{"start":0,"end":23,"type":"email"}],"lang":"vi"}
+{"text":"Ghi chú: 128.77.83.128 nhé.\nđiện thoại: 0987 667 460.","spans":[{"start":10,"end":23,"type":"ip"},{"start":47,"end":59,"type":"phone"}],"lang":"vi"}
+{"text":"Mình gửi 746-92-1514. Cảm ơn bạn.","spans":[{"start":12,"end":23,"type":"us_ssn"}],"lang":"vi"}
+{"text":"OPENAI_API_KEY=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxNjMzODI5MjUzIiwiaWF0IjoxNzM5NzA1MTY0fQ.mJnV1FNshimgFK2RQqbwcOGw7Oxl0TvB7JNC0A7YMGC giúp mình nhé.\nGhi chú: fe80::fb71:381:17b3:b869. Cảm ơn bạn.","spans":[{"start":15,"end":146,"type":"secret"},{"start":175,"end":199,"type":"ip"}],"lang":"vi"}
+{"text":"RRN: 7303201084471","spans":[{"start":5,"end":18,"type":"kr_rrn"}],"lang":"vi"}
+{"text":"điện thoại: +1 (667) 344-6341","spans":[{"start":17,"end":34,"type":"phone"}],"lang":"vi"}
+{"text":"số định danh cá nhân: 053119102987.\nGhi chú: 241205-3311469 giúp mình nhé.","spans":[{"start":29,"end":41,"type":"vn_cccd"},{"start":53,"end":67,"type":"kr_rrn"}],"lang":"vi"}
+{"text":"Giao hàng tới 75 hẻm Hai Bà Trưng, quận 1.","spans":[{"start":17,"end":40,"type":"street_address"}],"lang":"vi"}
+{"text":"My details: 6011574679575330\nLet me know if that works.","spans":[{"start":12,"end":28,"type":"credit_card"}],"lang":"en"}
+{"text":"PL48 8157 9241 4012 3321 5010 5369.","spans":[{"start":0,"end":34,"type":"iban"}],"lang":"en"}
+{"text":"My details: alice@naver.com, thanks.","spans":[{"start":12,"end":27,"type":"email"}],"lang":"en"}
+{"text":"My details: da24:e407::d669:726e\nLet me know if that works.","spans":[{"start":12,"end":32,"type":"ip"}],"lang":"en"}
+{"text":"Note: 280-92-2258.","spans":[{"start":6,"end":17,"type":"us_ssn"}],"lang":"en"}
+{"text":"OPENAI_API_KEY=AKIAE5ZR8LWN18NPG93S, thanks.","spans":[{"start":15,"end":35,"type":"secret"}],"lang":"en"}
+{"text":"630512-2584262\nLet me know if that works.","spans":[{"start":0,"end":14,"type":"kr_rrn"}],"lang":"en"}
+{"text":"Call my mobile: 299-767-2681.","spans":[{"start":16,"end":28,"type":"phone"}],"lang":"en"}
+{"text":"citizen ID (CCCD) 045323195233.","spans":[{"start":18,"end":30,"type":"vn_cccd"}],"lang":"en"}
+{"text":"Deliver to 3536 Park Lane Blvd, Springfield","spans":[{"start":11,"end":30,"type":"street_address"}],"lang":"en"}
+{"text":"아래 내용을 봐 주세요. 3743-684704-07197 로 처리해 주세요.","spans":[{"start":32,"end":49,"type":"credit_card"}],"lang":"ko"}
+{"text":"FR57 5643 7331 6127 7922 9419 264입니다.","spans":[{"start":0,"end":33,"type":"iban"}],"lang":"ko"}
+{"text":"확인 부탁드립니다. john.smith476@sub.io","spans":[{"start":27,"end":47,"type":"email"}],"lang":"ko"}
+{"text":"아래 내용을 봐 주세요. 180.107.207.231 로 처리해 주세요.\n고객 정보: 199 59 5632이고 확인했습니다.","spans":[{"start":32,"end":47,"type":"ip"},{"start":88,"end":99,"type":"us_ssn"}],"lang":"ko"}
+{"text":"고객 정보: 476-44-9165","spans":[{"start":15,"end":26,"type":"us_ssn"}],"lang":"ko"}
+{"text":"OPENAI_API_KEY=sk-kqIQ10m2Jm21OMiI4FAXkBYF8stNW1pxr8UxFZex45A5KN입니다.","spans":[{"start":15,"end":64,"type":"secret"}],"lang":"ko"}
+{"text":"요청하신 값은 060605-4214916","spans":[{"start":20,"end":34,"type":"kr_rrn"}],"lang":"ko"}
+{"text":"전화번호: 010 0260 9450","spans":[{"start":14,"end":27,"type":"phone"}],"lang":"ko"}
+{"text":"CCCD 번호 029144201166","spans":[{"start":12,"end":24,"type":"vn_cccd"}],"lang":"ko"}
+{"text":"위치가 서울특별시 강남구 테헤란로 123","spans":[{"start":10,"end":52,"type":"street_address"}],"lang":"ko"}
+{"text":"Ghi chú: 6294-2672-6880-0825","spans":[{"start":10,"end":29,"type":"credit_card"}],"lang":"vi"}
+{"text":"Thông tin: IT60Z0407245089141741190234. Cảm ơn bạn.","spans":[{"start":12,"end":39,"type":"iban"}],"lang":"vi"}
+{"text":"Mình gửi park_jihoon@gmail.com giúp mình nhé.","spans":[{"start":12,"end":33,"type":"email"}],"lang":"vi"}
+{"text":"fe80::2f9a:364e:b361:67b6","spans":[{"start":0,"end":25,"type":"ip"}],"lang":"vi"}
+{"text":"Mình gửi 207 57 1816 giúp mình nhé.","spans":[{"start":12,"end":23,"type":"us_ssn"}],"lang":"vi"}
+{"text":"Thông tin: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI4NTY2NDAzMDk2IiwiaWF0IjozMjk2NDE0Mjc2fQ.F6mouXr5-ZDeXHk6kHC5xw9EyKtfzDopLvLS0yvqnpP. Cảm ơn bạn.","spans":[{"start":12,"end":143,"type":"secret"}],"lang":"vi"}
+{"text":"Xin vui lòng kiểm tra 230419 3017240. Cảm ơn bạn.","spans":[{"start":25,"end":39,"type":"kr_rrn"}],"lang":"vi"}
+{"text":"Zalo: +84837021056 giúp mình nhé.","spans":[{"start":6,"end":18,"type":"phone"}],"lang":"vi"}
+{"text":"CCCD: 084131889606 , thanks\nGhi chú: c8b0:2021:6cbf:f842:c69f:9a1:b78f:12ef giúp mình nhé.","spans":[{"start":6,"end":18,"type":"vn_cccd"},{"start":38,"end":76,"type":"ip"}],"lang":"vi"}
+{"text":"Nhà mình ở 72/7 hẻm Lê Lợi, quận 1.","spans":[{"start":15,"end":35,"type":"street_address"}],"lang":"vi"}
+{"text":"The customer entered 5182-8042-2424-9585","spans":[{"start":21,"end":40,"type":"credit_card"}],"lang":"en"}
+{"text":"My details: PL50446387875151382520282220\nLet me know if that works.","spans":[{"start":12,"end":40,"type":"iban"}],"lang":"en"}
+{"text":"The customer entered kim.minsu77@sub.io.\nThe customer entered eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMDEyMTg2Njk3IiwiaWF0Ijo4ODYzMDcwODk0fQ.K_mq2mLoij04VeI8K8yrSgiwRFedas40C-D1_2bSqY_.","spans":[{"start":21,"end":39,"type":"email"},{"start":62,"end":193,"type":"secret"}],"lang":"en"}
+{"text":"::1, thanks.","spans":[{"start":0,"end":3,"type":"ip"}],"lang":"en"}
+{"text":"The customer entered 692-89-5317","spans":[{"start":21,"end":32,"type":"us_ssn"}],"lang":"en"}
+{"text":"export TOKEN=AKIADRQET2EMN8GUQTGI.\nPlease check 5578 1384 1718 7308\nLet me know if that works.","spans":[{"start":13,"end":33,"type":"secret"},{"start":48,"end":67,"type":"credit_card"}],"lang":"en"}
+{"text":"resident registration number: 6602046603674입니다.","spans":[{"start":30,"end":43,"type":"kr_rrn"}],"lang":"en"}
+{"text":"mobile 797.417.9892.","spans":[{"start":7,"end":19,"type":"phone"}],"lang":"en"}
+{"text":"citizen ID (CCCD) 012360899392.","spans":[{"start":18,"end":30,"type":"vn_cccd"}],"lang":"en"}
+{"text":"Deliver to 4358 Pennsylvania Road","spans":[{"start":11,"end":33,"type":"street_address"}],"lang":"en"}
+{"text":"고객 정보: 4058508801684999","spans":[{"start":15,"end":31,"type":"credit_card"}],"lang":"ko"}
+{"text":"메모: GB61 DELV 9691 8673 6300 58입니다.\n아래 내용을 봐 주세요. 66.151.16.119이고 확인했습니다.","spans":[{"start":8,"end":35,"type":"iban"},{"start":78,"end":91,"type":"ip"}],"lang":"ko"}
+{"text":"tran.thi.b@sub.io 로 처리해 주세요.","spans":[{"start":0,"end":17,"type":"email"}],"lang":"ko"}
+{"text":"메모: fe80::5b4:e9d:7281:4ecd","spans":[{"start":8,"end":31,"type":"ip"}],"lang":"ko"}
+{"text":"아래 내용을 봐 주세요. 654-96-2665 로 처리해 주세요.","spans":[{"start":32,"end":43,"type":"us_ssn"}],"lang":"ko"}
+{"text":"export TOKEN=sk-wEISi83CK2L89s6VsSnukHhlidIYOdHxYZnnDicGUdvKpQ입니다.","spans":[{"start":13,"end":62,"type":"secret"}],"lang":"ko"}
+{"text":"주민등록번호는 2411053469504입니다.\n확인 부탁드립니다. ES55 6220 8729 8700 1790 0468 로 처리해 주세요.","spans":[{"start":22,"end":35,"type":"kr_rrn"},{"start":73,"end":102,"type":"iban"}],"lang":"ko"}
+{"text":"제 전화는 010-5887-3595","spans":[{"start":14,"end":27,"type":"phone"}],"lang":"ko"}
+{"text":"CCCD 번호 045206525827 , thanks","spans":[{"start":12,"end":24,"type":"vn_cccd"}],"lang":"ko"}
+{"text":"주소: 서울시 마포구 월드컵북로 396입니다.","spans":[{"start":8,"end":47,"type":"street_address"}],"lang":"ko"}
+{"text":"Xin vui lòng kiểm tra 3739-227389-30126. Cảm ơn bạn.","spans":[{"start":25,"end":42,"type":"credit_card"}],"lang":"vi"}
+{"text":"PL19756541756742013773086760 nhé.","spans":[{"start":0,"end":28,"type":"iban"}],"lang":"vi"}
+{"text":"Xin vui lòng kiểm tra kim.minsu2@example.com nhé.","spans":[{"start":25,"end":47,"type":"email"}],"lang":"vi"}
+{"text":"Mình gửi 115.92.139.243 nhé.","spans":[{"start":12,"end":26,"type":"ip"}],"lang":"vi"}
+{"text":"Ghi chú: 515 17 8175 nhé.\nGhi chú: IT49V4646148280557206994105","spans":[{"start":10,"end":21,"type":"us_ssn"},{"start":38,"end":65,"type":"iban"}],"lang":"vi"}
+{"text":"Thông tin: sk-4qmHC9OUOb3kq0cEzXBrCkjdtqw6lzjfodgEdsdPYx6CV3ei giúp mình nhé.\nĐịa chỉ: 263 hẻm Trần Hưng Đạo, Hà Nội","spans":[{"start":12,"end":63,"type":"secret"},{"start":96,"end":125,"type":"street_address"}],"lang":"vi"}
+{"text":"Ghi chú: 870110-1387291. Cảm ơn bạn.","spans":[{"start":10,"end":24,"type":"kr_rrn"}],"lang":"vi"}
+{"text":"Ghi chú: +84941991180. Cảm ơn bạn.","spans":[{"start":10,"end":22,"type":"phone"}],"lang":"vi"}
+{"text":"CMND/CCCD 025289923700 , thanks","spans":[{"start":10,"end":22,"type":"vn_cccd"}],"lang":"vi"}
+{"text":"Giao hàng tới 82 hẻm Cầu Giấy.","spans":[{"start":17,"end":38,"type":"street_address"}],"lang":"vi"}
+{"text":"The customer entered 3530 4832 9544 4963\nLet me know if that works.","spans":[{"start":21,"end":40,"type":"credit_card"}],"lang":"en"}
+{"text":"Here it is: AT753334890688519765","spans":[{"start":12,"end":32,"type":"iban"}],"lang":"en"}
+{"text":"My details: john.smith572@company.vn\nLet me know if that works.","spans":[{"start":12,"end":36,"type":"email"}],"lang":"en"}
+{"text":"The customer entered 89.180.208.7\nLet me know if that works.","spans":[{"start":21,"end":33,"type":"ip"}],"lang":"en"}
+{"text":"Note: 016 58 8943.","spans":[{"start":6,"end":17,"type":"us_ssn"}],"lang":"en"}
+{"text":"Here it is: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIzNzI2OTgyOTI4IiwiaWF0Ijo1Mjk2MzAxNDYyfQ.dnfKyO58lE0iKRm7hzi5QNyKDf_v5iFFAHaMjEfESLQ.","spans":[{"start":12,"end":143,"type":"secret"}],"lang":"en"}
+{"text":"RRN 5304152545272.\nTel: +1 (947) 618-3594, thanks.","spans":[{"start":4,"end":17,"type":"kr_rrn"},{"start":24,"end":41,"type":"phone"}],"lang":"en"}
+{"text":"Call my mobile: 502-281-3514, thanks","spans":[{"start":16,"end":28,"type":"phone"}],"lang":"en"}
+{"text":"Address: 3381 Washington Dr","spans":[{"start":9,"end":27,"type":"street_address"}],"lang":"en"}
+{"text":"요청하신 값은 3530493981129778이고 확인했습니다.","spans":[{"start":20,"end":36,"type":"credit_card"}],"lang":"ko"}
+{"text":"IT60Z2596525545477436923138","spans":[{"start":0,"end":27,"type":"iban"}],"lang":"ko"}
+{"text":"요청하신 값은 bob@gmail.com","spans":[{"start":20,"end":33,"type":"email"}],"lang":"ko"}
+{"text":"요청하신 값은 fe80::af10:ada6:5e7:ab1d이고 확인했습니다.","spans":[{"start":20,"end":44,"type":"ip"}],"lang":"ko"}
+{"text":"고객 정보: 207-24-2736 로 처리해 주세요.","spans":[{"start":15,"end":26,"type":"us_ssn"}],"lang":"ko"}
+{"text":"확인 부탁드립니다. sk-proj-dMd1m7ug3k7mGX6Fc4nTqu0OUqKVZmi8yh4ClWaSmC입니다.","spans":[{"start":27,"end":77,"type":"secret"}],"lang":"ko"}
+{"text":"주민번호 5502131481406입니다.","spans":[{"start":13,"end":26,"type":"kr_rrn"}],"lang":"ko"}
+{"text":"전화 01037829564, thanks\nCCCD 번호 076377811112 , thanks","spans":[{"start":7,"end":18,"type":"phone"},{"start":39,"end":51,"type":"vn_cccd"}],"lang":"ko"}
+{"text":"CCCD 번호 044014927569.\n메모: support6@naver.com","spans":[{"start":12,"end":24,"type":"vn_cccd"},{"start":34,"end":52,"type":"email"}],"lang":"ko"}
+{"text":"위치가 제주특별자치도 제주시 첨단로 242입니다.","spans":[{"start":10,"end":55,"type":"street_address"}],"lang":"ko"}
+{"text":"Ghi chú: 5521 4234 8785 7750. Cảm ơn bạn.\nGhi chú: 253 79 2539 giúp mình nhé.","spans":[{"start":10,"end":29,"type":"credit_card"},{"start":58,"end":69,"type":"us_ssn"}],"lang":"vi"}
+{"text":"Ghi chú: DE97584693656095369585 giúp mình nhé.","spans":[{"start":10,"end":32,"type":"iban"}],"lang":"vi"}
+{"text":"Thông tin: park_jihoon425@sub.io giúp mình nhé.\nexport TOKEN=ghp_2Ykrx9CCTZUwtzut96KtwW6bkELvinYUC0el giúp mình nhé.","spans":[{"start":12,"end":33,"type":"email"},{"start":65,"end":105,"type":"secret"}],"lang":"vi"}
+{"text":"Xin vui lòng kiểm tra 45.253.35.156","spans":[{"start":25,"end":38,"type":"ip"}],"lang":"vi"}
+{"text":"Mình gửi 219-11-6092. Cảm ơn bạn.\nXin vui lòng kiểm tra 2001:db8::14fe nhé.","spans":[{"start":12,"end":23,"type":"us_ssn"},{"start":67,"end":81,"type":"ip"}],"lang":"vi"}
+{"text":"Xin vui lòng kiểm tra 240612-4389877 nhé.","spans":[{"start":25,"end":39,"type":"kr_rrn"}],"lang":"vi"}
+{"text":"điện thoại: 0880.555.627\nXin vui lòng kiểm tra sk-ant-api03-MLqMO1mYN4a04z6xy2XR2aKt9lP4J6PzJFfQomqAneRg. Cảm ơn bạn.","spans":[{"start":17,"end":29,"type":"phone"},{"start":55,"end":112,"type":"secret"}],"lang":"vi"}
+{"text":"CCCD: 056230414576","spans":[{"start":6,"end":18,"type":"vn_cccd"}],"lang":"vi"}
+{"text":"Giao hàng tới 83/47 Đường Hàng Bông.","spans":[{"start":17,"end":44,"type":"street_address"}],"lang":"vi"}
+{"text":"Please check 4924 9764 8794 5319\nLet me know if that works.","spans":[{"start":13,"end":32,"type":"credit_card"}],"lang":"en"}
+{"text":"The customer entered CH73 3139 11HD DDUO 5K3V L.","spans":[{"start":21,"end":47,"type":"iban"}],"lang":"en"}
+{"text":"Please check john.smith@naver.com","spans":[{"start":13,"end":33,"type":"email"}],"lang":"en"}
+{"text":"The customer entered 63.37.102.64","spans":[{"start":21,"end":33,"type":"ip"}],"lang":"en"}
+{"text":"My details: 817-95-5837","spans":[{"start":12,"end":23,"type":"us_ssn"}],"lang":"en"}
+{"text":"Please check ghp_ueMynRYG3s7k5wVNN53S62hl6Vc6WSiwKzJZ","spans":[{"start":13,"end":53,"type":"secret"}],"lang":"en"}
+{"text":"resident registration number: 2408254664283\nPlease check 3467 699020 37749, thanks.","spans":[{"start":30,"end":43,"type":"kr_rrn"},{"start":57,"end":74,"type":"credit_card"}],"lang":"en"}
+{"text":"Please check +49 30 2623661, thanks.","spans":[{"start":13,"end":27,"type":"phone"}],"lang":"en"}
+{"text":"CCCD: 010238235210 , thanks","spans":[{"start":6,"end":18,"type":"vn_cccd"}],"lang":"en"}
+{"text":"Ship it to 3410 Washington Road, thanks.","spans":[{"start":11,"end":31,"type":"street_address"}],"lang":"en"}
+{"text":"메모: 4022017195487541입니다.","spans":[{"start":8,"end":24,"type":"credit_card"}],"lang":"ko"}
+{"text":"아래 내용을 봐 주세요. BE41 1350 7660 2267입니다.","spans":[{"start":32,"end":51,"type":"iban"}],"lang":"ko"}
+{"text":"요청하신 값은 kim.minsu@company.vn 로 처리해 주세요.","spans":[{"start":20,"end":40,"type":"email"}],"lang":"ko"}
+{"text":"메모: 11.94.176.89","spans":[{"start":8,"end":20,"type":"ip"}],"lang":"ko"}
+{"text":"메모: 475-25-6823","spans":[{"start":8,"end":19,"type":"us_ssn"}],"lang":"ko"}
+{"text":"아래 내용을 봐 주세요. 240615-4007859입니다.\n메모: 23.43.78.56 로 처리해 주세요.","spans":[{"start":32,"end":46,"type":"kr_rrn"},{"start":65,"end":76,"type":"ip"}],"lang":"ko"}
+{"text":"휴대폰 01078499150","spans":[{"start":10,"end":21,"type":"phone"}],"lang":"ko"}
+{"text":"CCCD 번호 029041087682","spans":[{"start":12,"end":24,"type":"vn_cccd"}],"lang":"ko"}
+{"text":"위치가 대구광역시 수성구 달구벌대로 2500입니다.","spans":[{"start":10,"end":56,"type":"street_address"}],"lang":"ko"}
+{"text":"Mình gửi 6011-6439-0944-0878 nhé.","spans":[{"start":12,"end":31,"type":"credit_card"}],"lang":"vi"}
+{"text":"FR62 2086 7907 5845 3160 1195 782 nhé.","spans":[{"start":0,"end":33,"type":"iban"}],"lang":"vi"}
+{"text":"alice@example.com giúp mình nhé.\nsố định danh cá nhân: 085120180063.","spans":[{"start":0,"end":17,"type":"email"},{"start":65,"end":77,"type":"vn_cccd"}],"lang":"vi"}
+{"text":"Ghi chú: fe80::c74b:f713:2c10:d974. Cảm ơn bạn.","spans":[{"start":10,"end":35,"type":"ip"}],"lang":"vi"}
+{"text":"Mình gửi 653-97-0426 giúp mình nhé.","spans":[{"start":12,"end":23,"type":"us_ssn"}],"lang":"vi"}
+{"text":"Ghi chú: AKIA13V1K66CYAMCVEB6 nhé.","spans":[{"start":10,"end":30,"type":"secret"}],"lang":"vi"}
+{"text":"RRN: 5711261542056\nexport TOKEN=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIwNTEyMDI0MjQ1IiwiaWF0Ijo4Mzg3NzMxODg5fQ.JbsqxQYODpZZ-Kxvi0l44gvRbVss7F8yb7ZIoAyssgm nhé.","spans":[{"start":5,"end":18,"type":"kr_rrn"},{"start":32,"end":163,"type":"secret"}],"lang":"vi"}
+{"text":"Zalo: +44 20 2525 9484","spans":[{"start":6,"end":22,"type":"phone"}],"lang":"vi"}
+{"text":"CMND/CCCD 010394819888 , thanks","spans":[{"start":10,"end":22,"type":"vn_cccd"}],"lang":"vi"}
+{"text":"Địa chỉ: 344 đường Hàng Bông.","spans":[{"start":14,"end":39,"type":"street_address"}],"lang":"vi"}
+{"text":"My details: 6011-9416-8853-1390\n920102-2877218","spans":[{"start":12,"end":31,"type":"credit_card"},{"start":32,"end":46,"type":"kr_rrn"}],"lang":"en"}
+{"text":"kim.minsu@naver.com.","spans":[{"start":0,"end":19,"type":"email"}],"lang":"en"}
+{"text":"My details: ::1","spans":[{"start":12,"end":15,"type":"ip"}],"lang":"en"}
+{"text":"Please check 600-21-7095, thanks.","spans":[{"start":13,"end":24,"type":"us_ssn"}],"lang":"en"}
+{"text":"Authorization: Bearer AKIAG6J1VWGP8JV4EXYB","spans":[{"start":22,"end":42,"type":"secret"}],"lang":"en"}
+{"text":"510907-1525474\nLet me know if that works.","spans":[{"start":0,"end":14,"type":"kr_rrn"}],"lang":"en"}
+{"text":"My phone number is 863-772-6922, thanks","spans":[{"start":19,"end":31,"type":"phone"}],"lang":"en"}
+{"text":"CMND 095314111274","spans":[{"start":5,"end":17,"type":"vn_cccd"}],"lang":"en"}
+{"text":"Ship it to 657 Maple Ave, thanks.","spans":[{"start":11,"end":24,"type":"street_address"}],"lang":"en"}
+{"text":"요청하신 값은 5124291083541529이고 확인했습니다.","spans":[{"start":20,"end":36,"type":"credit_card"}],"lang":"ko"}
+{"text":"아래 내용을 봐 주세요. PL22 1137 2138 7367 6413 3205 8773 로 처리해 주세요.","spans":[{"start":32,"end":66,"type":"iban"}],"lang":"ko"}
+{"text":"요청하신 값은 kim.minsu887@mail.example.org 로 처리해 주세요.","spans":[{"start":20,"end":49,"type":"email"}],"lang":"ko"}
+{"text":"요청하신 값은 ::1 로 처리해 주세요.\nOPENAI_API_KEY=sk-vwRSI6zWsCq2LQGpIdKP0w1MZLllf4tZ3p0vzkGM1weG4ov0S입니다.","spans":[{"start":20,"end":23,"type":"ip"},{"start":64,"end":116,"type":"secret"}],"lang":"ko"}
+{"text":"확인 부탁드립니다. 513 94 9466입니다.\n배송지는 서울특별시 강남구 테헤란로 123 로 보내주세요.","spans":[{"start":27,"end":38,"type":"us_ssn"},{"start":62,"end":104,"type":"street_address"}],"lang":"ko"}
+{"text":"OPENAI_API_KEY=AKIAREBLV8GRJCPLM60H 로 처리해 주세요.\n메모: 71.89.252.123입니다.","spans":[{"start":15,"end":35,"type":"secret"},{"start":69,"end":82,"type":"ip"}],"lang":"ko"}
+{"text":"아래 내용을 봐 주세요. 931013-2929706이고 확인했습니다.","spans":[{"start":32,"end":46,"type":"kr_rrn"}],"lang":"ko"}
+{"text":"제 전화는 010 7523 4179, thanks","spans":[{"start":14,"end":27,"type":"phone"}],"lang":"ko"}
+{"text":"CCCD 번호 083011679976 , thanks","spans":[{"start":12,"end":24,"type":"vn_cccd"}],"lang":"ko"}
+{"text":"위치가 봉은사로 524 로 보내주세요.\n메모: 102.126.115.194 로 처리해 주세요.","spans":[{"start":10,"end":26,"type":"street_address"},{"start":56,"end":71,"type":"ip"}],"lang":"ko"}
+{"text":"Xin vui lòng kiểm tra 36229121817061. Cảm ơn bạn.","spans":[{"start":25,"end":39,"type":"credit_card"}],"lang":"vi"}
+{"text":"DE75 7055 9767 5336 6706 43. Cảm ơn bạn.","spans":[{"start":0,"end":27,"type":"iban"}],"lang":"vi"}
+{"text":"Thông tin: nguyen.van.a@naver.com giúp mình nhé.","spans":[{"start":12,"end":34,"type":"email"}],"lang":"vi"}
+{"text":"Mình gửi fe80::eeba:2f73:6b93:a890 giúp mình nhé.","spans":[{"start":12,"end":37,"type":"ip"}],"lang":"vi"}
+{"text":"Ghi chú: 009 55 3657. Cảm ơn bạn.","spans":[{"start":10,"end":21,"type":"us_ssn"}],"lang":"vi"}
+{"text":"export TOKEN=sk-ant-api03-0kvJH3VEyEhGAZzmloqYy5hG37ScjjV3C5XorFtFEL nhé.","spans":[{"start":13,"end":68,"type":"secret"}],"lang":"vi"}
+{"text":"RRN: 1906027742323","spans":[{"start":5,"end":18,"type":"kr_rrn"}],"lang":"vi"}
+{"text":"điện thoại: 0963-204-681","spans":[{"start":17,"end":29,"type":"phone"}],"lang":"vi"}
+{"text":"CCCD: 086250705248 , thanks","spans":[{"start":6,"end":18,"type":"vn_cccd"}],"lang":"vi"}
+{"text":"Giao hàng tới 347 ngõ Cầu Giấy, quận 1.","spans":[{"start":17,"end":38,"type":"street_address"}],"lang":"vi"}
+{"text":"Note: 3426 421011 27914.","spans":[{"start":6,"end":23,"type":"credit_card"}],"lang":"en"}
+{"text":"The customer entered ES1717181852244468718724","spans":[{"start":21,"end":45,"type":"iban"}],"lang":"en"}
+{"text":"Please check kim.minsu54@naver.com, thanks.","spans":[{"start":13,"end":34,"type":"email"}],"lang":"en"}
+{"text":"Please check 39.11.17.16, thanks.","spans":[{"start":13,"end":24,"type":"ip"}],"lang":"en"}
+{"text":"Note: 737-19-3979.\nMy phone number is 862.202.0444, thanks","spans":[{"start":6,"end":17,"type":"us_ssn"},{"start":38,"end":50,"type":"phone"}],"lang":"en"}
+{"text":"resident registration number: 1506094179220입니다.","spans":[{"start":30,"end":43,"type":"kr_rrn"}],"lang":"en"}
+{"text":"Tel: +84 924 271 797\nLet me know if that works.\nHere it is: AT631998960612209996","spans":[{"start":5,"end":20,"type":"phone"},{"start":60,"end":80,"type":"iban"}],"lang":"en"}
+{"text":"CMND 054254209793","spans":[{"start":5,"end":17,"type":"vn_cccd"}],"lang":"en"}
+{"text":"Ship it to 7049 Market Way, thanks.","spans":[{"start":11,"end":26,"type":"street_address"}],"lang":"en"}
+{"text":"요청하신 값은 6200-0802-0930-4325입니다.","spans":[{"start":20,"end":39,"type":"credit_card"}],"lang":"ko"}
+{"text":"GB83MMHE06880377231558이고 확인했습니다.","spans":[{"start":0,"end":22,"type":"iban"}],"lang":"ko"}
+{"text":"dev+test015@vnu.edu.vn이고 확인했습니다.","spans":[{"start":0,"end":22,"type":"email"}],"lang":"ko"}
+{"text":"21.205.157.171이고 확인했습니다.","spans":[{"start":0,"end":14,"type":"ip"}],"lang":"ko"}
+{"text":"확인 부탁드립니다. 620-12-4635 로 처리해 주세요.","spans":[{"start":27,"end":38,"type":"us_ssn"}],"lang":"ko"}
+{"text":"확인 부탁드립니다. sk-ant-api03-MMnZb0o77pjvnUp9cpVR1n2ohSDq6zBUMTq7D41GTad 로 처리해 주세요.\n요청하신 값은 204.190.86.74 로 처리해 주세요.","spans":[{"start":27,"end":83,"type":"secret"},{"start":129,"end":142,"type":"ip"}],"lang":"ko"}
+{"text":"750516-2541341입니다.","spans":[{"start":0,"end":14,"type":"kr_rrn"}],"lang":"ko"}
+{"text":"확인 부탁드립니다. +84913950921 로 처리해 주세요.","spans":[{"start":27,"end":39,"type":"phone"}],"lang":"ko"}
+{"text":"CCCD 번호 014135209319","spans":[{"start":12,"end":24,"type":"vn_cccd"}],"lang":"ko"}
+{"text":"본사는 부산광역시 해운대구 해운대해변로 264","spans":[{"start":10,"end":61,"type":"street_address"}],"lang":"ko"}
+{"text":"4928-6407-8984-8615 giúp mình nhé.","spans":[{"start":0,"end":19,"type":"credit_card"}],"lang":"vi"}
+{"text":"Ghi chú: BE19979444373717. Cảm ơn bạn.","spans":[{"start":10,"end":26,"type":"iban"}],"lang":"vi"}
+{"text":"Mình gửi tran.thi.b@example.com","spans":[{"start":12,"end":34,"type":"email"}],"lang":"vi"}
+{"text":"Mình gửi 88.18.184.164\nMình gửi nguyen.van.a@example.com","spans":[{"start":12,"end":25,"type":"ip"},{"start":38,"end":62,"type":"email"}],"lang":"vi"}
+{"text":"858 15 7060\nGiao hàng tới 113 đường Nguyễn Huệ, quận 1.","spans":[{"start":0,"end":11,"type":"us_ssn"},{"start":29,"end":57,"type":"street_address"}],"lang":"vi"}
+{"text":"Thông tin: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI2MzYyMDkwNDcyIiwiaWF0Ijo3Mjk0MDY4NDA0fQ.M6IOahxodYDaxKvCFLZEvTne5T2oBJcWZ889XlosZq_","spans":[{"start":12,"end":143,"type":"secret"}],"lang":"vi"}
+{"text":"RRN: 2310197562369","spans":[{"start":5,"end":18,"type":"kr_rrn"}],"lang":"vi"}
+{"text":"số điện thoại của mình là 0835 465 663, thanks","spans":[{"start":37,"end":49,"type":"phone"}],"lang":"vi"}
+{"text":"số định danh cá nhân: 064357745191","spans":[{"start":29,"end":41,"type":"vn_cccd"}],"lang":"vi"}
+{"text":"Giao hàng tới 325 hẻm Hai Bà Trưng, Hà Nội","spans":[{"start":17,"end":41,"type":"street_address"}],"lang":"vi"}
+{"text":"Please check 5508 9524 1391 2401.","spans":[{"start":13,"end":32,"type":"credit_card"}],"lang":"en"}
+{"text":"Note: NL93 EDCA 4028 7722 50, thanks.\nsk-e6gYn6bywOLdK6I67771W9w5dPOGtQjEH5iClpNbaVyhV33oZ","spans":[{"start":6,"end":28,"type":"iban"},{"start":38,"end":90,"type":"secret"}],"lang":"en"}
+{"text":"The customer entered bob@gmail.com.","spans":[{"start":21,"end":34,"type":"email"}],"lang":"en"}
+{"text":"The customer entered fe80::3936:361c:a96e:388d\nLet me know if that works.","spans":[{"start":21,"end":46,"type":"ip"}],"lang":"en"}
+{"text":"Here it is: 281 67 4914","spans":[{"start":12,"end":23,"type":"us_ssn"}],"lang":"en"}
+{"text":"RRN 6304181771534.","spans":[{"start":4,"end":17,"type":"kr_rrn"}],"lang":"en"}
+{"text":"Tel: +82 10-3229-1515","spans":[{"start":5,"end":21,"type":"phone"}],"lang":"en"}
+{"text":"CMND 040042742857","spans":[{"start":5,"end":17,"type":"vn_cccd"}],"lang":"en"}
+{"text":"Address: 1404 Market St","spans":[{"start":9,"end":23,"type":"street_address"}],"lang":"en"}
+{"text":"요청하신 값은 375596196947083 로 처리해 주세요.","spans":[{"start":20,"end":35,"type":"credit_card"}],"lang":"ko"}
+{"text":"요청하신 값은 ES37 2333 2320 1083 2561 9826입니다.\n확인 부탁드립니다. GB86 PVNV 4349 7321 7577 41입니다.","spans":[{"start":20,"end":49,"type":"iban"},{"start":87,"end":114,"type":"iban"}],"lang":"ko"}
+{"text":"확인 부탁드립니다. john.smith15@sub.io","spans":[{"start":27,"end":46,"type":"email"}],"lang":"ko"}
+{"text":"아래 내용을 봐 주세요. 40.178.220.161이고 확인했습니다.","spans":[{"start":32,"end":46,"type":"ip"}],"lang":"ko"}
+{"text":"858 68 4623입니다.","spans":[{"start":0,"end":11,"type":"us_ssn"}],"lang":"ko"}
+{"text":"요청하신 값은 AKIADJHAJUUX3K7HC0AI 로 처리해 주세요.","spans":[{"start":20,"end":40,"type":"secret"}],"lang":"ko"}
+{"text":"주민등록번호는 2302203915102입니다.","spans":[{"start":22,"end":35,"type":"kr_rrn"}],"lang":"ko"}
+{"text":"제 전화는 +44 20 8892 8093이고 확인했습니다.","spans":[{"start":14,"end":30,"type":"phone"}],"lang":"ko"}
+{"text":"CCCD 번호 069201868932.","spans":[{"start":12,"end":24,"type":"vn_cccd"}],"lang":"ko"}
+{"text":"주소: 봉은사로 524","spans":[{"start":8,"end":24,"type":"street_address"}],"lang":"ko"}
+{"text":"Xin vui lòng kiểm tra 5106 3395 5888 8115","spans":[{"start":25,"end":44,"type":"credit_card"}],"lang":"vi"}
+{"text":"BE29567518056135 nhé.\nMình gửi bob@corp.co.kr nhé.","spans":[{"start":0,"end":16,"type":"iban"},{"start":35,"end":49,"type":"email"}],"lang":"vi"}
+{"text":"nguyen.van.a0@corp.co.kr nhé.","spans":[{"start":0,"end":24,"type":"email"}],"lang":"vi"}
+{"text":"220.162.109.226","spans":[{"start":0,"end":15,"type":"ip"}],"lang":"vi"}
+{"text":"Thông tin: 865-35-8144\nGhi chú: 2001:db8::e9cf. Cảm ơn bạn.","spans":[{"start":12,"end":23,"type":"us_ssn"},{"start":34,"end":48,"type":"ip"}],"lang":"vi"}
+{"text":"Ghi chú: sk-ant-api03-87HWE60dj2r01MAitlCBGUQVipHPmOH5U6TLg9JeiNAWiK nhé.","spans":[{"start":10,"end":69,"type":"secret"}],"lang":"vi"}
+{"text":"220827-3021293. Cảm ơn bạn.","spans":[{"start":0,"end":14,"type":"kr_rrn"}],"lang":"vi"}
+{"text":"SĐT: 0357-797-631, thanks","spans":[{"start":6,"end":18,"type":"phone"}],"lang":"vi"}
+{"text":"CCCD: 081121140812","spans":[{"start":6,"end":18,"type":"vn_cccd"}],"lang":"vi"}
+{"text":"Giao hàng tới 155/43 hẻm Trần Hưng Đạo.","spans":[{"start":17,"end":49,"type":"street_address"}],"lang":"vi"}
+{"text":"Here it is: 3792 863994 31939.","spans":[{"start":12,"end":29,"type":"credit_card"}],"lang":"en"}
+{"text":"Note: FR2575083297059641627299485.","spans":[{"start":6,"end":33,"type":"iban"}],"lang":"en"}
+{"text":"The customer entered dev+test791@naver.com","spans":[{"start":21,"end":42,"type":"email"}],"lang":"en"}
+{"text":"The customer entered 204.57.93.62\nLet me know if that works.","spans":[{"start":21,"end":33,"type":"ip"}],"lang":"en"}
+{"text":"Please check 190-20-4885, thanks.","spans":[{"start":13,"end":24,"type":"us_ssn"}],"lang":"en"}
+{"text":"export TOKEN=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI0MTcyNTMyMzY1IiwiaWF0IjozMTc4NjI2MTE4fQ.VxOgSfGXNB_Tmb5nCr24ctRXqk48ODxnBjtejwoZMCK","spans":[{"start":13,"end":144,"type":"secret"}],"lang":"en"}
+{"text":"241123-4730854\nLet me know if that works.","spans":[{"start":0,"end":14,"type":"kr_rrn"}],"lang":"en"}
+{"text":"Phone: 295-890-2762, thanks","spans":[{"start":7,"end":19,"type":"phone"}],"lang":"en"}
+{"text":"citizen ID (CCCD) 076143639821 , thanks","spans":[{"start":18,"end":30,"type":"vn_cccd"}],"lang":"en"}
+{"text":"Our office is at 4521 Washington Court.","spans":[{"start":17,"end":38,"type":"street_address"}],"lang":"en"}
+{"text":"요청하신 값은 377523464574561","spans":[{"start":20,"end":35,"type":"credit_card"}],"lang":"ko"}
+{"text":"고객 정보: IT18 E071 7280 4305 3568 8431 804","spans":[{"start":15,"end":48,"type":"iban"}],"lang":"ko"}
+{"text":"확인 부탁드립니다. tran.thi.b@corp.co.kr","spans":[{"start":27,"end":48,"type":"email"}],"lang":"ko"}
+{"text":"메모: 2001:db8::2167","spans":[{"start":8,"end":22,"type":"ip"}],"lang":"ko"}
+{"text":"메모: 529-87-8403","spans":[{"start":8,"end":19,"type":"us_ssn"}],"lang":"ko"}
+{"text":"Authorization: Bearer ghp_fgvxOkP7IsuZznxDtogWKD3ZoBtLZxLjgt6P이고 확인했습니다.","spans":[{"start":22,"end":62,"type":"secret"}],"lang":"ko"}
+{"text":"확인 부탁드립니다. 531021-1043190 로 처리해 주세요.","spans":[{"start":27,"end":41,"type":"kr_rrn"}],"lang":"ko"}
+{"text":"전화번호: 010-0310-6828.","spans":[{"start":14,"end":27,"type":"phone"}],"lang":"ko"}
+{"text":"CCCD 번호 077268006238 , thanks","spans":[{"start":12,"end":24,"type":"vn_cccd"}],"lang":"ko"}
+{"text":"위치가 서울특별시 강남구 테헤란로 123입니다.","spans":[{"start":10,"end":52,"type":"street_address"}],"lang":"ko"}
+{"text":"Thông tin: 5157-6204-6510-3302 nhé.","spans":[{"start":12,"end":31,"type":"credit_card"}],"lang":"vi"}
+{"text":"Ghi chú: DE50201288689835098821 giúp mình nhé.","spans":[{"start":10,"end":32,"type":"iban"}],"lang":"vi"}
+{"text":"Ghi chú: dev+test@gmail.com giúp mình nhé.","spans":[{"start":10,"end":28,"type":"email"}],"lang":"vi"}
+{"text":"fe80::791e:5ea2:70be:bc61","spans":[{"start":0,"end":25,"type":"ip"}],"lang":"vi"}
+{"text":"Ghi chú: 783-38-2092. Cảm ơn bạn.","spans":[{"start":10,"end":21,"type":"us_ssn"}],"lang":"vi"}
+{"text":"Ghi chú: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI4NzM4MDc3NTU2IiwiaWF0Ijo5Mjg1NjIyNDk2fQ.YPEtz9Xv1lTObXJp6YuP0GNTr0n2UzZHdMQ3aaneHmF nhé.","spans":[{"start":10,"end":141,"type":"secret"}],"lang":"vi"}
+{"text":"Thông tin: 661022-2588228 nhé.","spans":[{"start":12,"end":26,"type":"kr_rrn"}],"lang":"vi"}
+{"text":"Hotline +1 (458) 984-6637 giúp mình nhé.","spans":[{"start":8,"end":25,"type":"phone"}],"lang":"vi"}
+{"text":"CCCD: 050304045280 , thanks","spans":[{"start":6,"end":18,"type":"vn_cccd"}],"lang":"vi"}
+{"text":"Nhà mình ở 271 ngõ Trần Hưng Đạo, quận 1.\nCMND/CCCD 056137484148","spans":[{"start":15,"end":43,"type":"street_address"},{"start":65,"end":77,"type":"vn_cccd"}],"lang":"vi"}
+{"text":"The customer entered 6225201991087446\nLet me know if that works.\n240112 8764209.","spans":[{"start":21,"end":37,"type":"credit_card"},{"start":65,"end":79,"type":"kr_rrn"}],"lang":"en"}
+{"text":"My details: FR43 3953 2517 7150 3097 4676 329.\nCMND 007373067857 , thanks","spans":[{"start":12,"end":45,"type":"iban"},{"start":52,"end":64,"type":"vn_cccd"}],"lang":"en"}
+{"text":"The customer entered tran.thi.b@naver.com, thanks.\nCMND 044018536509 , thanks","spans":[{"start":21,"end":41,"type":"email"},{"start":56,"end":68,"type":"vn_cccd"}],"lang":"en"}
+{"text":"fe80::5b30:9362:237d:5bf7\nLet me know if that works.","spans":[{"start":0,"end":25,"type":"ip"}],"lang":"en"}
+{"text":"The customer entered 434-30-8181, thanks.\nAuthorization: Bearer ghp_rWqkWr3H7YnzBw3Do2vanDgJUW6gutZEdbBR, thanks.","spans":[{"start":21,"end":32,"type":"us_ssn"},{"start":64,"end":104,"type":"secret"}],"lang":"en"}
+{"text":"130622 3331367","spans":[{"start":0,"end":14,"type":"kr_rrn"}],"lang":"en"}
+{"text":"Tel: (735) 415-1354","spans":[{"start":5,"end":19,"type":"phone"}],"lang":"en"}
+{"text":"CMND 046224347050","spans":[{"start":5,"end":17,"type":"vn_cccd"}],"lang":"en"}
+{"text":"Our office is at 9423 Washington Road, Springfield","spans":[{"start":17,"end":37,"type":"street_address"}],"lang":"en"}
+{"text":"메모: 3466-262691-32978이고 확인했습니다.","spans":[{"start":8,"end":25,"type":"credit_card"}],"lang":"ko"}
+{"text":"요청하신 값은 DE90370688136212888909입니다.","spans":[{"start":20,"end":42,"type":"iban"}],"lang":"ko"}
+{"text":"메모: dev+test@mail.example.org이고 확인했습니다.","spans":[{"start":8,"end":33,"type":"email"}],"lang":"ko"}
+{"text":"fe80::485b:65dc:29f4:6244이고 확인했습니다.\n525-05-4130","spans":[{"start":0,"end":25,"type":"ip"},{"start":52,"end":63,"type":"us_ssn"}],"lang":"ko"}
+{"text":"확인 부탁드립니다. 042 97 7983이고 확인했습니다.","spans":[{"start":27,"end":38,"type":"us_ssn"}],"lang":"ko"}
+{"text":"sk-proj-ONGAb45SsLxItVvn09i74wLwWuXwWNFSdzLsd7EIBuD입니다.\nCCCD 번호 084086046680.","spans":[{"start":0,"end":51,"type":"secret"},{"start":74,"end":86,"type":"vn_cccd"}],"lang":"ko"}
+{"text":"주민등록번호: 8811182048298","spans":[{"start":20,"end":33,"type":"kr_rrn"}],"lang":"ko"}
+{"text":"연락처: 010.0000.6218","spans":[{"start":11,"end":24,"type":"phone"}],"lang":"ko"}
+{"text":"CCCD 번호 029306980361.","spans":[{"start":12,"end":24,"type":"vn_cccd"}],"lang":"ko"}
+{"text":"주소: 서울특별시 강남구 테헤란로 123 로 보내주세요.\n전화 062-333-8421","spans":[{"start":8,"end":50,"type":"street_address"},{"start":79,"end":91,"type":"phone"}],"lang":"ko"}
+{"text":"Xin vui lòng kiểm tra 5597217853180527 giúp mình nhé.","spans":[{"start":25,"end":41,"type":"credit_card"}],"lang":"vi"}
+{"text":"IT61H4789785384553667224811. Cảm ơn bạn.","spans":[{"start":0,"end":27,"type":"iban"}],"lang":"vi"}
+{"text":"park_jihoon@mail.example.org giúp mình nhé.","spans":[{"start":0,"end":28,"type":"email"}],"lang":"vi"}
+{"text":"Xin vui lòng kiểm tra 103.114.23.220 giúp mình nhé.","spans":[{"start":25,"end":39,"type":"ip"}],"lang":"vi"}
+{"text":"387 12 8035 giúp mình nhé.","spans":[{"start":0,"end":11,"type":"us_ssn"}],"lang":"vi"}
+{"text":"Mình gửi 630405-2444600. Cảm ơn bạn.","spans":[{"start":12,"end":26,"type":"kr_rrn"}],"lang":"vi"}
+{"text":"SĐT: 0585 056 028.","spans":[{"start":6,"end":18,"type":"phone"}],"lang":"vi"}
+{"text":"CMND/CCCD 040193295709","spans":[{"start":10,"end":22,"type":"vn_cccd"}],"lang":"vi"}
+{"text":"Nhà mình ở 399 phố Láng, Hà Nội","spans":[{"start":15,"end":30,"type":"street_address"}],"lang":"vi"}
+{"text":"Note: 3685 166044 5853, thanks.\nmobile 879-900-3537.","spans":[{"start":6,"end":22,"type":"credit_card"},{"start":39,"end":51,"type":"phone"}],"lang":"en"}
+{"text":"CH11 5543 17NO F1NW 3ULM 3\nLet me know if that works.","spans":[{"start":0,"end":26,"type":"iban"}],"lang":"en"}
+{"text":"Here it is: lee.soyeon874@naver.com","spans":[{"start":12,"end":35,"type":"email"}],"lang":"en"}
+{"text":"The customer entered 81.126.168.64","spans":[{"start":21,"end":34,"type":"ip"}],"lang":"en"}
+{"text":"Please check 339 13 6493","spans":[{"start":13,"end":24,"type":"us_ssn"}],"lang":"en"}
+{"text":"ghp_XcXvsze5a2oYMuqS86FlCGDg86llRGuETmsi","spans":[{"start":0,"end":40,"type":"secret"}],"lang":"en"}
+{"text":"610708-2653191","spans":[{"start":0,"end":14,"type":"kr_rrn"}],"lang":"en"}
+{"text":"Note: +82 10 7351 5635, thanks.","spans":[{"start":6,"end":22,"type":"phone"}],"lang":"en"}
+{"text":"CMND 094007822739 , thanks","spans":[{"start":5,"end":17,"type":"vn_cccd"}],"lang":"en"}
+{"text":"Deliver to 4126 Main Drive","spans":[{"start":11,"end":26,"type":"street_address"}],"lang":"en"}
+{"text":"5589-7790-8767-0920 로 처리해 주세요.","spans":[{"start":0,"end":19,"type":"credit_card"}],"lang":"ko"}
+{"text":"확인 부탁드립니다. CH628326900HUON5FM9IP 로 처리해 주세요.","spans":[{"start":27,"end":48,"type":"iban"}],"lang":"ko"}
+{"text":"아래 내용을 봐 주세요. kim.minsu@naver.com 로 처리해 주세요.","spans":[{"start":32,"end":51,"type":"email"}],"lang":"ko"}
+{"text":"확인 부탁드립니다. c43f:f21c:daa5:1f88:406:57af:528a:8e84이고 확인했습니다.","spans":[{"start":27,"end":65,"type":"ip"}],"lang":"ko"}
+{"text":"743 82 4401 로 처리해 주세요.","spans":[{"start":0,"end":11,"type":"us_ssn"}],"lang":"ko"}
+{"text":"아래 내용을 봐 주세요. ghp_jrQPl72aDe16prze8Fkw26AE9MsyWYKIOKXi 로 처리해 주세요.","spans":[{"start":32,"end":72,"type":"secret"}],"lang":"ko"}
+{"text":"931123-1731645 로 처리해 주세요.","spans":[{"start":0,"end":14,"type":"kr_rrn"}],"lang":"ko"}
+{"text":"연락처: 010-1600-9643.","spans":[{"start":11,"end":24,"type":"phone"}],"lang":"ko"}
+{"text":"CCCD: 086059596445","spans":[{"start":6,"end":18,"type":"vn_cccd"}],"lang":"ko"}
+{"text":"위치가 제주특별자치도 제주시 첨단로 242","spans":[{"start":10,"end":55,"type":"street_address"}],"lang":"ko"}
+{"text":"Thông tin: 4807 1535 7651 3612 giúp mình nhé.","spans":[{"start":12,"end":31,"type":"credit_card"}],"lang":"vi"}
+{"text":"Ghi chú: FR0797926087681652183560981 nhé.","spans":[{"start":10,"end":37,"type":"iban"}],"lang":"vi"}
+{"text":"Xin vui lòng kiểm tra lee.soyeon8@gmail.com nhé.","spans":[{"start":25,"end":46,"type":"email"}],"lang":"vi"}
+{"text":"Thông tin: 82.112.222.117 nhé.\nThông tin: 6238635582115683 nhé.","spans":[{"start":12,"end":26,"type":"ip"},{"start":45,"end":61,"type":"credit_card"}],"lang":"vi"}
+{"text":"Xin vui lòng kiểm tra 003-16-0508 giúp mình nhé.","spans":[{"start":25,"end":36,"type":"us_ssn"}],"lang":"vi"}
+{"text":"Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIzNzA4OTYwODUyIiwiaWF0IjoyNzc1ODYwNjk3fQ.4u-t3K-vNWZdg-mHqfi4gidG1X7BJRzuuy1OTOqhR8S. Cảm ơn bạn.","spans":[{"start":22,"end":153,"type":"secret"}],"lang":"vi"}
+{"text":"Mình gửi 250603-4008080","spans":[{"start":12,"end":26,"type":"kr_rrn"}],"lang":"vi"}
+{"text":"Mình gửi +84 734 018 839\nsố căn cước công dân: 031396366426","spans":[{"start":12,"end":27,"type":"phone"},{"start":58,"end":70,"type":"vn_cccd"}],"lang":"vi"}
+{"text":"CCCD: 077205086695 , thanks","spans":[{"start":6,"end":18,"type":"vn_cccd"}],"lang":"vi"}
+{"text":"Nhà mình ở 173 hẻm Cầu Giấy.","spans":[{"start":15,"end":37,"type":"street_address"}],"lang":"vi"}
+{"text":"Please check 3443 943932 69594\nresident registration number: 8602142805615.","spans":[{"start":13,"end":30,"type":"credit_card"},{"start":61,"end":74,"type":"kr_rrn"}],"lang":"en"}
+{"text":"The customer entered FR3726741033089773297787434","spans":[{"start":21,"end":48,"type":"iban"}],"lang":"en"}
+{"text":"The customer entered john.smith@mail.example.org.\nShip it to 6026 Fifth Court","spans":[{"start":21,"end":48,"type":"email"},{"start":61,"end":77,"type":"street_address"}],"lang":"en"}
+{"text":"Note: fe80::26d1:6b36:ad6c:425","spans":[{"start":6,"end":30,"type":"ip"}],"lang":"en"}
+{"text":"Here it is: 579-62-9022, thanks.","spans":[{"start":12,"end":23,"type":"us_ssn"}],"lang":"en"}
+{"text":"The customer entered 810404-5893915.","spans":[{"start":21,"end":35,"type":"kr_rrn"}],"lang":"en"}
+{"text":"My phone number is +82 10 8670 8150.","spans":[{"start":19,"end":35,"type":"phone"}],"lang":"en"}
+{"text":"CMND 065149230078 , thanks","spans":[{"start":5,"end":17,"type":"vn_cccd"}],"lang":"en"}
+{"text":"Our office is at 135 Market Court.\nMy details: AKIAKW5O6DRO1L4JOL9X","spans":[{"start":17,"end":33,"type":"street_address"},{"start":47,"end":67,"type":"secret"}],"lang":"en"}
+{"text":"메모: 6228332850728528","spans":[{"start":8,"end":24,"type":"credit_card"}],"lang":"ko"}
+{"text":"요청하신 값은 ES33 2973 7299 2363 8030 9232 로 처리해 주세요.\n확인 부탁드립니다. +82 10-9435-4673","spans":[{"start":20,"end":49,"type":"iban"},{"start":102,"end":118,"type":"phone"}],"lang":"ko"}
+{"text":"요청하신 값은 bob@sub.io입니다.\n요청하신 값은 john.smith230@sub.io이고 확인했습니다.","spans":[{"start":20,"end":30,"type":"email"},{"start":61,"end":81,"type":"email"}],"lang":"ko"}
+{"text":"확인 부탁드립니다. ::1입니다.","spans":[{"start":27,"end":30,"type":"ip"}],"lang":"ko"}
+{"text":"505-36-7793","spans":[{"start":0,"end":11,"type":"us_ssn"}],"lang":"ko"}
+{"text":"export TOKEN=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIzNjg1NTM1NTEwIiwiaWF0Ijo2MjcwNDQ1OTI1fQ.YbywWxL1PcWq4IoyjHYRKJ9aMRK9LKdb9C8o12brI5R입니다.","spans":[{"start":13,"end":144,"type":"secret"}],"lang":"ko"}
+{"text":"주민번호 2405217733497입니다.","spans":[{"start":13,"end":26,"type":"kr_rrn"}],"lang":"ko"}
+{"text":"전화번호: 01003593312\n전화 010 2146 2834, thanks","spans":[{"start":14,"end":25,"type":"phone"},{"start":33,"end":46,"type":"phone"}],"lang":"ko"}
+{"text":"CCCD 번호 055049945968 , thanks","spans":[{"start":12,"end":24,"type":"vn_cccd"}],"lang":"ko"}
+{"text":"주소: 서울특별시 강남구 테헤란로 123입니다.","spans":[{"start":8,"end":50,"type":"street_address"}],"lang":"ko"}
+{"text":"Ghi chú: 3778-206675-64443","spans":[{"start":10,"end":27,"type":"credit_card"}],"lang":"vi"}
+{"text":"Ghi chú: IT86 U498 6034 7889 0937 9398 227","spans":[{"start":10,"end":43,"type":"iban"}],"lang":"vi"}
+{"text":"Ghi chú: kim.minsu@gmail.com. Cảm ơn bạn.","spans":[{"start":10,"end":29,"type":"email"}],"lang":"vi"}
+{"text":"Mình gửi 145.103.230.25. Cảm ơn bạn.","spans":[{"start":12,"end":26,"type":"ip"}],"lang":"vi"}
+{"text":"479-34-9589","spans":[{"start":0,"end":11,"type":"us_ssn"}],"lang":"vi"}
+{"text":"OPENAI_API_KEY=sk-ant-api03-0rUx88j13hPT8RLhys4jH06D9d1OFr3Dx3OBiYBZgX9tSBM0. Cảm ơn bạn.","spans":[{"start":15,"end":76,"type":"secret"}],"lang":"vi"}
+{"text":"Ghi chú: 760322-1629128 nhé.","spans":[{"start":10,"end":24,"type":"kr_rrn"}],"lang":"vi"}
+{"text":"số điện thoại của mình là 0397-989-358.","spans":[{"start":37,"end":49,"type":"phone"}],"lang":"vi"}
+{"text":"CCCD: 091364062752 , thanks","spans":[{"start":6,"end":18,"type":"vn_cccd"}],"lang":"vi"}
+{"text":"Nhà mình ở 174 hẻm Nguyễn Huệ, quận 1.\nThông tin: lee.soyeon5@vnu.edu.vn giúp mình nhé.","spans":[{"start":15,"end":39,"type":"street_address"},{"start":63,"end":85,"type":"email"}],"lang":"vi"}
+{"text":"Please check 3660 870104 8413\nMy details: park_jihoon152@example.com, thanks.","spans":[{"start":13,"end":29,"type":"credit_card"},{"start":42,"end":68,"type":"email"}],"lang":"en"}
+{"text":"Here it is: AT41 3439 1715 6675 0544, thanks.","spans":[{"start":12,"end":36,"type":"iban"}],"lang":"en"}
+{"text":"bob@sub.io, thanks.","spans":[{"start":0,"end":10,"type":"email"}],"lang":"en"}
+{"text":"Please check fe80::c935:f6b7:f906:d7d0.","spans":[{"start":13,"end":38,"type":"ip"}],"lang":"en"}
+{"text":"My details: 528 60 1422, thanks.","spans":[{"start":12,"end":23,"type":"us_ssn"}],"lang":"en"}
+{"text":"Here it is: sk-Otc7T148gK3MC1B05JgCbO434oJObXO1kBzWuOLnBr, thanks.","spans":[{"start":12,"end":57,"type":"secret"}],"lang":"en"}
+{"text":"The customer entered 871214-1188231\nLet me know if that works.","spans":[{"start":21,"end":35,"type":"kr_rrn"}],"lang":"en"}
+{"text":"Note: +1 (297) 301-3462, thanks.","spans":[{"start":6,"end":23,"type":"phone"}],"lang":"en"}
+{"text":"citizen ID (CCCD) 047071261693.","spans":[{"start":18,"end":30,"type":"vn_cccd"}],"lang":"en"}
+{"text":"Ship it to 5625 Baker Blvd, thanks.","spans":[{"start":11,"end":26,"type":"street_address"}],"lang":"en"}
+{"text":"고객 정보: 6214931952033822 로 처리해 주세요.","spans":[{"start":15,"end":31,"type":"credit_card"}],"lang":"ko"}
+{"text":"확인 부탁드립니다. GB63RVHO39741536617878이고 확인했습니다.","spans":[{"start":27,"end":49,"type":"iban"}],"lang":"ko"}
+{"text":"고객 정보: kim.minsu@corp.co.kr 로 처리해 주세요.","spans":[{"start":15,"end":35,"type":"email"}],"lang":"ko"}
+{"text":"고객 정보: a2cb:1003::3fd3:d1ba이고 확인했습니다.","spans":[{"start":15,"end":35,"type":"ip"}],"lang":"ko"}
+{"text":"026 56 2316 로 처리해 주세요.","spans":[{"start":0,"end":11,"type":"us_ssn"}],"lang":"ko"}
+{"text":"요청하신 값은 ghp_zgHYLbwUm0Uv5LHtaOMygytkUI3bRRJb6XrP입니다.","spans":[{"start":20,"end":60,"type":"secret"}],"lang":"ko"}
+{"text":"주민등록번호: 7310066433624.","spans":[{"start":20,"end":33,"type":"kr_rrn"}],"lang":"ko"}
+{"text":"전화번호: 010-6150-4150.","spans":[{"start":14,"end":27,"type":"phone"}],"lang":"ko"}
+{"text":"CCCD 번호 052203778295 , thanks\n배송지는 부산광역시 해운대구 해운대해변로 264","spans":[{"start":12,"end":24,"type":"vn_cccd"},{"start":47,"end":98,"type":"street_address"}],"lang":"ko"}
+{"text":"주소: 가로수길 10 로 보내주세요.\n확인 부탁드립니다. alice@example.com 로 처리해 주세요.","spans":[{"start":8,"end":23,"type":"street_address"},{"start":72,"end":89,"type":"email"}],"lang":"ko"}
+{"text":"Mình gửi 3433-749925-34334 giúp mình nhé.","spans":[{"start":12,"end":29,"type":"credit_card"}],"lang":"vi"}
+{"text":"Ghi chú: FR2878581526200866722551560 nhé.","spans":[{"start":10,"end":37,"type":"iban"}],"lang":"vi"}
+{"text":"Thông tin: lee.soyeon@gmail.com nhé.","spans":[{"start":12,"end":32,"type":"email"}],"lang":"vi"}
+{"text":"Thông tin: 3f98:dc01::ea11:4a2d giúp mình nhé.","spans":[{"start":12,"end":32,"type":"ip"}],"lang":"vi"}
+{"text":"Mình gửi 610-58-9909 nhé.","spans":[{"start":12,"end":23,"type":"us_ssn"}],"lang":"vi"}
+{"text":"211107 3064220 nhé.\n170102-7511412. Cảm ơn bạn.","spans":[{"start":0,"end":14,"type":"kr_rrn"},{"start":21,"end":35,"type":"kr_rrn"}],"lang":"vi"}
+{"text":"SĐT: 0328045510","spans":[{"start":6,"end":16,"type":"phone"}],"lang":"vi"}
+{"text":"số định danh cá nhân: 045068116769","spans":[{"start":29,"end":41,"type":"vn_cccd"}],"lang":"vi"}
+{"text":"Nhà mình ở 160 Đường Láng, Hà Nội","spans":[{"start":15,"end":34,"type":"street_address"}],"lang":"vi"}
+{"text":"Here it is: 3486 002767 99614, thanks.","spans":[{"start":12,"end":29,"type":"credit_card"}],"lang":"en"}
+{"text":"The customer entered IT09W5113410640135262622973, thanks.","spans":[{"start":21,"end":48,"type":"iban"}],"lang":"en"}
+{"text":"The customer entered alice@mail.example.org","spans":[{"start":21,"end":43,"type":"email"}],"lang":"en"}
+{"text":"Note: fe80::afe6:d016:7d5d:f4d3.","spans":[{"start":6,"end":31,"type":"ip"}],"lang":"en"}
+{"text":"My details: 629-79-4141","spans":[{"start":12,"end":23,"type":"us_ssn"}],"lang":"en"}
+{"text":"The customer entered sk-LOpi45dwRNkETdQFwEF4qhAsfKFZ3LFk4QWCSArhE.","spans":[{"start":21,"end":65,"type":"secret"}],"lang":"en"}
+{"text":"560106-2147622.","spans":[{"start":0,"end":14,"type":"kr_rrn"}],"lang":"en"}
+{"text":"Call my mobile: 949.545.7564, thanks","spans":[{"start":16,"end":28,"type":"phone"}],"lang":"en"}
+{"text":"citizen ID (CCCD) 015030434404","spans":[{"start":18,"end":30,"type":"vn_cccd"}],"lang":"en"}
+{"text":"Ship it to 3802 Main Rd.","spans":[{"start":11,"end":23,"type":"street_address"}],"lang":"en"}
+{"text":"확인 부탁드립니다. 3470 217797 22683입니다.","spans":[{"start":27,"end":44,"type":"credit_card"}],"lang":"ko"}
+{"text":"메모: NL76ITUA3589726153입니다.","spans":[{"start":8,"end":26,"type":"iban"}],"lang":"ko"}
+{"text":"요청하신 값은 park_jihoon824@gmail.com이고 확인했습니다.","spans":[{"start":20,"end":44,"type":"email"}],"lang":"ko"}
+{"text":"아래 내용을 봐 주세요. 105.215.69.177 로 처리해 주세요.","spans":[{"start":32,"end":46,"type":"ip"}],"lang":"ko"}
+{"text":"680-17-4431이고 확인했습니다.","spans":[{"start":0,"end":11,"type":"us_ssn"}],"lang":"ko"}
+{"text":"OPENAI_API_KEY=sk-ant-api03-UFNWN13Gng4LbaMxdVcytnhYGtiFUUMEgJ5mQP51S입니다.","spans":[{"start":15,"end":69,"type":"secret"}],"lang":"ko"}
+{"text":"메모: 751221-1750787이고 확인했습니다.","spans":[{"start":8,"end":22,"type":"kr_rrn"}],"lang":"ko"}
+{"text":"연락처: +49 30 5844193입니다.","spans":[{"start":11,"end":25,"type":"phone"}],"lang":"ko"}
+{"text":"CCCD: 036009406329","spans":[{"start":6,"end":18,"type":"vn_cccd"}],"lang":"ko"}
+{"text":"배송지는 대구광역시 수성구 달구벌대로 2500입니다.","spans":[{"start":13,"end":59,"type":"street_address"}],"lang":"ko"}
+{"text":"Thông tin: 5106 4465 3323 0279","spans":[{"start":12,"end":31,"type":"credit_card"}],"lang":"vi"}
+{"text":"Xin vui lòng kiểm tra AT885063204701275343. Cảm ơn bạn.","spans":[{"start":25,"end":45,"type":"iban"}],"lang":"vi"}
+{"text":"Xin vui lòng kiểm tra alice@example.com. Cảm ơn bạn.","spans":[{"start":25,"end":42,"type":"email"}],"lang":"vi"}
+{"text":"Thông tin: 57.160.20.119. Cảm ơn bạn.","spans":[{"start":12,"end":25,"type":"ip"}],"lang":"vi"}
+{"text":"Thông tin: 255-88-6589 nhé.","spans":[{"start":12,"end":23,"type":"us_ssn"}],"lang":"vi"}
+{"text":"Mình gửi ghp_Rd3rxtph7fkUf07XsVSVRxnDwx2KOn0fqNh3. Cảm ơn bạn.","spans":[{"start":12,"end":52,"type":"secret"}],"lang":"vi"}
+{"text":"020607-8450003 nhé.","spans":[{"start":0,"end":14,"type":"kr_rrn"}],"lang":"vi"}
+{"text":"Hotline 0596439725, thanks","spans":[{"start":8,"end":18,"type":"phone"}],"lang":"vi"}
+{"text":"số căn cước công dân: 033268224694\nGhi chú: 792 05 5777","spans":[{"start":30,"end":42,"type":"vn_cccd"},{"start":53,"end":64,"type":"us_ssn"}],"lang":"vi"}
+{"text":"Giao hàng tới 347 hẻm Trần Hưng Đạo, Hà Nội","spans":[{"start":17,"end":46,"type":"street_address"}],"lang":"vi"}
+{"text":"3530 1643 8490 5953\nLet me know if that works.","spans":[{"start":0,"end":19,"type":"credit_card"}],"lang":"en"}
+{"text":"Here it is: ES5599484947550844929724\nLet me know if that works.","spans":[{"start":12,"end":36,"type":"iban"}],"lang":"en"}
+{"text":"Please check kim.minsu@sub.io","spans":[{"start":13,"end":29,"type":"email"}],"lang":"en"}
+{"text":"222.15.54.217.","spans":[{"start":0,"end":13,"type":"ip"}],"lang":"en"}
+{"text":"Here it is: 836-88-5692, thanks.","spans":[{"start":12,"end":23,"type":"us_ssn"}],"lang":"en"}
+{"text":"OPENAI_API_KEY=ghp_oXmNzPk1wqh8WYKs4OIO9yhLzgunaFJjF5HP","spans":[{"start":15,"end":55,"type":"secret"}],"lang":"en"}
+{"text":"resident registration number: 0407023876590","spans":[{"start":30,"end":43,"type":"kr_rrn"}],"lang":"en"}
+{"text":"My details: +82 10-8562-6976.","spans":[{"start":12,"end":28,"type":"phone"}],"lang":"en"}
+{"text":"CCCD: 003074855376","spans":[{"start":6,"end":18,"type":"vn_cccd"}],"lang":"en"}
+{"text":"Deliver to 1486 Baker Street.","spans":[{"start":11,"end":28,"type":"street_address"}],"lang":"en"}
+{"text":"메모: 3530-7371-4458-3556","spans":[{"start":8,"end":27,"type":"credit_card"}],"lang":"ko"}
+{"text":"요청하신 값은 FR87 5123 7935 8971 6996 6744 517 로 처리해 주세요.","spans":[{"start":20,"end":53,"type":"iban"}],"lang":"ko"}
+{"text":"고객 정보: alice@gmail.com 로 처리해 주세요.","spans":[{"start":15,"end":30,"type":"email"}],"lang":"ko"}
+{"text":"아래 내용을 봐 주세요. 2001:db8::4be0이고 확인했습니다.","spans":[{"start":32,"end":46,"type":"ip"}],"lang":"ko"}
+{"text":"메모: 342 02 6676 로 처리해 주세요.","spans":[{"start":8,"end":19,"type":"us_ssn"}],"lang":"ko"}
+{"text":"Authorization: Bearer sk-proj-AR7mc0eicpnDUoQQSRj3wBJctWegSuMJKW4Ph3WHWwP3이고 확인했습니다.","spans":[{"start":22,"end":74,"type":"secret"}],"lang":"ko"}
+{"text":"요청하신 값은 240920-8520452","spans":[{"start":20,"end":34,"type":"kr_rrn"}],"lang":"ko"}
+{"text":"전화번호: 010-8276-3149, thanks","spans":[{"start":14,"end":27,"type":"phone"}],"lang":"ko"}
+{"text":"CCCD: 046269472009.","spans":[{"start":6,"end":18,"type":"vn_cccd"}],"lang":"ko"}
+{"text":"배송지는 서울특별시 강남구 테헤란로 123","spans":[{"start":13,"end":55,"type":"street_address"}],"lang":"ko"}
+{"text":"Xin vui lòng kiểm tra 36430481073747","spans":[{"start":25,"end":39,"type":"credit_card"}],"lang":"vi"}
+{"text":"CH95 5771 1HK7 A9ZG DBBE E","spans":[{"start":0,"end":26,"type":"iban"}],"lang":"vi"}
+{"text":"Mình gửi kim.minsu@example.com","spans":[{"start":12,"end":33,"type":"email"}],"lang":"vi"}
+{"text":"Thông tin: 96.106.80.104. Cảm ơn bạn.","spans":[{"start":12,"end":25,"type":"ip"}],"lang":"vi"}
+{"text":"Mình gửi 494-01-0322","spans":[{"start":12,"end":23,"type":"us_ssn"}],"lang":"vi"}
+{"text":"OPENAI_API_KEY=ghp_57tNZtz5W9qmDlmwTV8bu5eQmv41p0xlmKGr. Cảm ơn bạn.","spans":[{"start":15,"end":55,"type":"secret"}],"lang":"vi"}
+{"text":"RRN: 5701132896198","spans":[{"start":5,"end":18,"type":"kr_rrn"}],"lang":"vi"}
+{"text":"số điện thoại của mình là +82 10-6373-1991 nhé.","spans":[{"start":37,"end":53,"type":"phone"}],"lang":"vi"}
+{"text":"số định danh cá nhân: 059321926828","spans":[{"start":29,"end":41,"type":"vn_cccd"}],"lang":"vi"}
+{"text":"Địa chỉ: 163 Đường Láng, quận 1.","spans":[{"start":14,"end":33,"type":"street_address"}],"lang":"vi"}
+{"text":"My details: 5147 5652 9703 0186.","spans":[{"start":12,"end":31,"type":"credit_card"}],"lang":"en"}
+{"text":"Here it is: CH77 6193 9UIV ONNX 4N79 W, thanks.","spans":[{"start":12,"end":38,"type":"iban"}],"lang":"en"}
+{"text":"My details: support@sub.io, thanks.","spans":[{"start":12,"end":26,"type":"email"}],"lang":"en"}
+{"text":"Please check ::1\nCCCD: 087336777735","spans":[{"start":13,"end":16,"type":"ip"},{"start":23,"end":35,"type":"vn_cccd"}],"lang":"en"}
+{"text":"852-90-5609.","spans":[{"start":0,"end":11,"type":"us_ssn"}],"lang":"en"}
+{"text":"export TOKEN=sk-ant-api03-AzQBv4nI0pwKP7bn7iWxt7pBhbENDomKAX8VRqFifb5y3kY, thanks.","spans":[{"start":13,"end":73,"type":"secret"}],"lang":"en"}
+{"text":"RRN 6211151998592입니다.","spans":[{"start":4,"end":17,"type":"kr_rrn"}],"lang":"en"}
+{"text":"Tel: +44 20 7543 5352, thanks.","spans":[{"start":5,"end":21,"type":"phone"}],"lang":"en"}
+{"text":"CCCD: 053191877582.","spans":[{"start":6,"end":18,"type":"vn_cccd"}],"lang":"en"}
+{"text":"Ship it to 8026 Park Lane Drive","spans":[{"start":11,"end":31,"type":"street_address"}],"lang":"en"}
+{"text":"4098-5052-6423-6012 로 처리해 주세요.","spans":[{"start":0,"end":19,"type":"credit_card"}],"lang":"ko"}
+{"text":"확인 부탁드립니다. FR7812078532184239020208333입니다.","spans":[{"start":27,"end":54,"type":"iban"}],"lang":"ko"}
+{"text":"요청하신 값은 nguyen.van.a71@naver.com이고 확인했습니다.","spans":[{"start":20,"end":44,"type":"email"}],"lang":"ko"}
+{"text":"fe80::36fa:d1dc:494f:687b","spans":[{"start":0,"end":25,"type":"ip"}],"lang":"ko"}
+{"text":"요청하신 값은 285-17-3514 로 처리해 주세요.","spans":[{"start":20,"end":31,"type":"us_ssn"}],"lang":"ko"}
+{"text":"고객 정보: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIwMTgwNzk2NDM0IiwiaWF0IjoyNTYwOTgyMjk4fQ.KleskYCWwWaymIYiq7YcVIJWQ8D1qck0_OdRxSJTfJu 로 처리해 주세요.","spans":[{"start":15,"end":146,"type":"secret"}],"lang":"ko"}
+{"text":"고객 정보: 230115-3852421","spans":[{"start":15,"end":29,"type":"kr_rrn"}],"lang":"ko"}
+{"text":"전화 031-791-4039","spans":[{"start":7,"end":19,"type":"phone"}],"lang":"ko"}
+{"text":"본사는 제주특별자치도 제주시 첨단로 242 로 보내주세요.","spans":[{"start":10,"end":55,"type":"street_address"}],"lang":"ko"}

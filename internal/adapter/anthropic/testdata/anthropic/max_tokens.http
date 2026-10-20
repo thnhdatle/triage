@@ -1,0 +1,4 @@
+status: 200
+content-type: application/json
+
+{"id":"msg_01MaxTokens","type":"message","role":"assistant","model":"claude-haiku-5-5","content":[{"type":"text","text":"The answer is"}],"stop_reason":"max_tokens","usage":{"input_tokens":12,"output_tokens":4}}

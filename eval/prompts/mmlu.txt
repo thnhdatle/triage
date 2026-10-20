@@ -1,0 +1,6 @@
+The following is a multiple choice question about {{.Subject}}.
+
+{{.Question}}
+{{range .Choices}}{{.Letter}}. {{.Text}}
+{{end}}
+Answer with the letter of the correct choice, in the form "The answer is X".

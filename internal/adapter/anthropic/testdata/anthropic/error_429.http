@@ -1,0 +1,6 @@
+status: 429
+content-type: application/json
+retry-after: 12
+anthropic-ratelimit-requests-remaining: 0
+
+{"type":"error","error":{"type":"rate_limit_error","message":"This request would exceed the rate limit for your organization of 50 requests per minute."},"request_id":"req_011CRateLimit"}

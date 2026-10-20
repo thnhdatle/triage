@@ -1,0 +1,76 @@
+# SPDX-License-Identifier: Apache-2.0
+# Release builds for Linux (amd64, arm64). triage needs CGO (ONNX Runtime is loaded with dlopen), so
+# each architecture is built natively on its own runner: scripts/release-build.sh narrows this file
+# to the host architecture and runs it; scripts/release-publish.sh then merges the per-architecture
+# images into multi-arch manifests and publishes the GitHub release.
+version: 2
+project_name: triage
+
+before:
+  hooks:
+    - go mod download
+
+builds:
+  - id: triage
+    main: ./cmd/triage
+    binary: triage
+    env:
+      - CGO_ENABLED=1
+    goos: [linux]
+    goarch: [amd64, arm64]
+    flags: [-trimpath]
+    ldflags:
+      - -s -w
+      - -X github.com/thnhdatle/triage/internal/platform/buildinfo.Version={{ .Version }}
+      - -X github.com/thnhdatle/triage/internal/platform/buildinfo.Commit={{ .ShortCommit }}
+      - -X github.com/thnhdatle/triage/internal/platform/buildinfo.Date={{ .Date }}
+  - id: fakellm
+    main: ./cmd/fakellm
+    binary: fakellm
+    env:
+      - CGO_ENABLED=0
+    goos: [linux]
+    goarch: [amd64, arm64]
+    flags: [-trimpath]
+    ldflags:
+      - -s -w
+      - -X github.com/thnhdatle/triage/internal/platform/buildinfo.Version={{ .Version }}
+      - -X github.com/thnhdatle/triage/internal/platform/buildinfo.Commit={{ .ShortCommit }}
+      - -X github.com/thnhdatle/triage/internal/platform/buildinfo.Date={{ .Date }}
+
+archives:
+  # The triage archive does not bundle ONNX Runtime; install it separately (README "Install") or
+  # use the image, which does.
+  - id: triage
+    ids: [triage]
+    formats: [tar.gz]
+    name_template: "triage_{{ .Version }}_{{ .Os }}_{{ .Arch }}"
+    files:
+      - LICENSE
+      - NOTICE
+      - README.md
+      - deploy/config.example.yaml
+  - id: fakellm
+    ids: [fakellm]
+    formats: [tar.gz]
+    name_template: "fakellm_{{ .Version }}_{{ .Os }}_{{ .Arch }}"
+    files:
+      - LICENSE
+      - NOTICE
+
+checksum:
+  name_template: checksums.txt
+
+sboms:
+  - id: archive-sboms
+    artifacts: archive
+    cmd: syft
+    args: ["$artifact", "--output", "spdx-json=$document"]
+    documents: ["${artifact}.sbom.spdx.json"]
+
+changelog:
+  disable: true
+
+# Publishing (images, GitHub release) is done by scripts/release-publish.sh.
+release:
+  disable: true

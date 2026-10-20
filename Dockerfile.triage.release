@@ -1,0 +1,14 @@
+# SPDX-License-Identifier: Apache-2.0
+# Release image for triage, built by scripts/release-build.sh from a context holding the prebuilt
+# per-arch CGO binary (linux/<arch>/triage) and ONNX Runtime staged by scripts/stage-ort.sh under
+# ort/ (libonnxruntime.so with its LICENSE and ThirdPartyNotices.txt).
+FROM gcr.io/distroless/cc-debian12:nonroot@sha256:9dac0a79194e45a7da0158a9c6da57b217585af0786db3845d1f0ec1a0dd182f
+ARG TARGETPLATFORM
+COPY ${TARGETPLATFORM}/triage /triage
+COPY ort/ /opt/onnxruntime/
+ENV TRIAGE_ONNX_LIBRARY_PATH=/opt/onnxruntime/libonnxruntime.so
+USER 65532:65532
+EXPOSE 8080 9091
+HEALTHCHECK --interval=10s --timeout=3s --start-period=5s --retries=3 CMD ["/triage","healthcheck"]
+ENTRYPOINT ["/triage"]
+CMD ["serve","--config","/etc/triage/config.yaml"]

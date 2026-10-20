@@ -1,0 +1,36 @@
+# SPDX-License-Identifier: Apache-2.0
+# Images default to the release; set RAYLD_TRIAGE_IMAGE / RAYLD_FAKELLM_IMAGE to use others, for
+# example the local thnhdatle/triage:dev and thnhdatle/fakellm:dev built by `make docker`.
+name: triage
+services:
+  fakellm:
+    image: ${RAYLD_FAKELLM_IMAGE:-ghcr.io/thnhdatle/fakellm:v0.1.0}
+    command: ["--record-limit", "10000"]
+    ports:
+      - "8090:8090"
+    healthcheck:
+      test: ["CMD", "/fakellm", "healthcheck"]
+      interval: 3s
+      timeout: 3s
+      retries: 20
+      start_period: 2s
+    restart: unless-stopped
+
+  triage:
+    image: ${RAYLD_TRIAGE_IMAGE:-ghcr.io/thnhdatle/triage:v0.1.0}
+    command: ["serve", "--config", "/etc/triage/config.yaml"]
+    ports:
+      - "8080:8080"
+      - "127.0.0.1:9091:9091"
+    volumes:
+      - ./config.quickstart.yaml:/etc/triage/config.yaml:ro
+    depends_on:
+      fakellm:
+        condition: service_healthy
+    healthcheck:
+      test: ["CMD", "/triage", "healthcheck"]
+      interval: 3s
+      timeout: 3s
+      retries: 20
+      start_period: 3s
+    restart: unless-stopped

@@ -1,0 +1,189 @@
+[
+  {
+    "ID": "msg_01StreamTool",
+    "Model": "claude-haiku-5-5",
+    "Created": 1792411200,
+    "Choices": [
+      {
+        "Index": 0,
+        "Delta": {
+          "Role": "assistant",
+          "Content": "",
+          "ToolCalls": null
+        },
+        "FinishReason": ""
+      }
+    ],
+    "Usage": null
+  },
+  {
+    "ID": "msg_01StreamTool",
+    "Model": "claude-haiku-5-5",
+    "Created": 1792411200,
+    "Choices": [
+      {
+        "Index": 0,
+        "Delta": {
+          "Role": "",
+          "Content": "Checking.",
+          "ToolCalls": null
+        },
+        "FinishReason": ""
+      }
+    ],
+    "Usage": null
+  },
+  {
+    "ID": "msg_01StreamTool",
+    "Model": "claude-haiku-5-5",
+    "Created": 1792411200,
+    "Choices": [
+      {
+        "Index": 0,
+        "Delta": {
+          "Role": "",
+          "Content": "",
+          "ToolCalls": [
+            {
+              "Index": 0,
+              "ID": "toolu_01S",
+              "Type": "function",
+              "Name": "get_weather",
+              "Arguments": ""
+            }
+          ]
+        },
+        "FinishReason": ""
+      }
+    ],
+    "Usage": null
+  },
+  {
+    "ID": "msg_01StreamTool",
+    "Model": "claude-haiku-5-5",
+    "Created": 1792411200,
+    "Choices": [
+      {
+        "Index": 0,
+        "Delta": {
+          "Role": "",
+          "Content": "",
+          "ToolCalls": [
+            {
+              "Index": 0,
+              "ID": "",
+              "Type": "",
+              "Name": "",
+              "Arguments": "{\"city\": \"Ha"
+            }
+          ]
+        },
+        "FinishReason": ""
+      }
+    ],
+    "Usage": null
+  },
+  {
+    "ID": "msg_01StreamTool",
+    "Model": "claude-haiku-5-5",
+    "Created": 1792411200,
+    "Choices": [
+      {
+        "Index": 0,
+        "Delta": {
+          "Role": "",
+          "Content": "",
+          "ToolCalls": [
+            {
+              "Index": 0,
+              "ID": "",
+              "Type": "",
+              "Name": "",
+              "Arguments": "noi\"}"
+            }
+          ]
+        },
+        "FinishReason": ""
+      }
+    ],
+    "Usage": null
+  },
+  {
+    "ID": "msg_01StreamTool",
+    "Model": "claude-haiku-5-5",
+    "Created": 1792411200,
+    "Choices": [
+      {
+        "Index": 0,
+        "Delta": {
+          "Role": "",
+          "Content": "",
+          "ToolCalls": [
+            {
+              "Index": 1,
+              "ID": "toolu_01T",
+              "Type": "function",
+              "Name": "get_time",
+              "Arguments": ""
+            }
+          ]
+        },
+        "FinishReason": ""
+      }
+    ],
+    "Usage": null
+  },
+  {
+    "ID": "msg_01StreamTool",
+    "Model": "claude-haiku-5-5",
+    "Created": 1792411200,
+    "Choices": [
+      {
+        "Index": 0,
+        "Delta": {
+          "Role": "",
+          "Content": "",
+          "ToolCalls": [
+            {
+              "Index": 1,
+              "ID": "",
+              "Type": "",
+              "Name": "",
+              "Arguments": "{}"
+            }
+          ]
+        },
+        "FinishReason": ""
+      }
+    ],
+    "Usage": null
+  },
+  {
+    "ID": "msg_01StreamTool",
+    "Model": "claude-haiku-5-5",
+    "Created": 1792411200,
+    "Choices": [
+      {
+        "Index": 0,
+        "Delta": {
+          "Role": "",
+          "Content": "",
+          "ToolCalls": null
+        },
+        "FinishReason": "tool_calls"
+      }
+    ],
+    "Usage": null
+  },
+  {
+    "ID": "msg_01StreamTool",
+    "Model": "claude-haiku-5-5",
+    "Created": 1792411200,
+    "Choices": [],
+    "Usage": {
+      "PromptTokens": 450,
+      "CompletionTokens": 58,
+      "CachedPromptTokens": 50
+    }
+  }
+]

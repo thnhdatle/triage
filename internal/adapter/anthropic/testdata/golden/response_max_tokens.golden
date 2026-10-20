@@ -1,0 +1,32 @@
+{
+  "ID": "msg_01MaxTokens",
+  "Model": "claude-haiku-5-5",
+  "Created": 1792411200,
+  "Choices": [
+    {
+      "Index": 0,
+      "Message": {
+        "Role": "assistant",
+        "Content": [
+          {
+            "Type": "text",
+            "Text": "The answer is",
+            "ImageURL": "",
+            "ImageDetail": ""
+          }
+        ],
+        "ContentIsString": true,
+        "Name": "",
+        "ToolCalls": null,
+        "ToolCallID": ""
+      },
+      "FinishReason": "length"
+    }
+  ],
+  "Usage": {
+    "PromptTokens": 12,
+    "CompletionTokens": 4,
+    "CachedPromptTokens": 0
+  },
+  "SystemFingerprint": ""
+}

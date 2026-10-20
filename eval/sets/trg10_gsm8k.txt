@@ -1,0 +1,2 @@
+# TRG-10 GSM8K: every GSM8K test item except RouteLLM's contaminated prompts
+gsm8k/test:*

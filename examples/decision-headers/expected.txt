@@ -1,0 +1,8 @@
+== short prompt
+X-Triage-Route: triage-auto
+X-Triage-Target: local-small
+decision: route=triage-auto strategy=length tier=weak attempts=['local-small']
+== long prompt
+X-Triage-Route: triage-auto
+X-Triage-Target: cloud-strong
+decision: route=triage-auto strategy=length tier=strong attempts=['cloud-strong']

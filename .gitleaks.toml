@@ -1,0 +1,11 @@
+# SHA-256 digests pinned in the model manifest are not secrets.
+[extend]
+useDefault = true
+
+[[allowlists]]
+description = "pinned checksums"
+paths = ['''models/manifest\.yaml''', '''research/uv\.lock''']
+
+[[allowlists]]
+description = "synthetic PII and secrets in detector test data (generated, never real)"
+paths = ['''testdata/pii/''', '''internal/adapter/piiregex/.*_test\.go''', '''internal/adapter/piiregex/internal/gen/''', '''internal/adapter/piiregex/testdata/''']

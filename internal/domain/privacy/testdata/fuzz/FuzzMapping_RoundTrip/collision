@@ -1,0 +1,3 @@
+go test fuzz v1
+string("[[EMAIL_1]] then x@y.io")
+[]byte("\x0c\x06\x00\x02")

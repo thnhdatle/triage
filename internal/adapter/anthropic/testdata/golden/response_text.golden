@@ -1,0 +1,32 @@
+{
+  "ID": "msg_01TextFixture",
+  "Model": "claude-haiku-5-5",
+  "Created": 1792411200,
+  "Choices": [
+    {
+      "Index": 0,
+      "Message": {
+        "Role": "assistant",
+        "Content": [
+          {
+            "Type": "text",
+            "Text": "Hanoi is the capital of Vietnam.",
+            "ImageURL": "",
+            "ImageDetail": ""
+          }
+        ],
+        "ContentIsString": true,
+        "Name": "",
+        "ToolCalls": null,
+        "ToolCallID": ""
+      },
+      "FinishReason": "stop"
+    }
+  ],
+  "Usage": {
+    "PromptTokens": 2169,
+    "CompletionTokens": 9,
+    "CachedPromptTokens": 2048
+  },
+  "SystemFingerprint": ""
+}
