@@ -1,6 +1,6 @@
 # Tokenizer parity corpus
 
-Regenerate the corpus that checks `internal/platform/hftok` against Hugging Face `tokenizers`.
+The corpus that checks `internal/platform/hftok` against Hugging Face `tokenizers`.
 
 | Tokenizer | Source | Prompts used |
 |---|---|---|
@@ -43,23 +43,3 @@ Regenerate the corpus that checks `internal/platform/hftok` against Hugging Face
 Every text was written for this project, or is a common phrase or proverb (for example "The
 quick brown fox…", "Ăn quả nhớ kẻ trồng cây"), or is a short factual statement. No dataset,
 licensed or not, was used.
-
-The corpus is generated deterministically (no randomness, no network) by `build_corpus()` in
-`research/src/triage_research/reference_tokenize.py`. A research test fails if the committed
-`corpus.jsonl` and the generator disagree.
-
-## Regenerating
-
-```sh
-make bootstrap                      # pinned, SHA-verified tokenizer.json files
-cd research
-uv run python -m triage_research.reference_tokenize corpus     # corpus.jsonl
-uv run python -m triage_research.reference_tokenize reference  # reference_*.jsonl
-uv run python -m triage_research.reference_tokenize tables     # internal/platform/hftok/tables.go
-```
-
-- `reference` reads `TRIAGE_TOKENIZER_DIR` (default `~/.cache/rayld/triage/tokenizers`, layout
-  `{bert,ner}/tokenizer.json`).
-- It uses `tokenizers==0.23.3`, pinned in `research/pyproject.toml`.
-- The Go test `TestTokenizer_Encode_MatchesReference` reads the same directory. It fails, and
-  does not skip, when the files are missing.

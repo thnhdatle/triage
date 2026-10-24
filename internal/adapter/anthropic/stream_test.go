@@ -111,7 +111,6 @@ func TestClient_Stream_Failures_Table(t *testing.T) {
 	}
 }
 
-// sseServer serves body as an event stream.
 func sseServer(t *testing.T, body string) string {
 	t.Helper()
 	return newServer(t, func(w http.ResponseWriter, _ *http.Request) {

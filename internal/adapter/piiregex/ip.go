@@ -49,7 +49,7 @@ func scanIP(p *profile) []privacy.Finding {
 
 func validIPv4(text string, s, e int) bool {
 	if s > 0 && (text[s-1] == 'v' || text[s-1] == 'V') {
-		return false // version string such as v1.2.3.4
+		return false
 	}
 	if !isolated(text, s, e) {
 		return false
@@ -58,7 +58,6 @@ func validIPv4(text string, s, e int) bool {
 	return err == nil && a.Is4()
 }
 
-// validIPv6 trims sentence punctuation from a candidate and validates it.
 func validIPv6(text string, s, e int) (start, end int, ok bool) {
 	if s > 0 && (isAlnum(text[s-1]) || text[s-1] == '_') {
 		return 0, 0, false
@@ -78,7 +77,6 @@ func validIPv6(text string, s, e int) (start, end int, ok bool) {
 	return s, e, err == nil && a.Is6()
 }
 
-// trimIPv6 drops trailing sentence punctuation from the candidate text[s:e].
 func trimIPv6(text string, s, e int) int {
 	for e > s && text[e-1] == '.' {
 		e--
@@ -89,7 +87,6 @@ func trimIPv6(text string, s, e int) int {
 	return e
 }
 
-// sliceLike spots Python-style slices such as x[::2] that parse as IPv6.
 func sliceLike(text string, s, e int) bool {
 	if e-s > 5 || s == 0 || e >= len(text) || text[s-1] != '[' || text[e] != ']' {
 		return false

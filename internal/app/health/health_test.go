@@ -40,12 +40,12 @@ func TestTracker_Report_ThresholdAndCooldown(t *testing.T) {
 	assert.True(t, tr.IsHealthy("a"), "unknown targets are healthy")
 	tr.Report("a", errDown)
 	assert.True(t, tr.IsHealthy("a"))
-	tr.Report("a", nil) // success resets the count
+	tr.Report("a", nil)
 	tr.Report("a", errDown)
 	assert.True(t, tr.IsHealthy("a"))
 	tr.Report("a", errDown)
 	assert.False(t, tr.IsHealthy("a"))
-	tr.Report("a", nil) // success does not end the cooldown
+	tr.Report("a", nil)
 	assert.False(t, tr.IsHealthy("a"))
 	clk.Advance(time.Minute)
 	assert.True(t, tr.IsHealthy("a"))

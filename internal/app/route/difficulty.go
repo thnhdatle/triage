@@ -13,7 +13,6 @@ import (
 	"github.com/thnhdatle/triage/internal/platform/clock"
 )
 
-// Strategy failure causes (reason "strategy:<name> error-><tier>(<cause>)").
 const (
 	CauseTimeout      = "timeout"
 	CauseRejected     = "rejected"
@@ -21,26 +20,16 @@ const (
 	CauseError        = "error"
 )
 
-// reasonDefault prefixes the reason of a strategy-none route without a rule
-// match, e.g. "default:weak".
 const reasonDefault = "default:"
 
-// causePrivacy is the cause of the mf substitution.
 const causePrivacy = "privacy"
 
-// errScoreTimeout is the cancellation cause of a strategy timeout.
 var errScoreTimeout = errors.New("route: strategy timeout")
 
-// Rejection is implemented by strategy errors that mean the scorer refused
-// the request without trying (bounded queue full); the
-// failure is then recorded with cause "rejected".
 type Rejection interface {
 	Rejected() bool
 }
 
-// difficultyStage picks the tier when no rule matched: the default
-// tier for strategy none, else the strategy score against the threshold, or
-// difficulty.on_error when scoring fails.
 func (r *request) difficultyStage(ctx context.Context) {
 	cr := r.route
 	if cr.strategy == nil {
@@ -83,8 +72,6 @@ func (r *request) difficultyStage(ctx context.Context) {
 	r.dec.AddReason(decision.ReasonStrategy(name, p, threshold))
 }
 
-// score runs s under the strategy's timeout and measures its latency with the
-// clock. A timeout is reported as an error whose cause is errScoreTimeout.
 func (r *request) score(
 	ctx context.Context, s difficulty.Strategy, name string,
 ) (difficulty.Score, time.Duration, error) {
@@ -100,7 +87,6 @@ func (r *request) score(
 	return score, latency, err
 }
 
-// failureCause classifies a scoring error.
 func failureCause(err error) string {
 	var rej Rejection
 	switch {
@@ -114,10 +100,6 @@ func failureCause(err error) string {
 	return CauseError
 }
 
-// withClockTimeout returns a context cancelled with cause after d on clk
-// (so tests drive it with a fake clock), and a stop function that ends the
-// watchdog goroutine, waits for it and releases the context. The timer is
-// armed before withClockTimeout returns.
 func withClockTimeout(
 	parent context.Context, clk clock.Clock, d time.Duration, cause error,
 ) (context.Context, func()) {

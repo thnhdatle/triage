@@ -1,10 +1,6 @@
 #!/usr/bin/env bash
 # SPDX-License-Identifier: Apache-2.0
-# Publishes a release from the outputs of scripts/release-build.sh --push on every architecture,
-# collected in dist/release/: merges the per-architecture images into multi-arch manifests tagged
-# <tag> and latest, writes checksums.txt, and creates the GitHub release with the CHANGELOG.md
-# section of <tag> as notes. Needs docker buildx (logged in to ghcr.io) and gh (GH_TOKEN).
-# Usage: release-publish.sh <tag>
+# Publishes a release from the per-architecture build outputs.
 set -euo pipefail
 cd "$(git rev-parse --show-toplevel)"
 tag="${1:?usage: release-publish.sh <tag>}"

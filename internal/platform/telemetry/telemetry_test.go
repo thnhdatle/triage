@@ -133,7 +133,7 @@ func TestMiddlewareMetricsAndSpan(t *testing.T) {
 	mux.HandleFunc("POST /v1/chat/completions", func(w http.ResponseWriter, r *http.Request) {
 		telemetrySpanAttr(r)
 		w.WriteHeader(http.StatusCreated)
-		w.WriteHeader(http.StatusTeapot) // ignored for the status label
+		w.WriteHeader(http.StatusTeapot)
 		w.(http.Flusher).Flush()
 	})
 	mux.HandleFunc("GET /boom", func(w http.ResponseWriter, _ *http.Request) {

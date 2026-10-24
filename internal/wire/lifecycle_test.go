@@ -47,7 +47,7 @@ func TestServe_HotReload_AppliesValidAndKeepsOldOnInvalid(t *testing.T) {
 		"models: { cache_dir: " + cacheDir + " }\n")
 	r = reload()
 	assert.Equal(t, http.StatusUnprocessableEntity, r.status)
-	assertBERTUnavailable(t, string(r.body)) // missing artifacts reject the reload (F6, F11)
+	assertBERTUnavailable(t, string(r.body))
 
 	r = tr.call(t, http.MethodPost, tr.data+"/v1/chat/completions", chatBody("added", "still here", false))
 	assert.Equal(t, http.StatusOK, r.status, "the previous configuration stays active")
@@ -79,7 +79,7 @@ func TestServe_HotReload_RaceWithTraffic(t *testing.T) {
 					chatBody("triage-auto", "load "+string(rune('a'+w)), i%2 == 0))
 				if err != nil {
 					if ctx.Err() != nil {
-						return // the test is over; the request was cut by the client
+						return
 					}
 					r.status = -1
 				}
@@ -92,7 +92,7 @@ func TestServe_HotReload_RaceWithTraffic(t *testing.T) {
 	for i := range 40 {
 		require.NoError(t, os.WriteFile(tr.cfgPath, []byte(variants[i%len(variants)]), 0o600))
 		if i%2 == 0 {
-			reloads <- struct{}{} // SIGHUP path
+			reloads <- struct{}{}
 		} else {
 			tr.call(t, http.MethodPost, tr.admin+"/v1/admin/reload", nil)
 		}
@@ -121,7 +121,7 @@ func TestServe_GracefulShutdown_DrainsInFlight(t *testing.T) {
 		got <- r
 	}()
 	testutil.Eventually(t, func() bool { return len(f.requests(t)) > 0 }, 5*time.Second)
-	tr.stop(t) // Serve returns nil only after draining
+	tr.stop(t)
 	r := <-got
 	assert.Equal(t, http.StatusOK, r.status, string(r.body))
 	req, err := http.NewRequestWithContext(t.Context(), http.MethodGet, tr.data+"/healthz", nil)
@@ -167,7 +167,6 @@ func TestServe_Tracing_SpanTreeAndPropagation(t *testing.T) {
 	assert.Contains(t, recs[0].Headers.Get("Traceparent"), "4bf92f3577b34da6a3ce929d0e0e4736", "outgoing traceparent")
 }
 
-// reloadCount sums triage_config_reload_total over results.
 func reloadCount(t *testing.T, tr *triage) int {
 	t.Helper()
 	n := 0

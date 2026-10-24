@@ -14,15 +14,11 @@ import (
 	"github.com/thnhdatle/triage/internal/domain/model"
 )
 
-// sseSink writes a chat stream as server-sent events and implements
-// dispatch.Sink. Every event is flushed as it is written. Headers are sent by
-// Start, i.e. with the first relayed byte. A sink serves one request
-// and is called from one goroutine.
 type sseSink struct {
 	s       *Server
 	w       http.ResponseWriter
 	rc      *http.ResponseController
-	id      string // decision id, also the base of the chunk id
+	id      string
 	route   string
 	usage   bool
 	created int64
@@ -38,7 +34,6 @@ func newSSESink(s *Server, w http.ResponseWriter, req chat.Request) *sseSink {
 	}
 }
 
-// Start sends the status line and headers; later calls are no-ops.
 func (k *sseSink) Start(t model.Target) error {
 	if k.started {
 		return nil
@@ -57,10 +52,9 @@ func (k *sseSink) Start(t model.Target) error {
 	return k.flush()
 }
 
-// Chunk writes one chat.completion.chunk event.
 func (k *sseSink) Chunk(c chat.Chunk) error {
 	if !k.usage && len(c.Choices) == 0 && c.Usage != nil {
-		return nil // dispatch always asks upstream for usage; the client did not
+		return nil
 	}
 	b, err := json.Marshal(encodeChunk(c, "chatcmpl-"+k.id, k.created, k.usage))
 	if err != nil {
@@ -69,14 +63,11 @@ func (k *sseSink) Chunk(c chat.Chunk) error {
 	return k.event("data: " + string(b))
 }
 
-// Comment writes an SSE comment line, which clients ignore.
 func (k *sseSink) Comment(text string) error {
 	text = strings.NewReplacer("\r", " ", "\n", " ").Replace(text)
 	return k.event(": " + text)
 }
 
-// Error writes an error event in OpenAI shape. It is a no-op before Start,
-// where the handler answers with a regular error response instead.
 func (k *sseSink) Error(err error) error {
 	if !k.started {
 		return nil
@@ -89,14 +80,11 @@ func (k *sseSink) Error(err error) error {
 	return k.event("data: " + string(b))
 }
 
-// finish completes the response after the pipeline returned.
 func (k *sseSink) finish(out route.Outcome, err error) {
 	switch {
 	case err != nil && !k.started:
 		k.s.routeError(k.w, out, err)
 	case err != nil:
-		// Started: dispatch already sent the error event, or the failure was the
-		// client's own cancellation or a write error, and nobody is listening.
 	default:
 		if !k.started {
 			_ = k.Start(model.Target{Name: out.Target})
@@ -106,7 +94,6 @@ func (k *sseSink) finish(out route.Outcome, err error) {
 }
 
 func (k *sseSink) event(line string) error {
-	// A per-write deadline replaces the server WriteTimeout on streams.
 	if err := k.rc.SetWriteDeadline(k.s.deadline()); err != nil && !errors.Is(err, http.ErrNotSupported) {
 		return fmt.Errorf("set write deadline: %w", err)
 	}

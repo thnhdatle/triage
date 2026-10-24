@@ -6,15 +6,15 @@ Measure how much strong-model quality a routing strategy keeps for the cost it s
 
 ## Datasets
 
-Use your own JSONL dataset, or the project's benchmark sets (GSM8K, MMLU, RouteLLM labels):
+Use your own JSONL dataset, or the project's benchmark sets (GSM8K, MMLU and published GPT-4 / Mixtral labels):
 
 ```sh
 scripts/fetch_eval_data.sh      # into ~/.cache/rayld/triage/eval/data
 ```
 
 Sets and prompt templates are described in [eval/README.md](../../eval/README.md).
-Example configurations: `eval/trg03.yaml` (live, LM Studio pair), `eval/trg10.yaml` (MMLU labels)
-and `eval/trg10_gsm8k.yaml` (GSM8K labels).
+Example configurations: `eval/live.yaml` (live, LM Studio pair), `eval/labels-mmlu.yaml` (MMLU labels)
+and `eval/labels-gsm8k.yaml` (GSM8K labels). `make eval` runs all three in about 10 minutes.
 
 ## Run it
 
@@ -63,7 +63,7 @@ One JSON object per line.
 
 ```yaml
 dataset:
-  sets: [eval/sets/trg03_cal.txt, eval/sets/trg03_eval.txt]   # item-id files
+  sets: [eval/sets/live_cal.txt, eval/sets/live_eval.txt]     # item-id files
   prompts: eval/prompts/                       # live mode: gsm8k.txt and mmlu.txt
   data_dir: ~/.cache/rayld/triage/eval/data    # default <cache_dir>/data
   labels: { weak: mistralai/Mixtral-8x7B-Instruct-v0.1, strong: gpt-4-1106-preview }  # labels mode
@@ -107,7 +107,7 @@ cannot be built is shown as "not measured".
 By default each strategy uses the route's `threshold`. To calibrate it instead:
 
 ```yaml
-threshold_rule: { calibration: eval/sets/trg03_cal.txt, min_accuracy_of_all_strong: 0.96 }
+threshold_rule: { calibration: eval/sets/live_cal.txt, min_accuracy_of_all_strong: 0.96 }
 ```
 
 This picks the threshold with the fewest strong calls that keeps 96% of all-strong accuracy.
@@ -154,7 +154,7 @@ datasets; a few dozen items say little.
 | `dataset.sets` | one of the two | item-id set files |
 | `dataset.prompts` | required with `sets` in `live` | prompt template directory |
 | `dataset.data_dir` | `<cache_dir>/data` | benchmark data |
-| `dataset.labels.weak`, `.strong` | required with `sets` in `labels` | RouteLLM label columns |
+| `dataset.labels.weak`, `.strong` | required with `sets` in `labels` | label file columns |
 | `targets.weak`, `targets.strong` | required in `live` | `provider`, `model`, `pricing` |
 | `generation.temperature`, `.seed`, `.max_tokens` | unset | generation settings (`max_tokens` 0 = not sent) |
 | `strategies` | required | e.g. `random`, `length`, `bert`, `mf`, `none` |

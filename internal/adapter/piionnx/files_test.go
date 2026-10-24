@@ -97,7 +97,6 @@ func TestReadVocabulary_Pinned(t *testing.T) {
 	assert.True(t, cont)
 }
 
-// fakeEncoder returns fixed ids per text, or err.
 type fakeEncoder struct {
 	ids map[string][]int
 	err error

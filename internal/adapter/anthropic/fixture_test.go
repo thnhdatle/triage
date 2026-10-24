@@ -35,23 +35,16 @@ func TestMain(m *testing.M) {
 	goleak.VerifyTestMain(m)
 }
 
-// epoch is the fake clock time; translated responses carry it as created.
 var epoch = time.Date(2026, 10, 19, 12, 0, 0, 0, time.UTC)
 
-// fixtureHeader selects the recorded response served by the fixture server.
 const fixtureHeader = "X-Fixture"
 
-// recorded is one request received by the fixture server.
 type recorded struct {
 	method, path string
 	header       http.Header
 	body         []byte
 }
 
-// fixtureServer replays recorded Anthropic responses from testdata/anthropic.
-// A fixture file holds "status: N", response headers, a blank line and the
-// body, like a raw HTTP response. The fixture is chosen by the X-Fixture
-// request header.
 type fixtureServer struct {
 	url  string
 	mu   sync.Mutex
@@ -117,7 +110,6 @@ func (fs *fixtureServer) last(t *testing.T) recorded {
 	return fs.reqs[len(fs.reqs)-1]
 }
 
-// client returns a client for the fixture server serving fixture.
 func (fs *fixtureServer) client(t *testing.T, fixture string, opts ...anthropic.Option) *anthropic.Client {
 	t.Helper()
 	all := make([]anthropic.Option, 0, 4+len(opts))
@@ -151,8 +143,6 @@ func ctxT(t *testing.T) context.Context {
 	return ctx
 }
 
-// golden compares got (JSON) with testdata/golden/<name>.golden; -update
-// rewrites it.
 func golden(t *testing.T, name string, got []byte) {
 	t.Helper()
 	path := filepath.Join("testdata", "golden", name+".golden")
@@ -175,7 +165,6 @@ func goldenValue(t *testing.T, name string, v any) {
 	golden(t, name, data)
 }
 
-// collect reads a stream to its end.
 func collect(t *testing.T, s provider.Stream) ([]chat.Chunk, error) {
 	t.Helper()
 	var out []chat.Chunk

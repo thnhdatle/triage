@@ -18,8 +18,6 @@ import (
 	"github.com/thnhdatle/triage/internal/domain/artifact"
 )
 
-// scriptRunner fails the commands whose joined argv is in fail and records
-// every call; the converter run itself delegates to conv.
 type scriptRunner struct {
 	fail  map[string]bool
 	calls []string
@@ -38,7 +36,7 @@ func (s *scriptRunner) Run(ctx context.Context, name string, args []string, stdo
 	}
 	s.calls = append(s.calls, "run")
 	s.conv.args = args
-	out := filepath.Join(s.dir, bert.INT8FileName) // the container mount, as seen from the host
+	out := filepath.Join(s.dir, bert.INT8FileName)
 	if err := os.WriteFile(out, s.conv.body, 0o600); err != nil {
 		return err
 	}

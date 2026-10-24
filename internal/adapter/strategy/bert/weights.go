@@ -14,12 +14,8 @@ import (
 	"strconv"
 )
 
-// ErrWeightsMismatch is returned when the weights next to an FP32 graph do
-// not have the SHA-256 or size recorded in the graph: its external-data
-// offsets would then point at the wrong bytes.
 var ErrWeightsMismatch = errors.New("bert: model.safetensors does not match the graph")
 
-// weightsRef is the triage.weights.* metadata of a weight-free graph.
 type weightsRef struct {
 	file   string
 	sha256 string
@@ -43,8 +39,6 @@ func weightsRefOf(meta map[string]string) (weightsRef, error) {
 	return ref, nil
 }
 
-// verify checks the weights file in dir against the reference: size first
-// (cheap), then SHA-256.
 func (r weightsRef) verify(ctx context.Context, dir string) error {
 	path := filepath.Join(dir, r.file)
 	st, err := os.Stat(path)
@@ -64,7 +58,6 @@ func (r weightsRef) verify(ctx context.Context, dir string) error {
 	return nil
 }
 
-// fileSHA256 hashes a file, stopping between chunks when ctx ends.
 func fileSHA256(ctx context.Context, path string) (string, error) {
 	f, err := os.Open(path) //nolint:gosec // G304: artifact paths come from configuration or the cache.
 	if err != nil {

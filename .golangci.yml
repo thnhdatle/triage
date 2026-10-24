@@ -2,7 +2,7 @@
 version: "2"
 run:
   timeout: 10m
-  build-tags: [integration, acceptance, bench]
+  build-tags: [integration]
 linters:
   default: none
   enable:
@@ -88,9 +88,13 @@ linters:
   exclusions:
     generated: lax
     rules:
+      # Only the public API needs a doc comment on every exported name.
+      - path: (^internal/|/internal/|^cmd/|^examples/|^models/)
+        text: "exported"
+        linters: [revive]
       - path: _test\.go
         linters: [funlen, dupl, goconst, gosec, wrapcheck, errcheck, forcetypeassert]
-      - path: ^(cmd|internal/app|internal/domain|internal/config|internal/platform|internal/wire|models|acceptance|bench)/
+      - path: ^(cmd|internal/app|internal/domain|internal/config|internal/platform|internal/wire|models)/
         linters: [wrapcheck]
 formatters:
   enable:

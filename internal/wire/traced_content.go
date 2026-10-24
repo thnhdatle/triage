@@ -12,8 +12,6 @@ import (
 	"github.com/thnhdatle/triage/internal/domain/chat"
 )
 
-// Content attribute keys (OTel GenAI semantic conventions), set only under
-// tracing.capture_content.
 const (
 	attrInputMessages  = "gen_ai.input.messages"
 	attrOutputMessages = "gen_ai.output.messages"
@@ -39,7 +37,7 @@ func partsOf(m chat.Message) []contentPart {
 		if p.Type == chat.PartText {
 			parts = append(parts, contentPart{Type: "text", Content: p.Text})
 		} else {
-			parts = append(parts, contentPart{Type: "image"}) // the URL may be a data: payload; never recorded
+			parts = append(parts, contentPart{Type: "image"})
 		}
 	}
 	for _, c := range m.ToolCalls {
@@ -50,7 +48,6 @@ func partsOf(m chat.Message) []contentPart {
 	return parts
 }
 
-// inputMessages is the JSON of the messages exactly as sent upstream.
 func inputMessages(req chat.Request) string {
 	out := make([]contentMessage, 0, len(req.Messages))
 	for _, m := range req.Messages {
@@ -59,7 +56,6 @@ func inputMessages(req chat.Request) string {
 	return marshalContent(out)
 }
 
-// outputMessages is the JSON of the choices exactly as received upstream.
 func outputMessages(resp chat.Response) string {
 	out := make([]contentMessage, 0, len(resp.Choices))
 	for _, c := range resp.Choices {
@@ -72,14 +68,12 @@ func outputMessages(resp chat.Response) string {
 
 func marshalContent(v []contentMessage) string {
 	b, err := json.Marshal(v)
-	if err != nil { // plain strings cannot fail to marshal
+	if err != nil {
 		return "[]"
 	}
 	return string(b)
 }
 
-// streamContent accumulates the text and finish reason of the first choice of
-// a stream for gen_ai.output.messages.
 type streamContent struct {
 	text   strings.Builder
 	finish chat.FinishReason

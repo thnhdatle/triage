@@ -1,5 +1,5 @@
 # SPDX-License-Identifier: Apache-2.0
-"""Unit tests for triage_research.make_eval_sets on synthetic data (no network)."""
+"""Tests for the eval set converter on synthetic data."""
 
 from __future__ import annotations
 
@@ -39,7 +39,6 @@ def _data(tmp_path: Path) -> Path:
         _jsonl(d / "mmlu" / "test" / f"{subject}.jsonl", rows)
     bad = m.mmlu_prompt("anatomy 0", ["a", "b", "c", "d"])
     _jsonl(d / "routellm" / "mmlu" / "contaminated_prompts.jsonl", [{"eval_prompt": bad}])
-    # Only the first 15 anatomy items have labels.
     label = d / "routellm" / "mmlu" / "responses" / "mmlu_anatomy.csv"
     label.parent.mkdir(parents=True, exist_ok=True)
     with label.open("w", encoding="utf-8", newline="") as f:
@@ -50,7 +49,7 @@ def _data(tmp_path: Path) -> Path:
     return d
 
 
-def test_mmlu_prompt_matches_routellm_format() -> None:
+def test_mmlu_prompt_matches_label_format() -> None:
     assert m.mmlu_prompt("Q?", ["w", "x", "y", "z"]) == "Q?\nA. w\nB. x\nC. y\nD. z\nAnswer:"
 
 
@@ -66,26 +65,30 @@ def test_candidates_exclude_contaminated(tmp_path: Path) -> None:
 def test_draw_is_seeded_disjoint_and_sized(tmp_path: Path, monkeypatch: pytest.MonkeyPatch) -> None:
     monkeypatch.setattr(m, "GSM8K_PER_SET", 4)
     monkeypatch.setattr(m, "MMLU_PER_SET", 3)
-    monkeypatch.setattr(m, "APGR_SET_SIZE", 6)
+    monkeypatch.setattr(m, "LABELS_MMLU_SIZE", 6)
+    monkeypatch.setattr(m, "LABELS_GSM8K_SIZE", 5)
     d = _data(tmp_path)
     a = m.draw(d, 7)
     assert a == m.draw(d, 7)
     assert a != m.draw(d, 8)
-    cal, ev = a["trg03_cal.txt"], a["trg03_eval.txt"]
+    cal, ev = a["live_cal.txt"], a["live_eval.txt"]
     assert len(cal) == len(ev) == 7
     assert not set(cal) & set(ev)
     assert sum(i.startswith("gsm8k/") for i in cal) == 4
-    assert len(a["trg10_mmlu.txt"]) == 6
-    assert all(i.startswith("mmlu/test:anatomy:") for i in a["trg10_mmlu.txt"])
+    assert len(a["labels_mmlu.txt"]) == 6
+    assert all(i.startswith("mmlu/test:anatomy:") for i in a["labels_mmlu.txt"])
+    assert len(a["labels_gsm8k.txt"]) == 5
+    assert all(i.startswith("gsm8k/test:") for i in a["labels_gsm8k.txt"])
 
 
 def test_write_sets_files(tmp_path: Path, monkeypatch: pytest.MonkeyPatch) -> None:
     monkeypatch.setattr(m, "GSM8K_PER_SET", 2)
     monkeypatch.setattr(m, "MMLU_PER_SET", 2)
-    monkeypatch.setattr(m, "APGR_SET_SIZE", 3)
+    monkeypatch.setattr(m, "LABELS_MMLU_SIZE", 3)
+    monkeypatch.setattr(m, "LABELS_GSM8K_SIZE", 3)
     out = tmp_path / "sets"
     m.write_sets(_data(tmp_path), out, 7)
-    text = (out / "trg03_cal.txt").read_text(encoding="utf-8").splitlines()
+    text = (out / "live_cal.txt").read_text(encoding="utf-8").splitlines()
     assert text[0].startswith("# ")
     assert next(line for line in text if not line.startswith("#")).startswith("gsm8k/test:")
 

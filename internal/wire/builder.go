@@ -31,9 +31,6 @@ import (
 	"github.com/thnhdatle/triage/internal/platform/telemetry"
 )
 
-// builder turns configurations into generations, reusing the resources of
-// the current generation whose inputs did not change (provider pools,
-// strategies keyed by artifact and options, the NER session).
 type builder struct {
 	env      Env
 	log      *slog.Logger
@@ -43,23 +40,19 @@ type builder struct {
 	recorder decision.Recorder
 	ort      *ortHolder
 
-	mu    sync.Mutex // serialises build and commit; guards cache
+	mu    sync.Mutex
 	cache map[string]*shared
 }
 
-// assembly is one build in progress.
 type assembly struct {
-	b   *builder
-	ctx context.Context //nolint:containedctx // lives only for one build call
-	cfg *config.Config
-	p   *plan
-	g   *generation
-	// layout is set by providers.
+	b      *builder
+	ctx    context.Context //nolint:containedctx // lives only for one build call
+	cfg    *config.Config
+	p      *plan
+	g      *generation
 	layout *providerLayout
 }
 
-// get returns the cached resource for key or builds it with mk, and adds it
-// to the generation.
 func (a *assembly) get(key string, mk func() (*shared, error)) (any, error) {
 	if r, ok := a.g.resources[key]; ok {
 		return r.value, nil
@@ -76,8 +69,7 @@ func (a *assembly) get(key string, mk func() (*shared, error)) (any, error) {
 	return r.value, nil
 }
 
-// build resolves and builds cfg. Nothing changes for running requests until
-// commit.
+// build resolves and builds a generation from cfg.
 func (b *builder) build(ctx context.Context, cfg *config.Config) (*generation, error) {
 	b.mu.Lock()
 	defer b.mu.Unlock()
@@ -147,8 +139,6 @@ func (a *assembly) assemble() error {
 	return nil
 }
 
-// providers builds one traced provider per client key, the target pool and
-// the health checks.
 func (a *assembly) providers() (map[string]provider.Provider, map[string]route.Embedder, error) {
 	layout, err := layoutProviders(a.cfg, a.b.env, a.cfg.Difficulty.MF.Provider)
 	if err != nil {
@@ -228,7 +218,6 @@ func targetOf(t config.Target, providerKey string) model.Target {
 	}
 }
 
-// counter loads selection.tokenizer (nil means the estimate).
 func (a *assembly) counter() (chat.TokenCounter, error) {
 	if a.p.tokenizer == "" {
 		return nil, nil //nolint:nilnil // nil counter selects chat.Estimator
@@ -350,7 +339,6 @@ func (a *assembly) detectors() ([]privacy.Detector, error) {
 	return append(dets, v.(privacy.Detector)), nil //nolint:forcetypeassert // "ner:" keys hold detectors
 }
 
-// routesOf converts the configured routes (already validated).
 func routesOf(cfg *config.Config, p *plan) ([]route.Route, error) {
 	out := make([]route.Route, 0, len(cfg.Routes))
 	for _, r := range cfg.Routes {
@@ -409,8 +397,6 @@ func routeOptions(cfg *config.Config, p *plan, counter chat.TokenCounter) route.
 	}
 }
 
-// commit makes g current and arranges for the previous generation's
-// resources to be released once its last request ends.
 func (b *builder) commit(ctx context.Context, l *live, g *generation) {
 	b.mu.Lock()
 	defer b.mu.Unlock()
@@ -422,8 +408,6 @@ func (b *builder) commit(ctx context.Context, l *live, g *generation) {
 	b.retire(ctx, l.swap(g))
 }
 
-// retire drops the live reference of old; the last request to finish on it
-// disposes it.
 func (b *builder) retire(ctx context.Context, old *generation) {
 	if old == nil {
 		return
@@ -437,7 +421,6 @@ func (b *builder) retire(ctx context.Context, old *generation) {
 	old.release()
 }
 
-// shutdown retires the current generation and forgets the cache.
 func (b *builder) shutdown(ctx context.Context, l *live) {
 	b.mu.Lock()
 	defer b.mu.Unlock()

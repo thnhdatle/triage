@@ -85,8 +85,6 @@ func TestClient_Complete_ErrorScenarios(t *testing.T) {
 
 func TestClient_Complete_ErrorMessageHasNoContent(t *testing.T) {
 	t.Parallel()
-	// fakellm echoes the scenario name; the adapter must report only status,
-	// type and code.
 	c := newClient(t, newFake(t), scenario("secret-scenario-text", nil))
 	_, err := c.Complete(ctxT(t), userReq("m", "x"))
 	require.ErrorIs(t, err, provider.ErrBadRequest)
@@ -136,7 +134,6 @@ func TestClient_Complete_Unreachable(t *testing.T) {
 	assert.True(t, provider.IsRetryable(err))
 }
 
-// collect reads a stream to its end.
 func collect(t *testing.T, s provider.Stream) ([]chat.Chunk, error) {
 	t.Helper()
 	var out []chat.Chunk
@@ -179,7 +176,6 @@ func TestClient_Stream_TextWithUsage(t *testing.T) {
 	assert.Equal(t, chat.FinishStop, finish)
 	require.NotNil(t, usage)
 	assert.Equal(t, chat.Usage{PromptTokens: 3, CompletionTokens: 3}, *usage)
-	// Recv after the end keeps returning io.EOF.
 	_, err = s.Recv()
 	require.ErrorIs(t, err, io.EOF)
 }

@@ -21,7 +21,6 @@ import (
 	"github.com/thnhdatle/triage/internal/platform/clock"
 )
 
-// fixed returns a handler answering with status, headers and body.
 func fixed(status int, headers map[string]string, body string) http.HandlerFunc {
 	return func(w http.ResponseWriter, _ *http.Request) {
 		for k, v := range headers {

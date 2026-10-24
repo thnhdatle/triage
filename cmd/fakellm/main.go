@@ -1,11 +1,6 @@
 // SPDX-License-Identifier: Apache-2.0
 
-// Command fakellm is a fake OpenAI-compatible provider (contract C2).
-//
-// Usage:
-//
-//	fakellm [--listen :8090] [--record=true] [--record-limit 10000]
-//	fakellm healthcheck [--listen :8090]
+// Command fakellm is a fake OpenAI-compatible LLM provider for tests.
 package main
 
 import (
@@ -69,7 +64,6 @@ func serve(ctx context.Context, addr string, h http.Handler, logger *slog.Logger
 	if err != nil {
 		return fmt.Errorf("listen %s: %w", addr, err)
 	}
-	// No WriteTimeout: streaming and the timeout scenario hold responses open.
 	hs := &http.Server{
 		Handler:           h,
 		ReadHeaderTimeout: 10 * time.Second,
@@ -112,7 +106,6 @@ func runHealthcheck(ctx context.Context, args []string, stderr io.Writer) int {
 	return 0
 }
 
-// healthURL turns a listen address into the loopback /healthz URL.
 func healthURL(listen string) string {
 	host, port, err := net.SplitHostPort(listen)
 	if err != nil {

@@ -28,7 +28,6 @@ sha256_of() {
 	if command -v sha256sum >/dev/null 2>&1; then sha256sum "$1" | awk '{print $1}'; else shasum -a 256 "$1" | awk '{print $1}'; fi
 }
 
-# fetch <url> <sha256> <dest>: download once, verify, keep only verified files.
 fetch() {
 	local url="$1" want="$2" dest="$3" tmp got
 	if [ -f "$dest" ] && [ "$(sha256_of "$dest")" = "$want" ]; then
@@ -53,7 +52,6 @@ fetch() {
 }
 
 if [ -f "$MANIFEST" ] && command -v yq >/dev/null 2>&1; then
-	# Tokenizer files used by fixtures and parity tests: bert (XLM-R) and ner.
 	for name in bert ner; do
 		repo="$(yq ".entries[] | select(.name == \"$name\") | .hf_repo" "$MANIFEST")"
 		rev="$(yq ".entries[] | select(.name == \"$name\") | .revision" "$MANIFEST")"

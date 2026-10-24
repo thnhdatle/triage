@@ -1,10 +1,10 @@
-# TRG-10, GSM8K part: 1,319 test items minus RouteLLM's contaminated prompts, published labels.
+# Offline APGR on 300 MMLU items with published labels (GPT-4-1106 vs Mixtral). No LLM calls.
 mode: labels
 config: deploy/config.example.yaml
 route: triage-auto
 dataset:
-  sets: [eval/sets/trg10_gsm8k.txt]
+  sets: [eval/sets/labels_mmlu.txt]
   labels: { weak: mistralai/Mixtral-8x7B-Instruct-v0.1, strong: gpt-4-1106-preview }
-strategies: [random, bert, mf]
+strategies: [random, bert]
 bootstrap: { resamples: 10000, seed: 7 }
 cache_dir: ~/.cache/rayld/triage/eval

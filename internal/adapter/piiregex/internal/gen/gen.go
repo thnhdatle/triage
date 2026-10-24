@@ -1,7 +1,6 @@
 // SPDX-License-Identifier: Apache-2.0
 
-// Package gen generates the labelled PII data set under testdata/pii from a
-// seed. Output is deterministic: the same seed always yields the same bytes.
+// Package gen generates the labeled PII data set under testdata/pii from a seed.
 package gen
 
 import (
@@ -14,7 +13,6 @@ import (
 	"strings"
 )
 
-// Default seed and sizes of the committed data set.
 const (
 	Seed              int64 = 20261019
 	PositivesPerType        = 140
@@ -26,21 +24,18 @@ const (
 	positiveTypeCount       = 10
 )
 
-// Span is a labelled PII span; Start and End are byte offsets into Text.
 type Span struct {
 	Start int    `json:"start"`
 	End   int    `json:"end"`
 	Type  string `json:"type"`
 }
 
-// Sample is one labelled string.
 type Sample struct {
 	Text  string `json:"text"`
 	Spans []Span `json:"spans"`
 	Lang  string `json:"lang"`
 }
 
-// builder assembles a sample and records the spans of PII values.
 type builder struct {
 	sb    strings.Builder
 	spans []Span
@@ -62,7 +57,6 @@ func (b *builder) sample(lang string) Sample {
 	return Sample{Text: b.sb.String(), Spans: spans, Lang: lang}
 }
 
-// generator wraps the seeded random source.
 type generator struct{ r *rand.Rand }
 
 func newGenerator(seed int64) *generator {
@@ -71,10 +65,8 @@ func newGenerator(seed int64) *generator {
 
 func (g *generator) intn(n int) int { return g.r.Intn(n) }
 
-// between returns an int in [lo, hi].
 func (g *generator) between(lo, hi int) int { return lo + g.r.Intn(hi-lo+1) }
 
-// pick returns a random element of a "|"-separated list.
 func (g *generator) pick(list string) string {
 	items := strings.Split(list, "|")
 	return items[g.r.Intn(len(items))]
@@ -98,8 +90,7 @@ func (g *generator) charset(n int, set string) string {
 	return string(b)
 }
 
-// Positives returns PositivesPerType labelled strings for each of the ten
-// PII types, in languages en, ko and vi, with some two-value strings.
+// Positives returns the samples that contain PII.
 func Positives(seed int64) []Sample {
 	g := newGenerator(seed)
 	types := strings.Split(AllTypes, "|")
@@ -119,7 +110,7 @@ func Positives(seed int64) []Sample {
 	return out
 }
 
-// Negatives returns NegativeCount PII-free strings.
+// Negatives returns the samples that contain no PII.
 func Negatives(seed int64) []Sample {
 	g := newGenerator(seed + 1)
 	out := make([]Sample, 0, NegativeCount)
@@ -129,7 +120,7 @@ func Negatives(seed int64) []Sample {
 	return out
 }
 
-// Write generates the data set into dir.
+// Write writes the data set files into dir.
 func Write(dir string, seed int64) error {
 	if err := os.MkdirAll(dir, dirMode); err != nil {
 		return fmt.Errorf("gen: create %s: %w", dir, err)

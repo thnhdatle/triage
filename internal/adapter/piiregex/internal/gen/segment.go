@@ -2,7 +2,6 @@
 
 package gen
 
-// frame returns generic surrounding text for a context-free value.
 func (g *generator) frame(lang string) (pre, post string) {
 	switch lang {
 	case "ko":
@@ -16,7 +15,6 @@ func (g *generator) frame(lang string) (pre, post string) {
 		g.pick("|.|, thanks.|\nLet me know if that works.")
 }
 
-// contextPre returns a lead-in that contains a context word for the type.
 func (g *generator) contextPre(typ, lang string) string {
 	switch typ + "/" + lang {
 	case "phone/ko":

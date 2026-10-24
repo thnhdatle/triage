@@ -9,8 +9,6 @@
 bin
 dist
 coverage.*
-acceptance/logs
-acceptance/.build
 out
 paper
 *.local.yaml

@@ -10,18 +10,12 @@ import (
 	"strconv"
 )
 
-// This file hand-encodes tiny ONNX models (onnx.proto3 field numbers) so the
-// tests need no downloads, no Python and no protobuf dependency. The output is
-// deterministic: the same builder call always yields the same bytes.
-
-// ONNX TensorProto.DataType values used by the test models.
 const (
 	onnxFloat = 1
 	onnxInt32 = 6
 	onnxInt64 = 7
 )
 
-// pb is a protobuf message being encoded.
 type pb []byte
 
 func (b pb) tag(field, wire int) pb { return binary.AppendUvarint(b, uint64(field<<3|wire)) }
@@ -37,10 +31,8 @@ func (b pb) bytes(field int, p []byte) pb {
 
 func (b pb) str(field int, s string) pb { return b.bytes(field, []byte(s)) }
 
-// dim is a tensor dimension: an int64 value or a symbolic name.
 type dim any
 
-// valueInfo encodes a ValueInfoProto of a tensor.
 func valueInfo(name string, elem int, dims ...dim) pb {
 	var shape pb
 	for _, d := range dims {
@@ -58,12 +50,10 @@ func valueInfo(name string, elem int, dims ...dim) pb {
 	return pb{}.str(1, name).bytes(2, typ)
 }
 
-// attrInt encodes an INT AttributeProto.
 func attrInt(name string, v int64) pb {
 	return pb{}.str(1, name).varint(3, v).varint(20, 2)
 }
 
-// node encodes a NodeProto.
 func node(op string, in, out []string, attrs ...pb) pb {
 	var n pb
 	for _, s := range in {
@@ -79,7 +69,6 @@ func node(op string, in, out []string, attrs ...pb) pb {
 	return n
 }
 
-// floatInit encodes a float32 TensorProto initializer with raw data.
 func floatInit(name string, dims []int64, data []float32) pb {
 	var t pb
 	for _, d := range dims {
@@ -92,12 +81,10 @@ func floatInit(name string, dims []int64, data []float32) pb {
 	return t.varint(2, onnxFloat).str(8, name).bytes(9, raw)
 }
 
-// graphSpec is the content of a GraphProto.
 type graphSpec struct {
 	nodes, inits, inputs, outputs []pb
 }
 
-// model encodes a ModelProto (IR 8, default-domain opset 13).
 func model(g graphSpec) []byte {
 	var gp pb
 	for _, n := range g.nodes {
@@ -117,7 +104,6 @@ func model(g graphSpec) []byte {
 	return pb{}.varint(1, 8).str(2, "onnxrt-test").bytes(7, gp).bytes(8, opset)
 }
 
-// Weights of addModel: logits[j] = h[j] + h[3] + bias[j] for j < 3.
 var (
 	addW = []float32{
 		1, 0, 0,
@@ -128,9 +114,6 @@ var (
 	addB = []float32{10, 0, 0}
 )
 
-// addModel has inputs ids int64 [batch,4] and x float32 [batch,4] and
-// outputs logits float32 [batch,3] = (float(ids)+x)·W + B and
-// top int64 [batch] = argmax(logits).
 func addModel() []byte {
 	return model(graphSpec{
 		nodes: []pb{
@@ -146,7 +129,6 @@ func addModel() []byte {
 	})
 }
 
-// addReference computes addModel in Go.
 func addReference(ids []int64, x []float32) (logits []float32, top []int64) {
 	for r := range len(ids) / 4 {
 		var h [4]float32
@@ -170,7 +152,6 @@ func addReference(ids []int64, x []float32) (logits []float32, top []int64) {
 	return logits, top
 }
 
-// castModel casts float32 x [1] to element type to (output y).
 func castModel(to int) []byte {
 	return model(graphSpec{
 		nodes:   []pb{node("Cast", []string{"x"}, []string{"y"}, attrInt("to", int64(to)))},
@@ -179,8 +160,6 @@ func castModel(to int) []byte {
 	})
 }
 
-// slowModel multiplies x [n,n] by itself k times; it runs long enough for a
-// short deadline to expire mid-run.
 func slowModel(n, k int) []byte {
 	nodes := make([]pb, 0, k)
 	prev := "x"

@@ -8,7 +8,7 @@
 
 ## How tested
 
-<!-- Commands run and results (make test, make ci, acceptance criteria run). -->
+<!-- Commands run and results (make test, make ci). -->
 
 ## Checklist
 

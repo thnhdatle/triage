@@ -11,7 +11,6 @@ import (
 	"pgregory.net/rapid"
 )
 
-// runMatchers is every prefiltered pattern of the package.
 func runMatchers() map[string]*runMatcher {
 	return map[string]*runMatcher{
 		"cccd": cccdRe, "iban": ibanHeadRe, "credit_card": creditCardRe, "rrn": rrnRe, "ssn": ssnRe,
@@ -20,8 +19,6 @@ func runMatchers() map[string]*runMatcher {
 	}
 }
 
-// requireSameMatches checks the prefilter is invisible: findAll equals an
-// unrestricted FindAllStringIndex on text.
 func requireSameMatches(t require.TestingT, text string) {
 	for name, m := range runMatchers() {
 		want := m.re.FindAllStringIndex(text, -1)
@@ -49,8 +46,6 @@ func TestRunMatcher_SameMatchesOnTestData(t *testing.T) {
 
 func TestRunMatcher_SameMatchesProperty(t *testing.T) {
 	t.Parallel()
-	// Bytes that occur in the patterns' alphabets plus separators that split
-	// runs, multi-byte runes and an invalid byte.
 	pieces := []string{
 		"0", "1", "2", "3", "4", "5", "7", "9", "0", "1", "8", " ", "-", ".", "(", ")", "+", ":", "@", "_", "/",
 		"%", "a", "e", "f", "x", "k", "s", "A", "B", "D", "E", "F", "G", "K", "I", "J", "y", "o", "b", "p",

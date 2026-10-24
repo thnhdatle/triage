@@ -12,7 +12,6 @@ import (
 	"github.com/thnhdatle/triage/internal/domain/chat"
 )
 
-// streamAll feeds deltas to one stream and returns the relayed text.
 func streamAll(s *StreamUnmasker, args bool, deltas []string) string {
 	var b strings.Builder
 	for _, d := range deltas {
@@ -204,7 +203,7 @@ func TestStreamUnmasker_ToolArgs_StateAcrossDeltas(t *testing.T) {
 	for _, p := range parts {
 		b.WriteString(s.ToolArgs(0, 1, p))
 	}
-	want := `{"a":"x\"say \"hi\" \\ ok","b":say "hi" \ ok}` // byte-exact, not JSONEq
+	want := `{"a":"x\"say \"hi\" \\ ok","b":say "hi" \ ok}`
 	assert.Equal(t, want, b.String())
 	assert.Equal(t, "plain", s.Text(0, "plain"), "content streams are separate")
 }
@@ -301,7 +300,6 @@ func TestStreamUnmasker_Text_NonASCIIBytes(t *testing.T) {
 	t.Parallel()
 	m := testMapping(t)
 	s := m.NewStreamUnmasker()
-	// U+0400 is encoded D0 80; 0x80 must not be looked up in the ASCII table.
 	in := "Ѐ[[EMAIL_1]]Ѐ [[KR_RRN_1]]"
 	var b strings.Builder
 	for i := 0; i < len(in); i++ {

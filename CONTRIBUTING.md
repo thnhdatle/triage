@@ -41,9 +41,7 @@ make ci          # lint, test, test-integration, coverage, examples, security
 | `test` | unit tests with `-race` |
 | `test-integration` | integration tests (Testcontainers) |
 | `coverage` | coverage with thresholds |
-| `mutation` | mutation tests, routing and privacy |
-| `acceptance` | acceptance suite; `ONLY=<ids>` subset, `CI=1` CI thresholds |
-| `bench` | benchmarks, writes `bench/RESULTS.md` |
+| `eval` | small eval runs, about 10 minutes (live part needs LM Studio) |
 | `fuzz` | each fuzz target for `FUZZTIME` |
 | `examples` | run examples, check output |
 | `quickstart-test` | README quickstart from a clean clone |
@@ -61,12 +59,9 @@ make ci          # lint, test, test-integration, coverage, examples, security
 ```bash
 make test               # unit
 make test-integration   # integration, needs Docker
-make acceptance         # acceptance; add CI=1 for the CI thresholds
 make fuzz               # fuzz
-make bench              # benchmarks
+make eval               # small eval runs (live part needs LM Studio)
 ```
-
-Acceptance requirements: [acceptance/README.md](acceptance/README.md).
 
 ## Commit format
 
@@ -77,7 +72,7 @@ One line only, no body or trailers:
 ```
 
 - Types: `feat, fix, perf, refactor, test, docs, build, ci, chore`.
-- Scope: the area you change, for example `router`, `pii`, `strategy`, `api`, `bench`, `deps`.
+- Scope: the area you change, for example `router`, `pii`, `strategy`, `api`, `deps`.
 - Summary: starts lowercase, no final period.
 - Whole line: at most 72 characters.
 

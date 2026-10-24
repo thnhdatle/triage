@@ -24,8 +24,8 @@ var update = flag.Bool("update", false, "rewrite testdata/pii/REPORT.md")
 
 const (
 	dataDir          = "../../../testdata/pii"
-	recallStrong     = 0.99 // checksum and structural detectors
-	recallWeak       = 0.95 // context-anchored and street-address detectors
+	recallStrong     = 0.99
+	recallWeak       = 0.95
 	maxNegativeFPAvg = 0.02
 )
 

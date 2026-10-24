@@ -21,7 +21,6 @@ import (
 	"github.com/thnhdatle/triage/internal/domain/difficulty"
 )
 
-// tolP is the acceptance bound on p_strong (mf_max_abs_dp).
 const tolP = 1e-5
 
 func fixtureU(t *testing.T) []float64 {
@@ -48,8 +47,6 @@ func TestComputeUGolden(t *testing.T) {
 	assert.Less(t, maxDiff, 1e-9)
 }
 
-// TestScoreGolden runs the full chain the binary wires (strategy over
-// embedcache over UsageEmbedder) on the 200 fixture embeddings.
 func TestScoreGolden(t *testing.T) {
 	t.Parallel()
 	ref := loadReference(t)
@@ -75,7 +72,7 @@ func TestScoreGolden(t *testing.T) {
 		maxDP = math.Max(maxDP, math.Abs(got.P-ref.Scores[i].PStrong))
 		maxTorch = math.Max(maxTorch, math.Abs(got.P-ref.Scores[i].PMFModel))
 	}
-	t.Logf("max |dp| vs float64 reference = %.3g, vs RouteLLM MFModel = %.3g", maxDP, maxTorch)
+	t.Logf("max |dp| vs float64 reference = %.3g, vs reference MFModel = %.3g", maxDP, maxTorch)
 	assert.LessOrEqual(t, maxDP, tolP)
 	assert.LessOrEqual(t, maxTorch, tolP)
 	assert.InDelta(t, 0.04355773491008071, mustScore(t, s, ids[0]).P, tolP)
@@ -96,7 +93,6 @@ func mustScore(t *testing.T, s *mf.Strategy, text string) difficulty.Score {
 	return got
 }
 
-// vecEmbedder returns fixed vectors and records the call.
 type vecEmbedder struct {
 	out   [][]float32
 	err   error
@@ -140,7 +136,7 @@ func TestScoreOptionsAndTruncation(t *testing.T) {
 	u := []float64{0.5, -0.25}
 	s, err := mf.New(emb, u, mf.WithModel("deploy-1"), mf.WithMaxInputTokens(3))
 	require.NoError(t, err)
-	u[0] = 100 // New copies u
+	u[0] = 100
 	got, err := s.Score(t.Context(), userReq(strings.Repeat("a", 40)))
 	require.NoError(t, err)
 	assert.InDelta(t, 0.5, got.P, 1e-15, "u.e = 0.5 - 0.5 = 0")
@@ -268,8 +264,6 @@ func TestTruncateEstimate(t *testing.T) {
 	}
 }
 
-// TestTruncateEstimateProperty: the result is the longest rune-aligned
-// prefix within the bound.
 func TestTruncateEstimateProperty(t *testing.T) {
 	t.Parallel()
 	rapid.Check(t, func(t *rapid.T) {
@@ -292,8 +286,6 @@ func TestTruncateEstimateProperty(t *testing.T) {
 	})
 }
 
-// BenchmarkScore measures the local part of mf scoring (truncation and the
-// 1,536-element dot product); the embedding call is a cache-like fake.
 func BenchmarkScore(b *testing.B) {
 	u := make([]float64, mf.Dimensions)
 	e := make([]float32, mf.Dimensions)

@@ -12,10 +12,8 @@ import (
 
 // Env is the process environment as the wiring sees it, injectable in tests.
 type Env struct {
-	// Getenv reads an environment variable; nil means os.Getenv.
 	Getenv func(string) string
-	// Home returns the home directory; nil means os.UserHomeDir.
-	Home func() (string, error)
+	Home   func() (string, error)
 }
 
 func (e Env) getenv(k string) string {
@@ -36,7 +34,6 @@ func (e Env) home() (string, error) {
 	return e.Home()
 }
 
-// expandHome replaces a leading "~" or "~/" with the home directory.
 func (e Env) expandHome(p string) (string, error) {
 	if p != "~" && !strings.HasPrefix(p, "~/") {
 		return p, nil
@@ -48,10 +45,8 @@ func (e Env) expandHome(p string) (string, error) {
 	return filepath.Join(h, strings.TrimPrefix(p, "~")), nil
 }
 
-// errNoKey is returned when a provider's key source is set but empty.
 var errNoKey = errors.New("api key is empty")
 
-// apiKey reads a provider key from env or file. Neither set means no key.
 func (e Env) apiKey(envName, file string) (string, error) {
 	switch {
 	case envName != "":
@@ -78,9 +73,6 @@ func (e Env) apiKey(envName, file string) (string, error) {
 	return "", nil
 }
 
-// authKeys reads the data-plane API keys: one per line from keys_file, or
-// comma separated from the keys_env variable. Blank lines and lines starting
-// with "#" are ignored.
 func (e Env) authKeys(file, envName string) ([]string, error) {
 	var raw []string
 	switch {

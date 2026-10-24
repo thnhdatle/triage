@@ -14,11 +14,6 @@ import (
 	"github.com/thnhdatle/triage/internal/domain/chat"
 )
 
-// propValue generates finding values. They start and end with a lower-case
-// letter that is neither a JSON escape letter nor a hex digit, so they never
-// begin or end inside an escape sequence of the encoded arguments; their
-// middle may contain quotes, backslashes, upper-case letters, digits, '_' and
-// non-ASCII text.
 func propValue() *rapid.Generator[string] {
 	return rapid.StringMatching(`[g-mopqsv-z][g-z0-9A-Z_ @."\\é]{0,8}[g-mopqsv-z]`)
 }
@@ -84,7 +79,6 @@ func propRequest(t *rapid.T, values []string) chat.Request {
 	return req
 }
 
-// streamSplit unmasks s through a StreamUnmasker in random pieces.
 func streamSplit(t *rapid.T, m *Mapping, s string, args bool) string {
 	u := m.NewStreamUnmasker()
 	var b strings.Builder

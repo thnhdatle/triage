@@ -120,7 +120,6 @@ func TestThreshold_CalibrationThresholdAt_Fraction(t *testing.T) {
 		{Score: 0.7, WeakCorrect: true, StrongCorrect: true},
 		{Score: 0.6, WeakCorrect: true, StrongCorrect: true},
 	}
-	// Weak is right on 2 of 4, strong on 4 of 4.
 	tests := []struct {
 		fraction  float64
 		wantThr   float64

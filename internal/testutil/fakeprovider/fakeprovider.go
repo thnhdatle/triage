@@ -1,13 +1,6 @@
 // SPDX-License-Identifier: Apache-2.0
 
 // Package fakeprovider is a scriptable in-memory provider.Provider for tests.
-// Each Complete or Stream call consumes the next scripted Outcome (a response,
-// an error, or a stream script); when the queue is empty the call answers with
-// a default response echoing the last user text. Every request is recorded as a
-// deep copy.
-//
-//	p := fakeprovider.New(fakeprovider.WithOutcomes(fakeprovider.Fail(err)))
-//	_, err := p.Complete(ctx, req) // scripted error, then echo responses
 package fakeprovider
 
 import (
@@ -22,55 +15,42 @@ import (
 	"github.com/thnhdatle/triage/internal/testutil/fakeembedder"
 )
 
-// ErrStreamClosed is returned by Recv after the stream was closed.
 var ErrStreamClosed = errors.New("fakeprovider: stream closed")
 
-// StreamScript scripts a stream: Chunks are delivered in order, then Err, or
-// io.EOF when Err is nil.
 type StreamScript struct {
 	Chunks []chat.Chunk
 	Err    error
 }
 
-// Outcome is one scripted result. Err wins over Stream, which wins over
-// Response. A stream script given to Complete is aggregated into a response.
 type Outcome struct {
 	Response *chat.Response
 	Err      error
 	Stream   *StreamScript
 }
 
-// Respond scripts a successful response.
 func Respond(resp chat.Response) Outcome { return Outcome{Response: &resp} }
 
-// Fail scripts a call error (returned before any stream starts).
 func Fail(err error) Outcome { return Outcome{Err: err} }
 
-// StreamChunks scripts a stream of chunks ending with err, or io.EOF when nil.
 func StreamChunks(chunks []chat.Chunk, err error) Outcome {
 	return Outcome{Stream: &StreamScript{Chunks: chunks, Err: err}}
 }
 
-// Option configures a Provider.
 type Option func(*Provider)
 
-// WithOutcomes queues outcomes consumed by successive Complete/Stream calls.
 func WithOutcomes(o ...Outcome) Option {
 	return func(p *Provider) { p.queue = append(p.queue, o...) }
 }
 
-// WithModels sets the names returned by Models.
 func WithModels(names ...string) Option {
 	return func(p *Provider) { p.models = append([]string(nil), names...) }
 }
 
-// WithModelsError makes Models fail with err.
 func WithModelsError(err error) Option { return func(p *Provider) { p.modelsErr = err } }
 
-// WithEmbedError makes Embed fail with err.
 func WithEmbedError(err error) Option { return func(p *Provider) { p.embedErr = err } }
 
-// Provider implements provider.Provider. It is safe for concurrent use.
+// Provider is a fake provider.Provider.
 type Provider struct {
 	mu        sync.Mutex
 	queue     []Outcome
@@ -90,14 +70,12 @@ func New(opts ...Option) *Provider {
 	return p
 }
 
-// Enqueue appends outcomes to the script queue.
 func (p *Provider) Enqueue(o ...Outcome) {
 	p.mu.Lock()
 	defer p.mu.Unlock()
 	p.queue = append(p.queue, o...)
 }
 
-// record stores a deep copy of req and pops the next outcome, if any.
 func (p *Provider) record(req chat.Request) (Outcome, bool) {
 	p.mu.Lock()
 	defer p.mu.Unlock()
@@ -110,7 +88,6 @@ func (p *Provider) record(req chat.Request) (Outcome, bool) {
 	return o, true
 }
 
-// Complete implements provider.Provider.
 func (p *Provider) Complete(ctx context.Context, req chat.Request) (chat.Response, error) {
 	o, scripted := p.record(req)
 	if err := ctx.Err(); err != nil {
@@ -129,8 +106,6 @@ func (p *Provider) Complete(ctx context.Context, req chat.Request) (chat.Respons
 	return echoResponse(req), nil
 }
 
-// Stream implements provider.Provider. A scripted Response is delivered as a
-// content chunk plus a finish chunk (with usage when req.IncludeUsage).
 func (p *Provider) Stream(ctx context.Context, req chat.Request) (provider.Stream, error) {
 	o, scripted := p.record(req)
 	if err := ctx.Err(); err != nil {
@@ -149,7 +124,6 @@ func (p *Provider) Stream(ctx context.Context, req chat.Request) (provider.Strea
 	return newStream(ctx, StreamScript{Chunks: responseChunks(req, resp)}), nil
 }
 
-// Embed implements provider.Provider with deterministic unit vectors.
 func (p *Provider) Embed(ctx context.Context, req provider.EmbedRequest) (provider.EmbedResponse, error) {
 	p.mu.Lock()
 	p.embeds = append(p.embeds, provider.EmbedRequest{
@@ -182,7 +156,6 @@ func (p *Provider) Embed(ctx context.Context, req provider.EmbedRequest) (provid
 	}, nil
 }
 
-// Models implements provider.Provider.
 func (p *Provider) Models(ctx context.Context) ([]string, error) {
 	p.mu.Lock()
 	names := append([]string(nil), p.models...)
@@ -197,8 +170,6 @@ func (p *Provider) Models(ctx context.Context) ([]string, error) {
 	return names, nil
 }
 
-// Requests returns deep copies of every Complete and Stream request received,
-// in arrival order.
 func (p *Provider) Requests() []chat.Request {
 	p.mu.Lock()
 	defer p.mu.Unlock()
@@ -209,7 +180,6 @@ func (p *Provider) Requests() []chat.Request {
 	return out
 }
 
-// EmbedRequests returns every embeddings request received, in arrival order.
 func (p *Provider) EmbedRequests() []provider.EmbedRequest {
 	p.mu.Lock()
 	defer p.mu.Unlock()
@@ -283,7 +253,6 @@ func aggregate(req chat.Request, s StreamScript) (chat.Response, error) {
 	return resp, nil
 }
 
-// stream is the fake provider.Stream.
 type stream struct {
 	ctx    context.Context //nolint:containedctx // the stream honours the context of the call that created it
 	script StreamScript
@@ -297,7 +266,6 @@ func newStream(ctx context.Context, s StreamScript) *stream {
 	return &stream{ctx: ctx, script: s}
 }
 
-// Recv implements provider.Stream.
 func (s *stream) Recv() (chat.Chunk, error) {
 	s.mu.Lock()
 	defer s.mu.Unlock()
@@ -318,7 +286,6 @@ func (s *stream) Recv() (chat.Chunk, error) {
 	return chat.Chunk{}, io.EOF
 }
 
-// Close implements provider.Stream; it is idempotent.
 func (s *stream) Close() error {
 	s.mu.Lock()
 	defer s.mu.Unlock()

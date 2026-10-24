@@ -1,0 +1,17 @@
+# Live evaluation set: 8 GSM8K + 7 MMLU test items
+# seed 7, contaminated prompts excluded; regenerate with research/src/triage_research/make_eval_sets.py
+gsm8k/test:81
+gsm8k/test:123
+gsm8k/test:182
+gsm8k/test:449
+gsm8k/test:867
+gsm8k/test:899
+gsm8k/test:1051
+gsm8k/test:1205
+mmlu/test:college_computer_science:18
+mmlu/test:electrical_engineering:110
+mmlu/test:high_school_government_and_politics:15
+mmlu/test:moral_scenarios:756
+mmlu/test:nutrition:148
+mmlu/test:prehistory:259
+mmlu/test:prehistory:312

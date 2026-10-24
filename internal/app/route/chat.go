@@ -15,14 +15,11 @@ import (
 	"github.com/thnhdatle/triage/internal/domain/privacy"
 )
 
-// Operations recorded in Decision.Operation.
 const (
 	OperationChat       = "chat"
 	OperationEmbeddings = "embeddings"
 )
 
-// request is the state of one chat request through the stages. It is owned
-// by the goroutine that called Chat or ChatStream.
 type request struct {
 	p     *Pipeline
 	route *compiledRoute
@@ -30,7 +27,6 @@ type request struct {
 	dec   decision.Decision
 	start time.Time
 
-	// privacy stage
 	mode      privacy.Mode
 	scan      privacy.Result
 	scanned   bool
@@ -42,16 +38,14 @@ type request struct {
 	tier         model.Tier
 }
 
-// Chat routes a non-streaming chat request. The decision is recorded exactly
-// once, also on error (with Decision.Error set to the Code of the error).
+// Chat routes and runs a chat request.
 func (p *Pipeline) Chat(ctx context.Context, req chat.Request) (Outcome, error) {
 	return p.chat(ctx, req, func(ctx context.Context, plan dispatch.Plan) (dispatch.Result, error) {
 		return p.deps.Dispatcher.Complete(ctx, plan)
 	})
 }
 
-// ChatStream routes a streaming chat request and relays it to sink. The
-// decision is recorded exactly once, after the stream ended.
+// ChatStream routes a chat request and relays the stream to sink.
 func (p *Pipeline) ChatStream(ctx context.Context, req chat.Request, sink dispatch.Sink) (Outcome, error) {
 	return p.chat(ctx, req, func(ctx context.Context, plan dispatch.Plan) (dispatch.Result, error) {
 		return p.deps.Dispatcher.Stream(ctx, plan, sink)
@@ -68,8 +62,6 @@ func (p *Pipeline) chat(ctx context.Context, req chat.Request, run dispatchFunc)
 
 type decisionIDKey struct{}
 
-// WithDecisionID makes the pipeline use id as the decision id of the request run
-// with ctx, so a caller can announce the id before the outcome is known (streams).
 func WithDecisionID(ctx context.Context, id string) context.Context {
 	return context.WithValue(ctx, decisionIDKey{}, id)
 }
@@ -91,7 +83,6 @@ func (p *Pipeline) newRequest(ctx context.Context, req chat.Request, op string) 
 	}
 }
 
-// run runs every stage and the dispatch.
 func (r *request) run(ctx context.Context, run dispatchFunc) (dispatch.Result, error) {
 	if err := r.resolve(); err != nil {
 		return dispatch.Result{}, err
@@ -117,7 +108,6 @@ func (r *request) run(ctx context.Context, run dispatchFunc) (dispatch.Result, e
 	return run(ctx, plan)
 }
 
-// resolve finds the route named by the model field.
 func (r *request) resolve() error {
 	cr, ok := r.p.routes[r.req.Model]
 	if !ok {
@@ -127,7 +117,6 @@ func (r *request) resolve() error {
 	return nil
 }
 
-// plan builds the dispatch plan from the selection.
 func (r *request) plan() (dispatch.Plan, error) {
 	chain, err := r.selectChain()
 	if err != nil {
@@ -146,7 +135,6 @@ func (r *request) plan() (dispatch.Plan, error) {
 	return plan, nil
 }
 
-// finish completes and records the decision and builds the outcome.
 func (r *request) finish(res dispatch.Result, err error) (Outcome, error) {
 	d := &r.dec
 	d.Attempts = res.Attempts
@@ -177,8 +165,6 @@ func (r *request) finish(res dispatch.Result, err error) (Outcome, error) {
 	}, err
 }
 
-// attemptCause is the fallback reason cause of a failed attempt: its HTTP
-// status when one was received, else its status class.
 func attemptCause(a decision.Attempt) string {
 	if a.HTTPStatus > 0 {
 		return strconv.Itoa(a.HTTPStatus)

@@ -11,8 +11,6 @@ import (
 	"github.com/thnhdatle/triage/internal/testutil/fakellmcontainer"
 )
 
-// container is the fakellm container shared by the integration tests of this
-// package; tests isolate themselves by model name.
 var container *fakellmcontainer.Container
 
 func TestMain(m *testing.M) {

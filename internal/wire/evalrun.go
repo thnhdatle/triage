@@ -28,8 +28,6 @@ import (
 	"github.com/thnhdatle/triage/internal/domain/provider"
 )
 
-// evalContextWindow is the window of the synthetic eval targets: selection
-// must never drop an eval item for its length.
 const evalContextWindow = 1 << 30
 
 type evalRun struct {
@@ -64,9 +62,6 @@ func newEvalRun(ctx context.Context, c *CLI, ec *evalConfig) (*evalRun, error) {
 	return r, nil
 }
 
-// loadItems reads the eval items (JSONL and/or id sets) and the calibration
-// items. Items of the calibration set are not evaluated, so the two stay
-// disjoint when the calibration set is also listed in dataset.sets.
 func (r *evalRun) loadItems() error {
 	ds := r.ec.Dataset
 	dataDir := ds.DataDir
@@ -116,7 +111,6 @@ func (r *evalRun) loadItems() error {
 	return nil
 }
 
-// readSet reads a JSONL dataset or an item-id set file.
 func (r *evalRun) readSet(path string) ([]datasetItem, error) {
 	if !isSetFile(path) {
 		return readDataset(path)
@@ -140,7 +134,6 @@ func hasRoute(cfg *config.Config, name string) bool {
 func (r *evalRun) close(ctx context.Context) { r.off.close(ctx) }
 
 func (r *evalRun) run(ctx context.Context) error {
-	// One batch per model over evaluation and calibration items together.
 	all := make([]datasetItem, 0, len(r.items)+len(r.cal))
 	all = append(append(all, r.items...), r.cal...)
 	out, err := r.outcomes(ctx, all)
@@ -168,8 +161,6 @@ func (r *evalRun) run(ctx context.Context) error {
 	return r.writeSummary(res, results)
 }
 
-// outcomes returns each item's correctness and cost under both tiers: from
-// labels, or from answers generated per tier in one batch each.
 func (r *evalRun) outcomes(ctx context.Context, items []datasetItem) ([]itemResult, error) {
 	out := make([]itemResult, len(items))
 	for i, it := range items {
@@ -197,8 +188,6 @@ type cachedAnswer struct {
 	Usage  chat.Usage `json:"usage"`
 }
 
-// generate answers every item with one tier's target through dispatch
-// pinned to that target, caching answers by (model, item, prompt hash).
 func (r *evalRun) generate(ctx context.Context, tier model.Tier, items []datasetItem, out []itemResult) error {
 	t := r.ec.Targets.Weak
 	if tier == model.TierStrong {
@@ -329,9 +318,6 @@ func writeJSONFile(path string, v any) error {
 	return nil
 }
 
-// strategy scores the items through the real route pipeline of the eval
-// route with the strategy swapped in; dispatch is a stub, answers come from
-// pass 1. Items a rule or privacy pinned to a tier get a score outside [0,1].
 func (r *evalRun) strategy(ctx context.Context, name string, cal []itemResult) strategyResult {
 	sr := strategyResult{name: name}
 	pl, cleanup, err := r.pipeline(ctx, name)
@@ -372,16 +358,12 @@ func (r *evalRun) routeThreshold() float64 {
 	return 0
 }
 
-// pipeline builds the eval route with strategy name over the two eval
-// targets and a stub dispatcher.
 func (r *evalRun) pipeline(ctx context.Context, name string) (*route.Pipeline, func(), error) {
 	cfg := *r.cfg
 	weak, strong := r.ec.Targets.Weak, r.ec.Targets.Strong
 	anyProvider := r.defaultProvider()
 	weak.Provider = pick(weak.Provider == "", anyProvider, weak.Provider)
 	strong.Provider = pick(strong.Provider == "", anyProvider, strong.Provider)
-	// Only the providers the eval uses are built: the others (and their
-	// secrets) are irrelevant to pass 2.
 	keep := map[string]bool{weak.Provider: true, strong.Provider: true}
 	if name == strategyMF {
 		keep[cfg.Difficulty.MF.Provider] = true
@@ -420,8 +402,6 @@ func (r *evalRun) pipeline(ctx context.Context, name string) (*route.Pipeline, f
 	return pl, func() { r.off.b.retire(ctx, g) }, nil
 }
 
-// defaultProvider is the provider of eval targets that name none (labels
-// mode): the first, by name, that needs no API key, else the first.
 func (r *evalRun) defaultProvider() string {
 	names := make([]string, 0, len(r.cfg.Providers))
 	for n := range r.cfg.Providers {
@@ -460,7 +440,7 @@ func routeScores(ctx context.Context, pl *route.Pipeline, routeName string, item
 		case d.Score != nil:
 			scores[i] = *d.Score
 		case d.Tier == model.TierStrong:
-			scores[i] = 2 // pinned to strong by a rule or the default tier
+			scores[i] = 2
 		default:
 			scores[i] = -1
 		}
@@ -468,8 +448,6 @@ func routeScores(ctx context.Context, pl *route.Pipeline, routeName string, item
 	return scores, nil
 }
 
-// stubDispatcher answers every plan from its primary target without any
-// upstream call: pass 2 only needs the routing decision.
 type stubDispatcher struct{}
 
 func (stubDispatcher) Complete(_ context.Context, p dispatch.Plan) (dispatch.Result, error) {
@@ -573,7 +551,6 @@ func ratio(a, b float64) string {
 	return fmt.Sprintf("%.1f%%", 100*a/b)
 }
 
-// writeSweep adds one strategy's threshold sweep to summary.md.
 func writeSweep(b *strings.Builder, sr strategyResult) {
 	fmt.Fprintf(b, "\n## Sweep: %s\n\n", sr.name)
 	b.WriteString("| threshold | strong calls | accuracy (95% CI) | random at same ratio | cost USD | PGR |\n" +
@@ -585,7 +562,6 @@ func writeSweep(b *strings.Builder, sr strategyResult) {
 	}
 }
 
-// writeCurve writes curve.csv: every strategy's sweep, the input of research/plot_eval.py.
 func (r *evalRun) writeCurve(results []strategyResult) error {
 	f, err := os.Create(filepath.Join(r.ec.OutDir, "curve.csv"))
 	if err != nil {
@@ -609,9 +585,6 @@ func (r *evalRun) writeCurve(results []strategyResult) error {
 	return errors.Join(w.Error(), f.Close())
 }
 
-// displayPath shortens a path for the summary, which is meant to be committed and shared: an
-// absolute path becomes relative to the working directory when it lies below it, and its base name
-// otherwise, so no host-specific directory is written. Relative paths are kept as given.
 func displayPath(p string) string {
 	if !filepath.IsAbs(p) {
 		return p

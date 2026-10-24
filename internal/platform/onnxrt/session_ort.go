@@ -13,19 +13,11 @@ import (
 	ort "github.com/yalue/onnxruntime_go"
 )
 
-// SessionConfig configures a session.
 type SessionConfig struct {
-	// IntraOpThreads is ORT's intra-op thread count (bert.intra_op_threads);
-	// 0 keeps ORT's default (one per physical core).
 	IntraOpThreads int
-	// InterOpThreads is ORT's inter-op thread count; 0 keeps ORT's default.
 	InterOpThreads int
-	// InputNames and OutputNames select the model inputs fed and outputs
-	// returned by Run, in that order. Empty means every model input or
-	// output in model order; discovering them loads the model one extra
-	// time, so callers of large models should name them.
-	InputNames  []string
-	OutputNames []string
+	InputNames     []string
+	OutputNames    []string
 }
 
 func (c SessionConfig) validate() error {
@@ -36,14 +28,13 @@ func (c SessionConfig) validate() error {
 	return nil
 }
 
-// Session is a loaded model. Run is safe for concurrent use; Close waits for
-// runs in flight.
+// Session is a loaded model.
 type Session struct {
 	rt      *Runtime
 	inputs  []string
 	outputs []string
 
-	mu sync.RWMutex // guards s: Run holds it shared, Close exclusively
+	mu sync.RWMutex
 	s  *ort.DynamicAdvancedSession
 }
 
@@ -51,7 +42,7 @@ type ioInfoFunc func() ([]ort.InputOutputInfo, []ort.InputOutputInfo, error)
 
 type createFunc func(in, out []string, so *ort.SessionOptions) (*ort.DynamicAdvancedSession, error)
 
-// NewSession loads a model from its serialised ONNX bytes.
+// NewSession loads a model from its serialized ONNX bytes.
 func (r *Runtime) NewSession(model []byte, cfg SessionConfig) (*Session, error) {
 	return r.newSession(cfg, "model bytes",
 		func() ([]ort.InputOutputInfo, []ort.InputOutputInfo, error) {
@@ -62,9 +53,6 @@ func (r *Runtime) NewSession(model []byte, cfg SessionConfig) (*Session, error) 
 		})
 }
 
-// NewSessionFromFile loads a model from a graph file. External initializer
-// data is resolved relative to the file's directory, which the bert FP32
-// graph relies on (its weights stay in model.safetensors).
 func (r *Runtime) NewSessionFromFile(path string, cfg SessionConfig) (*Session, error) {
 	return r.newSession(cfg, path,
 		func() ([]ort.InputOutputInfo, []ort.InputOutputInfo, error) {
@@ -75,8 +63,6 @@ func (r *Runtime) NewSessionFromFile(path string, cfg SessionConfig) (*Session, 
 		})
 }
 
-// newSession holds r.mu throughout so Close cannot destroy the environment
-// while a session is being built.
 func (r *Runtime) newSession(cfg SessionConfig, src string, info ioInfoFunc, create createFunc) (*Session, error) {
 	if err := cfg.validate(); err != nil {
 		return nil, err
@@ -139,15 +125,11 @@ func sessionOptions(cfg SessionConfig) (*ort.SessionOptions, error) {
 	return so, nil
 }
 
-// InputNames returns the names Run expects, in order.
 func (s *Session) InputNames() []string { return slices.Clone(s.inputs) }
 
-// OutputNames returns the names of the tensors Run returns, in order.
 func (s *Session) OutputNames() []string { return slices.Clone(s.outputs) }
 
-// Run feeds one tensor per input name (in any order) and returns the outputs
-// in OutputNames order, copied into Go memory. When ctx ends during the run,
-// ORT is told to terminate and the context's error is returned (wrapped).
+// Run feeds the input tensors and returns the outputs in OutputNames order.
 func (s *Session) Run(ctx context.Context, inputs ...Tensor) ([]Tensor, error) {
 	if err := ctx.Err(); err != nil {
 		return nil, fmt.Errorf("onnxrt: run: %w", err)
@@ -174,9 +156,6 @@ func (s *Session) Run(ctx context.Context, inputs ...Tensor) ([]Tensor, error) {
 	return fromValues(s.outputs, out)
 }
 
-// run executes the session with a terminate flag raised when ctx ends. The
-// flag is only touched under mu and never after the run returned, so the
-// run options can be destroyed safely.
 func (s *Session) run(ctx context.Context, in, out []ort.Value) error {
 	ro, err := ort.NewRunOptions()
 	if err != nil {
@@ -184,7 +163,7 @@ func (s *Session) run(ctx context.Context, in, out []ort.Value) error {
 	}
 	defer func() { _ = ro.Destroy() }()
 	var (
-		mu       sync.Mutex // guards finished
+		mu       sync.Mutex
 		finished bool
 	)
 	stop := context.AfterFunc(ctx, func() {
@@ -208,7 +187,6 @@ func (s *Session) run(ctx context.Context, in, out []ort.Value) error {
 	return nil
 }
 
-// order returns inputs in s.inputs order, validated.
 func (s *Session) order(inputs []Tensor) ([]Tensor, error) {
 	if len(inputs) != len(s.inputs) {
 		return nil, fmt.Errorf("%w: got %d tensors, session inputs are %v", ErrInvalidInput, len(inputs), s.inputs)
@@ -230,8 +208,6 @@ func (s *Session) order(inputs []Tensor) ([]Tensor, error) {
 	return ordered, nil
 }
 
-// toValues wraps the tensors' Go memory as ORT values; the slice is fully
-// allocated so destroyAll can release a partial result.
 func toValues(ts []Tensor) ([]ort.Value, error) {
 	vals := make([]ort.Value, len(ts))
 	for i, t := range ts {
@@ -275,8 +251,6 @@ func destroyAll(vals []ort.Value) {
 	}
 }
 
-// Close releases the session after runs in flight finish. It is safe to call
-// more than once.
 func (s *Session) Close() error {
 	s.mu.Lock()
 	if s.s == nil {

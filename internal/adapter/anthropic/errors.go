@@ -15,12 +15,8 @@ import (
 	"github.com/thnhdatle/triage/internal/domain/provider"
 )
 
-// maxErrorBody bounds the error body read from a failed response.
 const maxErrorBody = 64 << 10
 
-// apiError is the safe part of an Anthropic error body
-// ({"type":"error","error":{"type":...,"message":...}}). The message is only
-// inspected for prompt-length markers, never returned.
 type apiError struct {
 	typ     string
 	message string
@@ -47,15 +43,12 @@ func (a apiError) describe(status int) string {
 	return s
 }
 
-// promptTooLong reports an invalid_request_error caused by the prompt size
-// ("prompt is too long: 210000 tokens > 200000 maximum").
 func (a apiError) promptTooLong() bool {
 	msg := strings.ToLower(a.message)
 	return strings.Contains(msg, "prompt is too long") || strings.Contains(msg, "context window") ||
 		strings.Contains(msg, "context length")
 }
 
-// kind maps an error type, used for error events inside a 200 stream.
 func (a apiError) kind() error {
 	switch a.typ {
 	case "rate_limit_error":
@@ -69,10 +62,9 @@ func (a apiError) kind() error {
 		}
 		return provider.ErrBadRequest
 	}
-	return provider.ErrUpstreamUnavailable // api_error, overloaded_error and unknown types
+	return provider.ErrUpstreamUnavailable
 }
 
-// httpError maps a non-2xx response.
 func (c *Client) httpError(resp *http.Response, body []byte) error {
 	a := parseAPIError(body)
 	e := &provider.Error{StatusCode: resp.StatusCode, Message: a.describe(resp.StatusCode)}
@@ -92,7 +84,6 @@ func (c *Client) httpError(resp *http.Response, body []byte) error {
 	return e
 }
 
-// parseRetryAfter accepts seconds or an HTTP date.
 func parseRetryAfter(v string, now time.Time) time.Duration {
 	v = strings.TrimSpace(v)
 	if v == "" {
@@ -107,9 +98,6 @@ func parseRetryAfter(v string, now time.Time) time.Duration {
 	return 0
 }
 
-// requestError maps a failure to send a request or read a body: the
-// caller's cancellation is returned as its cause, a deadline or network
-// timeout is ErrTimeout, anything else ErrUpstreamUnavailable.
 func requestError(ctx context.Context, err error) error {
 	if ctx.Err() != nil {
 		if errors.Is(ctx.Err(), context.DeadlineExceeded) {
@@ -125,18 +113,15 @@ func connError(err error) error {
 	if errors.As(err, &ne) && ne.Timeout() {
 		return &provider.Error{Kind: provider.ErrTimeout, Message: "network timeout"}
 	}
-	// Transport errors name the method and URL, never the request body.
 	return &provider.Error{Kind: provider.ErrUpstreamUnavailable, Message: "transport error: " + err.Error()}
 }
 
-// badUpstream reports an unusable 2xx body or stream event.
 func badUpstream(status int, what string) error {
 	return &provider.Error{
 		Kind: provider.ErrUpstreamUnavailable, StatusCode: status, Message: "malformed upstream response: " + what,
 	}
 }
 
-// unsupported reports a request the adapter cannot translate.
 func unsupported(what string) error {
 	return &provider.Error{Kind: provider.ErrBadRequest, Message: "anthropic: " + what}
 }

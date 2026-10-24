@@ -20,24 +20,14 @@ import (
 	"github.com/thnhdatle/triage/internal/app/eval"
 )
 
-// Item id grammar of the benchmark sets (eval/README.md):
-//
-//	gsm8k/test:<row>             zero-based row of the GSM8K test split
-//	gsm8k/test:*                 every GSM8K test row not in RouteLLM's contaminated prompts
-//	mmlu/test:<subject>:<row>    zero-based row in the test split of one MMLU subject
-//
-// Ids refer to the converted data written by scripts/fetch_eval_data.sh.
 const (
-	srcGSM8K = "gsm8k/test"
-	srcMMLU  = "mmlu/test"
-	// idWildcard in place of a gsm8k row selects all rows.
+	srcGSM8K   = "gsm8k/test"
+	srcMMLU    = "mmlu/test"
 	idWildcard = "*"
 )
 
 var subjectRE = regexp.MustCompile(`^[a-z0-9_]+$`)
 
-// readItemIDs reads an id list: one id per line, blank lines and lines
-// starting with # ignored, duplicates dropped keeping the first.
 func readItemIDs(path string) ([]string, error) {
 	f, err := os.Open(path) //nolint:gosec // operator-chosen set file
 	if err != nil {
@@ -64,11 +54,10 @@ func readItemIDs(path string) ([]string, error) {
 	return ids, nil
 }
 
-// itemID is a parsed benchmark item id.
 type itemID struct {
-	source  string // srcGSM8K or srcMMLU
-	subject string // MMLU only
-	row     int    // -1 for the wildcard
+	source  string
+	subject string
+	row     int
 }
 
 func parseItemID(id string) (itemID, error) {
@@ -113,10 +102,8 @@ type mmluRow struct {
 	Answer   int      `json:"answer"`
 }
 
-// mmluLetters label the choices.
 const mmluLetters = "ABCD"
 
-// mmluLabelPrompt is the prompt text of RouteLLM's MMLU label files.
 func mmluLabelPrompt(r mmluRow) string {
 	var b strings.Builder
 	b.WriteString(r.Question)
@@ -129,8 +116,6 @@ func mmluLabelPrompt(r mmluRow) string {
 
 type labelRow struct{ weak, strong bool }
 
-// evalData resolves benchmark ids against the converted data directory and,
-// in labels mode, the RouteLLM label files.
 type evalData struct {
 	dir       string
 	promptDir string
@@ -140,9 +125,9 @@ type evalData struct {
 
 	gsm      []gsm8kRow
 	mmlu     map[string][]mmluRow
-	labels   map[string]map[string]labelRow // label file -> prompt -> labels
+	labels   map[string]map[string]labelRow
 	tmpl     map[string]*template.Template
-	excluded map[string]bool // contaminated GSM8K questions, loaded on demand for the wildcard
+	excluded map[string]bool
 }
 
 func newEvalData(dir, promptDir, weakCol, strongCol string, live bool) *evalData {
@@ -152,7 +137,6 @@ func newEvalData(dir, promptDir, weakCol, strongCol string, live bool) *evalData
 	}
 }
 
-// items resolves ids into dataset items, expanding the gsm8k wildcard.
 func (d *evalData) items(ids []string) ([]datasetItem, error) {
 	var out []datasetItem
 	seen := map[string]bool{}
@@ -186,7 +170,6 @@ func (d *evalData) items(ids []string) ([]datasetItem, error) {
 	return out, nil
 }
 
-// allGSM8K returns every GSM8K test item except the contaminated prompts.
 func (d *evalData) allGSM8K() ([]datasetItem, error) {
 	rows, err := d.gsm8k()
 	if err != nil {
@@ -241,8 +224,6 @@ func (d *evalData) item(p itemID, id string) (datasetItem, error) {
 	}
 }
 
-// fill sets the prompt: rendered from the template in live mode, the prompt
-// text of the label file (with its labels) in labels mode.
 func (d *evalData) fill(it datasetItem, tmplName string, row any, labelPrompt, labelFile string) (datasetItem, error) {
 	if d.live {
 		text, err := d.render(tmplName, row)
@@ -366,8 +347,6 @@ func readJSONLRows[T any](path string) ([]T, error) {
 	return rows, nil
 }
 
-// labelFile reads one RouteLLM label CSV into prompt -> correctness of the
-// configured weak and strong columns. The first row of a repeated prompt wins.
 func (d *evalData) labelFile(rel string) (map[string]labelRow, error) {
 	if m, ok := d.labels[rel]; ok {
 		return m, nil

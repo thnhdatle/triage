@@ -7,7 +7,6 @@ import (
 	"strings"
 )
 
-// negative returns one PII-free prompt made of one to three snippets.
 func (g *generator) negative(lang string) Sample {
 	n := g.between(1, 3)
 	parts := make([]string, 0, n)
@@ -187,7 +186,6 @@ func (g *generator) contextOnly() string {
 		"What does RRN stand for in Korean systems?|주민등록번호는 어디에 쓰이나요?|CCCD là gì?|The hotel phone is on the desk.")
 }
 
-// hardNegative returns near-miss PII: right shape, failing validation.
 func (g *generator) hardNegative() string {
 	switch g.intn(4) {
 	case 0:

@@ -34,8 +34,6 @@ func TestQuickstartLoads(t *testing.T) {
 	require.NoError(t, err)
 }
 
-// TestExampleDocumentsEveryField fails when a struct field is missing from
-// deploy/config.example.yaml or lacks a comment there.
 func TestExampleDocumentsEveryField(t *testing.T) {
 	t.Parallel()
 	raw, err := readFile(examplePath)
@@ -70,8 +68,6 @@ func hasComment(k *yaml.Node, v *yaml.Node) bool {
 	return false
 }
 
-// walk checks every field of struct type t against the example nodes that
-// represent it (several for slices and maps of structs).
 func walk(t reflect.Type, nodes []*yaml.Node, path string, issues *[]string) {
 	for i := range t.NumField() {
 		f := t.Field(i)
@@ -91,7 +87,7 @@ func walk(t reflect.Type, nodes []*yaml.Node, path string, issues *[]string) {
 			*issues = append(*issues, p+": missing from example")
 			continue
 		}
-		section := f.Type.Kind() == reflect.Struct // a section header needs no comment of its own
+		section := f.Type.Kind() == reflect.Struct
 		if !documented && !section {
 			*issues = append(*issues, p+": no comment in example")
 		}

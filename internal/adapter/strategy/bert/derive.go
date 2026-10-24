@@ -20,24 +20,15 @@ import (
 	"github.com/thnhdatle/triage/internal/domain/artifact"
 )
 
-// Derived artifact file names, written into the entry directory next to
-// model.safetensors (the FP32 graph must sit there: ORT resolves its
-// external data relative to the graph file).
 const (
 	FP32FileName = "graph.onnx"
 	INT8FileName = "model.int8.onnx"
 )
 
-// DefaultConvertTimeout bounds one INT8 conversion (about 1 minute on the
-// reference Mac).
 const DefaultConvertTimeout = 15 * time.Minute
 
-// ErrConvert is returned when the INT8 converter fails or its output does
-// not check out.
 var ErrConvert = errors.New("bert: int8 conversion failed")
 
-// FP32Deriver installs the committed weight-free graph
-// (models/bert/graph.onnx) next to the downloaded model.safetensors.
 type FP32Deriver struct {
 	graph []byte
 	ref   weightsRef
@@ -45,8 +36,7 @@ type FP32Deriver struct {
 
 var _ artifact.Deriver = (*FP32Deriver)(nil)
 
-// NewFP32Deriver returns a deriver for the serialised weight-free graph,
-// which must carry the triage.weights.* metadata.
+// NewFP32Deriver returns a deriver that installs the FP32 graph.
 func NewFP32Deriver(graph []byte) (*FP32Deriver, error) {
 	meta, err := ReadMetadata(bytes.NewReader(graph))
 	if err != nil {
@@ -59,12 +49,8 @@ func NewFP32Deriver(graph []byte) (*FP32Deriver, error) {
 	return &FP32Deriver{graph: graph, ref: ref}, nil
 }
 
-// Kind implements artifact.Deriver.
 func (*FP32Deriver) Kind() artifact.DerivedKind { return artifact.KindONNXFP32 }
 
-// Derive implements artifact.Deriver: it checks that the graph was built for
-// the entry's weights (manifest and file), then writes dir/graph.onnx
-// atomically. No Python is involved.
 func (d *FP32Deriver) Derive(ctx context.Context, e artifact.Entry, dir string) (artifact.Derived, error) {
 	for _, f := range e.Files {
 		if f.Path == d.ref.file && (f.SHA256 != d.ref.sha256 || f.Size != d.ref.size) {
@@ -106,16 +92,12 @@ func writeAtomic(path string, data []byte) error {
 	return nil
 }
 
-// CommandRunner runs an external command; ExecRunner is the real one and
-// tests inject a fake.
 type CommandRunner interface {
 	Run(ctx context.Context, name string, args []string, stdout, stderr io.Writer) error
 }
 
-// ExecRunner runs commands with os/exec; the process is killed when ctx ends.
 type ExecRunner struct{}
 
-// Run implements CommandRunner.
 func (ExecRunner) Run(ctx context.Context, name string, args []string, stdout, stderr io.Writer) error {
 	cmd := exec.CommandContext(ctx, name, args...) //nolint:gosec // G204: argv built by Converter, no shell.
 	cmd.Stdout, cmd.Stderr = stdout, stderr
@@ -125,25 +107,17 @@ func (ExecRunner) Run(ctx context.Context, name string, args []string, stdout, s
 	return nil
 }
 
-// Converter builds the argv that runs research/export_bert.py
-// (`export_bert --checkpoint-dir <dir> --out <file>`, research/README.md).
 type Converter interface {
 	Command(dir, out string) (name string, args []string)
 }
 
-// exportModule is the documented converter entry point.
 const exportModule = "triage_research.export_bert"
 
-// UVConverter runs the pinned research/ project with uv (locked
-// dependencies, no dev group), from a checkout.
 type UVConverter struct {
-	// UV is the uv executable; empty means "uv" on PATH.
-	UV string
-	// ResearchDir is the research/ directory holding pyproject.toml and uv.lock.
+	UV          string
 	ResearchDir string
 }
 
-// Command implements Converter.
 func (c UVConverter) Command(dir, out string) (string, []string) {
 	uv := c.UV
 	if uv == "" {
@@ -155,22 +129,14 @@ func (c UVConverter) Command(dir, out string) (string, []string) {
 	}
 }
 
-// ImageConverter runs the weight-free converter image with the entry
-// directory mounted at /models and no network.
 type ImageConverter struct {
-	// Engine is the container CLI; empty means "docker".
 	Engine string
-	// Image is RAYLD_TRIAGE_MODELS_IMAGE or its default.
-	Image string
-	// User is passed as --user (e.g. "501:20") so the output is owned by the
-	// caller; empty omits it.
-	User string
+	Image  string
+	User   string
 }
 
-// containerDir is where ImageConverter mounts the entry directory.
 const containerDir = "/models"
 
-// Command implements Converter. out must be inside dir.
 func (c ImageConverter) Command(dir, out string) (string, []string) {
 	engine := c.Engine
 	if engine == "" {
@@ -187,8 +153,6 @@ func (c ImageConverter) Command(dir, out string) (string, []string) {
 	return engine, args
 }
 
-// CurrentUser returns "uid:gid" of the process for ImageConverter.User, or
-// "" where ids do not exist (Windows).
 func CurrentUser() string {
 	uid, gid := os.Getuid(), os.Getgid()
 	if uid < 0 || gid < 0 {
@@ -197,23 +161,14 @@ func CurrentUser() string {
 	return strconv.Itoa(uid) + ":" + strconv.Itoa(gid)
 }
 
-// DevImage is the converter image built locally by `make docker`, the
-// fallback when the released image is neither present nor pullable.
 const DevImage = "thnhdatle/triage-models:dev"
 
-// ImageResolver is a Converter that first picks a usable image: the released
-// one (present locally or pullable), else DevImage. Command, used when Resolve
-// was skipped, uses the first image unchecked.
 type ImageResolver struct {
-	// Engine is the container CLI; empty means "docker".
 	Engine string
-	// Images are tried in order; the last one is never pulled (it is local).
 	Images []string
-	// User is passed as --user, see ImageConverter.
-	User string
+	User   string
 }
 
-// Command implements Converter for callers that skip Resolve.
 func (r ImageResolver) Command(dir, out string) (string, []string) {
 	img := ""
 	if len(r.Images) > 0 {
@@ -222,9 +177,6 @@ func (r ImageResolver) Command(dir, out string) (string, []string) {
 	return ImageConverter{Engine: r.Engine, Image: img, User: r.User}.Command(dir, out)
 }
 
-// Resolve returns the ImageConverter for the first image that `<engine> image
-// inspect` finds or `<engine> pull` fetches (the last image is only inspected).
-// When none works the error names every image tried.
 func (r ImageResolver) Resolve(ctx context.Context, run CommandRunner) (Converter, error) {
 	engine := r.Engine
 	if engine == "" {
@@ -247,14 +199,10 @@ func (r ImageResolver) Resolve(ctx context.Context, run CommandRunner) (Converte
 		"to build %s, or use uv with a research/ checkout", ErrConvert, strings.Join(tried, ", "), DevImage)
 }
 
-// resolver is implemented by converters that must pick their runtime first.
 type resolver interface {
 	Resolve(ctx context.Context, run CommandRunner) (Converter, error)
 }
 
-// SelectConverter returns the uv converter when uv is on PATH and a research
-// directory is known (the checkout path), else the converter image with the
-// local DevImage as fallback (a released binary has no research/).
 func SelectConverter(lookPath func(string) (string, error), researchDir, image string) Converter {
 	if researchDir != "" {
 		if uv, err := lookPath("uv"); err == nil {
@@ -268,7 +216,6 @@ func SelectConverter(lookPath func(string) (string, error), researchDir, image s
 	return ImageResolver{Images: images, User: CurrentUser()}
 }
 
-// INT8Deriver builds model.int8.onnx with the research converter.
 type INT8Deriver struct {
 	conv    Converter
 	run     CommandRunner
@@ -277,16 +224,13 @@ type INT8Deriver struct {
 
 var _ artifact.Deriver = (*INT8Deriver)(nil)
 
-// INT8Option configures an INT8Deriver.
 type INT8Option func(*INT8Deriver)
 
-// WithCommandRunner replaces ExecRunner.
 func WithCommandRunner(r CommandRunner) INT8Option { return func(d *INT8Deriver) { d.run = r } }
 
-// WithConvertTimeout replaces DefaultConvertTimeout.
 func WithConvertTimeout(t time.Duration) INT8Option { return func(d *INT8Deriver) { d.timeout = t } }
 
-// NewINT8Deriver returns a deriver running conv.
+// NewINT8Deriver returns a deriver that converts the model to INT8.
 func NewINT8Deriver(conv Converter, opts ...INT8Option) (*INT8Deriver, error) {
 	d := &INT8Deriver{conv: conv, run: ExecRunner{}, timeout: DefaultConvertTimeout}
 	for _, o := range opts {
@@ -301,12 +245,8 @@ func NewINT8Deriver(conv Converter, opts ...INT8Option) (*INT8Deriver, error) {
 	return d, nil
 }
 
-// Kind implements artifact.Deriver.
 func (*INT8Deriver) Kind() artifact.DerivedKind { return artifact.KindONNXINT8 }
 
-// Derive implements artifact.Deriver. The converter writes dir/model.int8.onnx
-// atomically and prints `<sha256>  <path>` as its last stdout line; the file
-// is re-hashed here and must match, and must be tagged triage.variant=int8.
 func (d *INT8Deriver) Derive(ctx context.Context, _ artifact.Entry, dir string) (artifact.Derived, error) {
 	abs, err := filepath.Abs(dir)
 	if err != nil {
@@ -344,7 +284,6 @@ func (d *INT8Deriver) Derive(ctx context.Context, _ artifact.Entry, dir string) 
 	return artifact.Derived{Kind: artifact.KindONNXINT8, Path: out, SHA256: sum}, nil
 }
 
-// reportedSHA parses the converter's last stdout line `<sha256>  <path>`.
 func reportedSHA(stdout string) (string, error) {
 	lines := strings.Split(strings.TrimSpace(stdout), "\n")
 	fields := strings.Fields(lines[len(lines)-1])
@@ -357,7 +296,6 @@ func reportedSHA(stdout string) (string, error) {
 	return strings.ToLower(fields[0]), nil
 }
 
-// tail keeps the end of converter output for error messages.
 func tail(s string) string {
 	const limit = 2048
 	s = strings.TrimSpace(s)

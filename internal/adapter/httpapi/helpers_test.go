@@ -29,7 +29,6 @@ func TestMain(m *testing.M) {
 	goleak.VerifyTestMain(m)
 }
 
-// fakeRouter is a scriptable httpapi.Router recording the last requests.
 type fakeRouter struct {
 	mu     sync.Mutex
 	chat   func(req chat.Request) (route.Outcome, error)
@@ -76,7 +75,6 @@ type fakeCatalog struct {
 func (c fakeCatalog) Routes() []string        { return c.routes }
 func (c fakeCatalog) Targets() []model.Target { return c.targets }
 
-// idGen returns id-1, id-2, ...
 func idGen() func() string {
 	var n atomic.Int64
 	return func() string { return "id-" + strconv.FormatInt(n.Add(1), 10) }

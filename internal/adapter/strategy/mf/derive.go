@@ -14,23 +14,17 @@ import (
 	"github.com/thnhdatle/triage/internal/domain/artifact"
 )
 
-// File names in the mf entry directory.
 const (
 	WeightsFileName = "model.safetensors"
 	VectorFileName  = "mf-vector.safetensors"
 )
 
-// Deriver computes u in Go from the downloaded model.safetensors and writes
-// it as a one-tensor safetensors file (F64 [1536]) with provenance metadata.
 type Deriver struct{}
 
 var _ artifact.Deriver = Deriver{}
 
-// Kind implements artifact.Deriver.
 func (Deriver) Kind() artifact.DerivedKind { return artifact.KindMFVector }
 
-// Derive implements artifact.Deriver. The output is written atomically and
-// is byte-for-byte reproducible for the same weights.
 func (Deriver) Derive(ctx context.Context, _ artifact.Entry, dir string) (artifact.Derived, error) {
 	if err := ctx.Err(); err != nil {
 		return artifact.Derived{}, fmt.Errorf("mf: derive: %w", err)

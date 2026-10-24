@@ -8,31 +8,18 @@ import (
 	"os"
 )
 
-// Checkpoint layout of routellm/mf_gpt4_augmented (RouteLLM MFModel).
 const (
-	// TensorModels is P.weight [num_models, dim]: one embedding per model.
-	TensorModels = "P.weight"
-	// TensorClassifier is classifier.0.weight [1, dim].
+	TensorModels     = "P.weight"
 	TensorClassifier = "classifier.0.weight"
-	// TensorProjection is text_proj.0.weight [dim, Dimensions].
 	TensorProjection = "text_proj.0.weight"
-	// StrongRow is gpt-4-1106-preview in RouteLLM MODEL_IDS.
-	StrongRow = 24
-	// WeakRow is mixtral-8x7b-instruct-v0.1 in RouteLLM MODEL_IDS.
-	WeakRow = 36
-	// Dimensions is the text-embedding-3-small size the projection expects.
-	Dimensions = 1536
-	// VectorTensor is the tensor name of u in the derived vector file.
-	VectorTensor = "u"
+	StrongRow        = 24
+	WeakRow          = 36
+	Dimensions       = 1536
+	VectorTensor     = "u"
 )
 
-// normEps is the L2-normalisation floor of torch.nn.functional.normalize.
 const normEps = 1e-12
 
-// ComputeU folds the checkpoint into the vector u:
-// u = W_proj^T (c * (P^[strong] - P^[weak])), with P^ the L2-normalised rows
-// of P.weight and c the classifier weights, in float64. Then
-// p_strong = sigmoid(u . e) for a query embedding e.
 func ComputeU(f *File, strong, weak int) ([]float64, error) {
 	p, pShape, err := tensor(f, TensorModels, 2)
 	if err != nil {
@@ -96,7 +83,6 @@ func normalized(v []float64) []float64 {
 	return out
 }
 
-// LoadVector reads u from a vector file written by the Deriver.
 func LoadVector(path string) ([]float64, error) {
 	b, err := os.ReadFile(path) //nolint:gosec // G304: the path comes from the artifact cache.
 	if err != nil {

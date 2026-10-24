@@ -9,10 +9,6 @@ import (
 	"unicode"
 )
 
-// bertNormalizer ports HF BertNormalizer. Control and punctuation classes come
-// from tables.go, probed from HF tokenizers, because HF uses Unicode tables
-// older than Go's unicode package (e.g. U+0890, U+110CD are Cf in Go but kept
-// by HF).
 type bertNormalizer struct {
 	cleanText    bool
 	chineseChars bool
@@ -55,7 +51,6 @@ func (n *bertNormalizer) normalize(s string) string {
 	b.Grow(len(s))
 	for _, r := range s {
 		if n.cleanText {
-			// bertRemoved already excludes \t, \n and \r, which HF treats as whitespace.
 			if unicode.Is(bertRemoved, r) {
 				continue
 			}
@@ -74,7 +69,6 @@ func (n *bertNormalizer) normalize(s string) string {
 	return b.String()
 }
 
-// bertPreTokenizer splits on whitespace (removed) and isolates punctuation.
 type bertPreTokenizer struct{}
 
 func isBertPunct(r rune) bool {

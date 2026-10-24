@@ -13,9 +13,7 @@ import (
 )
 
 const (
-	// DefaultModel is always listed by GET /v1/models.
-	DefaultModel = "fake-default"
-	// DefaultRecordLimit is the default size of the request log ring buffer.
+	DefaultModel       = "fake-default"
 	DefaultRecordLimit = 10000
 
 	keyObject  = "object"
@@ -27,11 +25,8 @@ const (
 	maxScriptBytes = 1 << 20
 )
 
-// Option configures a Server.
 type Option func(*Server)
 
-// WithRecord enables or disables the request log and sets its ring buffer
-// size. The limit is only validated when recording is enabled.
 func WithRecord(enabled bool, limit int) Option {
 	return func(s *Server) {
 		s.recordEnabled = enabled
@@ -39,32 +34,27 @@ func WithRecord(enabled bool, limit int) Option {
 	}
 }
 
-// WithClock injects the clock used for delays and timestamps.
 func WithClock(c clock.Clock) Option {
 	return func(s *Server) { s.clock = c }
 }
 
-// Server is the fake provider. All exported methods are safe for concurrent
-// use.
+// Server is the fake provider.
 type Server struct {
 	clock         clock.Clock
 	recordEnabled bool
 	recordLimit   int
 	log           *recorder
 
-	// mu protects models.
 	mu     sync.Mutex
 	models map[string]*modelState
 }
 
-// modelState is the per-model counter and script queue; guarded by Server.mu.
 type modelState struct {
 	count int
 	rules []*scriptRule
 }
 
-// New builds a Server. Recording is enabled with DefaultRecordLimit unless
-// overridden by WithRecord.
+// New returns a Server.
 func New(opts ...Option) (*Server, error) {
 	s := &Server{
 		clock:         clock.Real(),
@@ -87,7 +77,6 @@ func New(opts ...Option) (*Server, error) {
 	return s, nil
 }
 
-// Handler returns the HTTP handler serving C2 plus /healthz and /readyz.
 func (s *Server) Handler() http.Handler {
 	mux := http.NewServeMux()
 	mux.HandleFunc("GET /healthz", okHandler)
@@ -107,7 +96,6 @@ func okHandler(w http.ResponseWriter, _ *http.Request) {
 	_, _ = w.Write([]byte("ok\n"))
 }
 
-// state returns the state for model, creating it; callers hold s.mu.
 func (s *Server) state(model string) (*modelState, bool) {
 	st, ok := s.models[model]
 	if ok {
@@ -121,7 +109,6 @@ func (s *Server) state(model string) (*modelState, bool) {
 	return st, true
 }
 
-// touch registers a model name as seen.
 func (s *Server) touch(model string) bool {
 	s.mu.Lock()
 	defer s.mu.Unlock()

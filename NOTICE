@@ -11,11 +11,6 @@ Third-party software and models
   LICENSE and ThirdPartyNotices.txt (/opt/onnxruntime). It is not included in the
   release archives: users of the binary install it separately. Loaded at run time.
 
-- RouteLLM (Apache-2.0), https://github.com/lm-sys/RouteLLM
-  The reference inference code is vendored in research/routellm_ref (pinned at
-  commit 0b64fdafe049e596a3f5657c219329f24af24198) and is used only for offline
-  parity checks and evaluation. Its license applies to that directory.
-
 - dslim/bert-base-NER (MIT License), https://huggingface.co/dslim/bert-base-NER
   Optional English NER model. It is not distributed with Triage; the user
   downloads it with "triage models pull ner". The repository has no LICENSE file;
@@ -37,8 +32,8 @@ Third-party software and models
 - internal/platform/hftok contains Go ports of parts of Hugging Face tokenizers
   (Apache-2.0), https://github.com/huggingface/tokenizers.
 
-- Datasets: GSM8K (openai/gsm8k, MIT), MMLU (cais/mmlu, MIT) and the RouteLLM
-  evaluation labels (lm-sys/RouteLLM, Apache-2.0) are downloaded by the user
+- Datasets: GSM8K (openai/gsm8k, MIT), MMLU (cais/mmlu, MIT) and the GPT-4 /
+  Mixtral evaluation labels (lm-sys/RouteLLM, Apache-2.0) are downloaded by the user
   (scripts/fetch_eval_data.sh) and not redistributed; the repository holds item ids
   and scores only.
 

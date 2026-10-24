@@ -21,12 +21,6 @@ import (
 	"github.com/thnhdatle/triage/internal/fakellm"
 )
 
-// The tests below talk to the fakellm container over the Docker network. The
-// container is shared: each test uses its own model name, so request-log
-// assertions only see its own requests, and scenarios are chosen by header.
-
-// containerRequests returns the logged requests for model and asserts the
-// log dropped nothing.
 func containerRequests(t *testing.T, model string) []fakellm.Record {
 	t.Helper()
 	recs, dropped, err := container.Requests(ctxT(t), model)

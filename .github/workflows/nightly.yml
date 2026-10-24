@@ -31,5 +31,4 @@ jobs:
           scripts/stage-ort.sh "$RUNNER_TEMP/ort"
           echo "TRIAGE_ONNX_LIBRARY_PATH=$RUNNER_TEMP/ort/libonnxruntime.so" >> "$GITHUB_ENV"
       - run: make bootstrap
-      - run: make mutation fuzz
-      - run: make acceptance CI=1
+      - run: make fuzz

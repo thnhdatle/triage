@@ -4,9 +4,6 @@ package cpu
 
 import "strings"
 
-// countCores counts the unique (physical id, core id) pairs of a
-// /proc/cpuinfo text. It returns 0 when the text has no core ids (some ARM
-// kernels), so the caller falls back to the logical CPU count.
 func countCores(cpuinfo string) int {
 	type core struct{ phys, id string }
 	seen := map[core]bool{}

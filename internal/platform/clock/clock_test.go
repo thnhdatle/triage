@@ -43,7 +43,7 @@ func TestFake_NewTicker_TicksAndStops(t *testing.T) {
 	tk := f.NewTicker(time.Second)
 	f.Advance(time.Second)
 	assert.Equal(t, epoch.Add(time.Second), <-tk.C())
-	f.Advance(3 * time.Second) // unconsumed ticks are dropped
+	f.Advance(3 * time.Second)
 	assert.Equal(t, epoch.Add(2*time.Second), <-tk.C())
 	tk.Stop()
 	assert.Equal(t, 0, f.Waiters())

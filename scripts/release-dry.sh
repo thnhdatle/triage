@@ -1,9 +1,6 @@
 #!/usr/bin/env bash
 # SPDX-License-Identifier: Apache-2.0
-# Release dry run of what this host can build, without publishing. On Linux: the snapshot archives,
-# SBOMs and both release images for the host architecture (scripts/release-build.sh --snapshot).
-# On macOS, triage (CGO) cannot be cross-built for Linux: the config is checked, fakellm is built for
-# linux/<host arch>, and the server image is built from Dockerfile for linux/<host arch>.
+# Dry-runs the release build for this host without publishing.
 set -euo pipefail
 cd "$(git rev-parse --show-toplevel)"
 if [ "$(uname -s)" = Linux ]; then

@@ -10,10 +10,8 @@ import (
 	"github.com/thnhdatle/triage/internal/domain/chat"
 )
 
-// jsonNull is the JSON null literal.
 const jsonNull = "null"
 
-// wireRequest is the OpenAI chat completions request body.
 type wireRequest struct {
 	Model               string             `json:"model"`
 	Messages            []wireMessage      `json:"messages"`
@@ -77,8 +75,6 @@ type wireFunction struct {
 	Strict      *bool           `json:"strict,omitempty"`
 }
 
-// encodeRequest builds the request body for req. Unknown fields in
-// req.Extra are passed through unless they collide with a known field.
 func encodeRequest(req chat.Request, stream bool) ([]byte, error) {
 	w := wireRequest{
 		Model: req.Model, ToolChoice: req.ToolChoice, ResponseFormat: req.ResponseFormat,
@@ -130,8 +126,6 @@ func encodeRequest(req chat.Request, stream bool) ([]byte, error) {
 	return data, nil
 }
 
-// knownField lists request fields the adapter owns even when it omits them,
-// so Extra can never override them.
 var knownField = map[string]bool{
 	"model": true, "messages": true, "tools": true, "tool_choice": true, "response_format": true,
 	"temperature": true, "top_p": true, "max_tokens": true, "max_completion_tokens": true,
@@ -192,7 +186,6 @@ func marshalRaw(v any) (json.RawMessage, error) {
 	return data, nil
 }
 
-// wireUsage is the OpenAI usage object.
 type wireUsage struct {
 	PromptTokens        int `json:"prompt_tokens"`
 	CompletionTokens    int `json:"completion_tokens"`
@@ -229,7 +222,6 @@ type wireResponse struct {
 	SystemFingerprint string     `json:"system_fingerprint"`
 }
 
-// decodeResponse translates a chat completion body.
 func decodeResponse(data []byte, status int) (chat.Response, error) {
 	var w wireResponse
 	if err := json.Unmarshal(data, &w); err != nil {
@@ -267,7 +259,6 @@ func decodeResponse(data []byte, status int) (chat.Response, error) {
 	return resp, nil
 }
 
-// decodeContent accepts a string, null, or an array of text parts.
 func decodeContent(raw json.RawMessage) (string, bool) {
 	raw = bytes.TrimSpace(raw)
 	if len(raw) == 0 || string(raw) == jsonNull {

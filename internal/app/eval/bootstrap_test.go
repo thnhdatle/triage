@@ -70,8 +70,6 @@ func TestBootstrap_Bootstrap_Cases(t *testing.T) {
 
 func TestBootstrap_Bootstrap_PercentileIndices(t *testing.T) {
 	t.Parallel()
-	// stat returns 0..9999 in call order, so the sorted sample is the identity and the interval is
-	// the 2.5th/97.5th nearest-rank elements.
 	calls := -1
 	lo, hi := eval.Bootstrap(4, 10000, 7, func([]int) float64 {
 		calls++

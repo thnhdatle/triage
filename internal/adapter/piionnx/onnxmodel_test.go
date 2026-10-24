@@ -9,12 +9,6 @@ import (
 	"math"
 )
 
-// This file hand-encodes a tiny ONNX token-classification model (onnx.proto3
-// field numbers), the same approach as internal/platform/onnxrt's tests, so
-// no weights are downloaded and no Python or protobuf dependency is needed.
-// The output is deterministic.
-
-// ONNX TensorProto.DataType values.
 const (
 	onnxFloat = 1
 	onnxInt64 = 7
@@ -35,8 +29,6 @@ func (b pb) bytes(field int, p []byte) pb {
 
 func (b pb) str(field int, s string) pb { return b.bytes(field, []byte(s)) }
 
-// valueInfo encodes a ValueInfoProto of a tensor; a dim is an int or a
-// symbolic name.
 func valueInfo(name string, elem int, dims ...any) pb {
 	var shape pb
 	for _, d := range dims {
@@ -94,11 +86,6 @@ func int64Init(name string, dims []int64, data []int64) pb {
 	return t.varint(2, onnxInt64).str(8, name).bytes(9, raw)
 }
 
-// tokenModel is a token-classification model whose logits depend only on the
-// token id: logits[b,s,:] = E[input_ids[b,s],:]. The attention mask and the
-// token type ids are consumed (multiplied by zero), so the graph has the
-// three inputs of a Hugging Face BERT export and one output "logits"
-// [batch, seq, labels]. inputs overrides the input names when non-nil.
 func tokenModel(vocab, labels int, rows map[int][]float32, inputs []string) []byte {
 	if inputs == nil {
 		inputs = []string{InputIDs, InputAttentionMask, InputTokenTypeIDs}

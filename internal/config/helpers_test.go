@@ -21,7 +21,6 @@ func writeConfig(t *testing.T, content string) string {
 	return path
 }
 
-// validYAML is a minimal valid configuration.
 const validYAML = `
 auth: { enabled: true, keys_env: TRIAGE_API_KEYS }
 providers:

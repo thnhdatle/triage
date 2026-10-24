@@ -39,7 +39,7 @@ func scanSecret(p *profile) []privacy.Finding {
 		}
 		v := p.text[s:e]
 		if strings.HasPrefix(v, "sk-") && !digitAndLetter(v[3:]) {
-			continue // kebab-case words such as "sk-learn-..." are not keys
+			continue
 		}
 		if strings.HasPrefix(v, "AKIA") && e < len(p.text) && isAlnum(p.text[e]) {
 			continue

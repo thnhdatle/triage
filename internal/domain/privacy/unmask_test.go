@@ -12,8 +12,6 @@ import (
 	"github.com/thnhdatle/triage/internal/domain/chat"
 )
 
-// testMapping has EMAIL_1, EMAIL_2, KR_RRN_1 and NAME_1, whose value needs
-// JSON escaping.
 func testMapping(t *testing.T) *Mapping {
 	t.Helper()
 	m := NewMapping(userReq("x"), []Finding{
@@ -156,7 +154,7 @@ func TestMapping_UnmaskResponse_Choices(t *testing.T) {
 	assert.False(t, partial)
 	assert.Equal(t, orig, resp, "input not modified")
 	assert.Equal(t, "hi [[EMAIL_1]]", resp.Choices[0].Message.Content[0].Text, "input parts not modified")
-	maskedArgs := `{"n":"[[NAME_1]]"}` // byte-exact, not JSONEq
+	maskedArgs := `{"n":"[[NAME_1]]"}`
 	assert.Equal(t, maskedArgs, resp.Choices[1].Message.ToolCalls[0].Function.Arguments)
 
 	want := chat.Response{

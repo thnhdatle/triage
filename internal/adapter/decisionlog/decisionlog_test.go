@@ -89,11 +89,11 @@ func TestDuplicateIDLatestWinsAndEvictionKeepsIndex(t *testing.T) {
 	l := newLog(t, 2)
 	l.Record(decision.Decision{ID: "x", Route: "old"})
 	l.Record(decision.Decision{ID: "x", Route: "new"})
-	l.Record(decision.Decision{ID: "y"}) // evicts the first x only
+	l.Record(decision.Decision{ID: "y"})
 	d, ok := l.Get("x")
 	require.True(t, ok)
 	assert.Equal(t, "new", d.Route)
-	l.Record(decision.Decision{ID: "z"}) // evicts the second x
+	l.Record(decision.Decision{ID: "z"})
 	_, ok = l.Get("x")
 	assert.False(t, ok)
 }
@@ -251,7 +251,6 @@ func TestListAfterWrapAndEvictionBetweenPages(t *testing.T) {
 	require.NoError(t, err)
 	assert.Equal(t, []string{"5", "4"}, ids(p))
 
-	// Evict 3 while the client holds a cursor; the next page is empty, not an error.
 	l.Record(decision.Decision{ID: "6"})
 	l.Record(decision.Decision{ID: "7"})
 	p2, err := l.List(decisionlog.Filter{}, 2, p.NextCursor)

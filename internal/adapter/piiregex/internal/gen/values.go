@@ -10,7 +10,6 @@ import (
 )
 
 const (
-	// AllTypes lists the labelled PII types, "|"-separated.
 	AllTypes = "credit_card|iban|email|ip|us_ssn|secret|kr_rrn|phone|vn_cccd|street_address"
 	alnum    = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789"
 	upperNum = "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789"
@@ -180,11 +179,10 @@ func rrnCheck(d12 string) int {
 	return (11 - sum%11) % 10
 }
 
-// rrn returns 13 digits for a valid birth date and gender digit.
 func (g *generator) rrn(validChecksum bool) string {
 	year := g.between(1950, 2020)
 	if g.chance(30) {
-		year = g.between(2021, 2025) // issued after October 2020: random tail
+		year = g.between(2021, 2025)
 	}
 	genders := "12|12|12|56"
 	if year >= 2000 {

@@ -38,8 +38,8 @@ A strategy returns `p_strong` in [0, 1]. The request goes to `strong` when
 | `none` | nothing | no scoring; rules, else `default_tier` |
 | `random` | nothing | uniform, stable per request id; a baseline |
 | `length` | nothing | logistic over prompt tokens |
-| `bert` | `triage models pull bert`, ONNX Runtime | RouteLLM BERT classifier, local |
-| `mf` | `triage models pull mf`, an OpenAI API key, opt-in | RouteLLM matrix factorization; **sends text off the machine** |
+| `bert` | `triage models pull bert`, ONNX Runtime | pretrained BERT classifier, local |
+| `mf` | `triage models pull mf`, an OpenAI API key, opt-in | pretrained matrix factorization; **sends text off the machine** |
 
 `bert` and `mf` score only the last `user` message. A request without one follows
 `difficulty.on_error`.
@@ -59,7 +59,7 @@ uses it.
 
 ### bert
 
-The RouteLLM classifier `routellm/bert_gpt4_augmented`, run locally on ONNX Runtime.
+The pretrained classifier `routellm/bert_gpt4_augmented`, run locally on ONNX Runtime.
 
 ```sh
 triage models pull bert --int8   # see models.md
@@ -87,7 +87,7 @@ The checkpoint was trained for GPT-4 against Mixtral. For other pairs,
 
 ### mf
 
-The RouteLLM matrix-factorization router. **It sends the scored text to an embedding API.**
+The pretrained matrix-factorization router. **It sends the scored text to an embedding API.**
 Read [privacy.md](privacy.md#mf-egress) first.
 
 ```yaml

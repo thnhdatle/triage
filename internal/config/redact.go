@@ -8,13 +8,8 @@ import (
 	"slices"
 )
 
-// RedactedValue replaces secret-bearing values in Redacted.
 const RedactedValue = "[redacted]"
 
-// Redacted returns a deep copy of c that is safe to print or serve on the
-// admin API: extra_headers values (which may carry tokens) and user info in
-// base URLs are replaced. Secrets themselves never live in the file (keys are
-// referenced by env var or file name), so names and paths are kept.
 func (c *Config) Redacted() *Config {
 	out := *c
 	out.Providers = make(map[string]Provider, len(c.Providers))

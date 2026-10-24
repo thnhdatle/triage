@@ -1,10 +1,6 @@
 // SPDX-License-Identifier: Apache-2.0
 
-// Package fakedetector provides a privacy.Detector for tests that finds
-// literal substrings or regexp matches and reports them with a fixed type.
-//
-//	d := fakedetector.NewLiteral("fake", "email", "bob@example.com")
-//	findings, _ := d.Detect(ctx, "mail bob@example.com") // one "email" finding
+// Package fakedetector provides a fake privacy.Detector for tests.
 package fakedetector
 
 import (
@@ -18,8 +14,7 @@ import (
 	"github.com/thnhdatle/triage/internal/domain/privacy"
 )
 
-// Detector implements privacy.Detector and records the texts it scanned. It is
-// safe for concurrent use.
+// Detector is a fake privacy.Detector that records the texts it scanned.
 type Detector struct {
 	id       string
 	typ      string
@@ -31,20 +26,14 @@ type Detector struct {
 	texts []string
 }
 
-// NewLiteral returns a Detector that reports every occurrence of each literal
-// as a finding of type typ. Empty literals are ignored.
 func NewLiteral(id, typ string, literals ...string) *Detector {
 	return &Detector{id: id, typ: typ, literals: append([]string(nil), literals...)}
 }
 
-// NewRegexp returns a Detector that reports every match of re as a finding of
-// type typ. Empty matches are ignored.
 func NewRegexp(id, typ string, re *regexp.Regexp) *Detector {
 	return &Detector{id: id, typ: typ, re: re}
 }
 
-// WithError makes Detect fail with err (after recording the text) and returns
-// the Detector for chaining; a nil err clears it.
 func (d *Detector) WithError(err error) *Detector {
 	d.mu.Lock()
 	defer d.mu.Unlock()
@@ -52,11 +41,8 @@ func (d *Detector) WithError(err error) *Detector {
 	return d
 }
 
-// ID implements privacy.Detector.
 func (d *Detector) ID() string { return d.id }
 
-// Detect implements privacy.Detector. Findings are ordered by start offset,
-// longer first on ties, with confidence 1.
 func (d *Detector) Detect(ctx context.Context, text string) ([]privacy.Finding, error) {
 	d.mu.Lock()
 	d.texts = append(d.texts, text)
@@ -109,14 +95,12 @@ func (d *Detector) Detect(ctx context.Context, text string) ([]privacy.Finding, 
 	return findings, nil
 }
 
-// Texts returns every text passed to Detect so far, in call order.
 func (d *Detector) Texts() []string {
 	d.mu.Lock()
 	defer d.mu.Unlock()
 	return append([]string(nil), d.texts...)
 }
 
-// Calls returns the number of Detect calls so far.
 func (d *Detector) Calls() int {
 	d.mu.Lock()
 	defer d.mu.Unlock()

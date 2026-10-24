@@ -21,9 +21,6 @@ import (
 	"github.com/thnhdatle/triage/internal/config"
 )
 
-// evalConfig is the `triage eval --config` file (docs/guides/evaluation.md). The
-// dataset is a JSONL file (dataset.jsonl), id-list set files over the fetched
-// benchmark data (dataset.sets, with dataset.prompts for live mode), or both.
 type evalConfig struct {
 	Mode    string `yaml:"mode"`
 	Config  string `yaml:"config"`
@@ -32,11 +29,8 @@ type evalConfig struct {
 		JSONL   string   `yaml:"jsonl"`
 		Sets    []string `yaml:"sets"`
 		Prompts string   `yaml:"prompts"`
-		// DataDir holds the converted benchmark data; default <cache_dir>/data.
-		DataDir string `yaml:"data_dir"`
-		// Labels names the weak and strong columns of the RouteLLM label
-		// files (labels mode with sets).
-		Labels struct {
+		DataDir string   `yaml:"data_dir"`
+		Labels  struct {
 			Weak   string `yaml:"weak"`
 			Strong string `yaml:"strong"`
 		} `yaml:"labels"`
@@ -69,7 +63,6 @@ type evalTarget struct {
 	Pricing  config.Pricing `yaml:"pricing"`
 }
 
-// Eval modes.
 const (
 	evalLive   = "live"
 	evalLabels = "labels"
@@ -77,8 +70,6 @@ const (
 
 const defaultResamples = 10000
 
-// jsonlExt marks a JSONL dataset or calibration file; any other file is an
-// item-id set.
 const jsonlExt = ".jsonl"
 
 func loadEvalConfig(path string) (*evalConfig, error) {
@@ -116,10 +107,8 @@ func loadEvalConfig(path string) (*evalConfig, error) {
 	return &ec, nil
 }
 
-// isSetFile reports whether path names an item-id set rather than a JSONL file.
 func isSetFile(path string) bool { return path != "" && !strings.HasSuffix(path, jsonlExt) }
 
-// runProblems checks the threshold rule, targets and strategies.
 func (ec *evalConfig) runProblems() []string {
 	var problems []string
 	if m := ec.ThresholdRule.MinAccuracyOfAllStrong; m != 0 && !(m > 0 && m <= 1) {
@@ -134,7 +123,6 @@ func (ec *evalConfig) runProblems() []string {
 	return problems
 }
 
-// datasetProblems checks the dataset keys against the mode.
 func (ec *evalConfig) datasetProblems() []string {
 	var problems []string
 	if ec.Dataset.JSONL == "" && len(ec.Dataset.Sets) == 0 {
@@ -152,6 +140,7 @@ func (ec *evalConfig) datasetProblems() []string {
 	return problems
 }
 
+// eval runs the eval subcommand.
 func (c *CLI) eval(ctx context.Context, args []string) error {
 	fs := c.flags("eval")
 	path := fs.String("config", "", "evaluation config (YAML)")
@@ -180,7 +169,6 @@ func (c *CLI) eval(ctx context.Context, args []string) error {
 	return r.run(ctx)
 }
 
-// itemResult is one item's outcome under each tier.
 type itemResult struct {
 	id                          string
 	weakCorrect, strongCorrect  bool
@@ -189,7 +177,6 @@ type itemResult struct {
 	weakOutTokens, strongOutTok int
 }
 
-// strategyResult is one strategy's routing of the eval items.
 type strategyResult struct {
 	name      string
 	err       error
@@ -199,26 +186,19 @@ type strategyResult struct {
 	curve     []curvePoint
 }
 
-// curvePoint is one threshold of a strategy's sweep, evaluated from the
-// cached answers.
 type curvePoint struct {
 	threshold, strongRatio, accuracy, cost, randomAcc, pgr float64
 	accCI                                                  [2]float64
 	chosen                                                 bool
 }
 
-// summary are the per-strategy figures of summary.md.
 type summary struct {
 	strongRatio, accuracy, cost, apgr, randomAcc float64
 	accCI, costCI, apgrCI                        [2]float64
 }
 
-// sweepStep is the strong-ratio grid step of the threshold sweep.
 const sweepStep = 0.05
 
-// routedStrong reports the tier of an item: scores outside [0,1] mark items a
-// rule or privacy pinned (above 1 strong, below 0 weak) and stay there at any
-// threshold.
 func routedStrong(score, threshold float64) bool {
 	switch {
 	case score > 1:
@@ -242,7 +222,6 @@ func strongShare(scores []float64, threshold float64) float64 {
 	return float64(n) / float64(len(scores))
 }
 
-// outcomeAt returns each item's correctness and cost under the routing at threshold.
 func outcomeAt(res []itemResult, scores []float64, threshold float64) (acc, cost []float64) {
 	acc, cost = make([]float64, len(res)), make([]float64, len(res))
 	for i, it := range res {
@@ -269,7 +248,6 @@ func allIndex(n int) []int {
 	return idx
 }
 
-// tierAccuracy returns the all-weak and all-strong accuracy.
 func tierAccuracy(res []itemResult) (weak, strong float64) {
 	for _, it := range res {
 		weak += b2f(it.weakCorrect)
@@ -279,9 +257,6 @@ func tierAccuracy(res []itemResult) (weak, strong float64) {
 	return weak / n, strong / n
 }
 
-// sweepThresholds returns the thresholds of the sweep: those that route the
-// strong ratio grid 0, 0.05, ..., 1 of the scores, plus chosen, in ascending
-// strong ratio.
 func sweepThresholds(scores []float64, chosen float64) []float64 {
 	var out []float64
 	add := func(t float64) {
@@ -301,7 +276,6 @@ func sweepThresholds(scores []float64, chosen float64) []float64 {
 	return out
 }
 
-// sweep evaluates the strategy at every sweep threshold from the cached answers.
 func (r *evalRun) sweep(res []itemResult, sr strategyResult) []curvePoint {
 	accWeak, accStrong := tierAccuracy(res)
 	n := float64(len(res))
@@ -326,7 +300,6 @@ func (r *evalRun) sweep(res []itemResult, sr strategyResult) []curvePoint {
 	return pts
 }
 
-// summarise computes the summary.md figures at the strategy's chosen threshold.
 func (r *evalRun) summarise(res []itemResult, sr strategyResult) summary {
 	n := len(res)
 	items := make([]eval.Item, n)
@@ -381,6 +354,4 @@ func pick[T any](cond bool, a, b T) T {
 	return b
 }
 
-// errNotMeasured marks a strategy that could not be built (e.g. mf without
-// an API key); it is reported, never fatal.
 var errNotMeasured = errors.New("not measured")

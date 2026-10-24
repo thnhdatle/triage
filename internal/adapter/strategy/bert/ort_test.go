@@ -30,9 +30,6 @@ const (
 	corpusPath = "../../../../testdata/tokenizer/corpus.jsonl"
 )
 
-// Tolerances against the committed Python ONNX Runtime references: FP32 is
-// the same kernels; INT8 quantises activations at run time, so the bound is
-// looser in case the CPU differs from the darwin/arm64 that produced them.
 const (
 	tolFP32 = 1e-5
 	tolINT8 = 1e-3
@@ -65,7 +62,6 @@ func readJSONL[T any](t *testing.T, path string) []T {
 	return out
 }
 
-// references joins reference.jsonl with the corpus texts (same order).
 func references(t *testing.T) []refLine {
 	t.Helper()
 	refs := readJSONL[refLine](t, filepath.Join(fixtureDir, "reference.jsonl"))
@@ -81,8 +77,6 @@ func references(t *testing.T) []refLine {
 	return refs
 }
 
-// tokenizerPath is TRIAGE_TOKENIZER_DIR or the make bootstrap cache; a
-// missing file fails the test, never skips it.
 func tokenizerPath(t *testing.T) string {
 	t.Helper()
 	dir := os.Getenv("TRIAGE_TOKENIZER_DIR")
@@ -149,7 +143,6 @@ func TestGolden(t *testing.T) {
 			var maxDiff float64
 			var wg sync.WaitGroup
 			var mu sync.Mutex
-			// Eight callers at a time: four run, four wait in the pool queue.
 			sem := make(chan struct{}, 8)
 			for _, r := range refs {
 				sem <- struct{}{}
@@ -174,8 +167,6 @@ func TestGolden(t *testing.T) {
 	}
 }
 
-// TestGoldenLogits checks the raw FP32 logits and the truncation length on
-// the prompts that hit 512 tokens.
 func TestGoldenLogits(t *testing.T) {
 	t.Parallel()
 	rt := openRuntime(t)
@@ -222,8 +213,6 @@ func (r *recordingRunner) Run(ctx context.Context, in ...onnxrt.Tensor) ([]onnxr
 	return out, err
 }
 
-// TestQueueFullRejects saturates a pool with no wait queue: scoring fails at
-// once with an error the route stage classifies as rejected.
 func TestQueueFullRejects(t *testing.T) {
 	t.Parallel()
 	rt := openRuntime(t)
@@ -272,7 +261,6 @@ func TestLoadErrors(t *testing.T) {
 	fp32 := filepath.Join(fixtureDir, bert.FP32FileName)
 	int8Model := filepath.Join(fixtureDir, bert.INT8FileName)
 
-	// An FP32 graph next to tampered weights of the right size.
 	tampered := t.TempDir()
 	graph, err := os.ReadFile(fp32)
 	require.NoError(t, err)
@@ -281,7 +269,6 @@ func TestLoadErrors(t *testing.T) {
 	require.NoError(t, err)
 	weights[len(weights)-1] ^= 0xff
 	require.NoError(t, os.WriteFile(filepath.Join(tampered, "model.safetensors"), weights, 0o600))
-	// A file that is not ONNX at all.
 	junk := filepath.Join(t.TempDir(), "junk.onnx")
 	require.NoError(t, os.WriteFile(junk, []byte{0xff, 0xff, 0xff}, 0o600))
 
@@ -363,8 +350,6 @@ func TestCloseTwice(t *testing.T) {
 	require.ErrorIs(t, err, onnxrt.ErrPoolClosed)
 }
 
-// BenchmarkScore measures Score latency on the bert-tiny fixture (the real
-// checkpoint is measured by the acceptance latency benchmark).
 func BenchmarkScore(b *testing.B) {
 	rt, err := onnxrt.Open()
 	require.NoError(b, err)
@@ -398,9 +383,6 @@ func BenchmarkScore(b *testing.B) {
 	}
 }
 
-// TestDerivedFP32Loads proves that the graph written by FP32Deriver into a
-// fresh entry directory (a regular file next to the copied weights, as after
-// `triage models pull bert`) is accepted by ONNX Runtime.
 func TestDerivedFP32Loads(t *testing.T) {
 	t.Parallel()
 	d, err := bert.NewFP32Deriver(readFixture(t, bert.FP32FileName))

@@ -19,22 +19,13 @@ import (
 
 const tracerName = "github.com/thnhdatle/triage"
 
-// Options are plain values taken from the configuration.
 type Options struct {
-	// ServiceName is the OTel service.name (default "triage").
-	ServiceName string
-	// Version, Commit and GoVersion feed triage_build_info and the resource.
+	ServiceName                string
 	Version, Commit, GoVersion string
-	// TracingEnabled turns the OTLP exporter on. Endpoint, headers and
-	// timeouts come from the standard OTEL_EXPORTER_OTLP_* variables.
-	TracingEnabled bool
-	// Protocol is "http/protobuf" (default) or "grpc".
-	Protocol string
-	// CaptureContent reports whether prompt content may be put on spans.
-	CaptureContent bool
-	// SpanExporter, when set, replaces the OTLP exporter and is used
-	// synchronously (tests, in-memory exporters). It implies tracing on.
-	SpanExporter sdktrace.SpanExporter
+	TracingEnabled             bool
+	Protocol                   string
+	CaptureContent             bool
+	SpanExporter               sdktrace.SpanExporter
 }
 
 // Telemetry owns the metrics registry and the tracer provider.
@@ -46,8 +37,7 @@ type Telemetry struct {
 	capture bool
 }
 
-// Setup builds the telemetry. With tracing disabled it installs no exporter
-// and spans are no-ops, so it never touches the network.
+// Setup creates the metrics and the tracer.
 func Setup(ctx context.Context, o Options) (*Telemetry, error) {
 	if o.ServiceName == "" {
 		o.ServiceName = "triage"
@@ -101,8 +91,6 @@ func newExporter(ctx context.Context, protocol string) (sdktrace.SpanExporter, e
 	return nil, fmt.Errorf("telemetry: unknown otlp protocol %q", protocol)
 }
 
-// Shutdown flushes and stops the tracer provider. It is safe to call on a
-// Telemetry without an exporter.
 func (t *Telemetry) Shutdown(ctx context.Context) error {
 	if t.sdk == nil {
 		return nil
@@ -113,15 +101,10 @@ func (t *Telemetry) Shutdown(ctx context.Context) error {
 	return nil
 }
 
-// Tracer returns the tracer for spans created outside this package.
 func (t *Telemetry) Tracer() trace.Tracer { return t.tracer }
 
-// CaptureContent reports tracing.capture_content.
 func (t *Telemetry) CaptureContent() bool { return t.capture }
 
-// StartAttempt opens the GenAI child span `<operation> <model>` of one
-// upstream attempt. operation is "chat" or "embeddings"; the caller sets the
-// usage and response attributes and ends the span.
 func (t *Telemetry) StartAttempt(
 	ctx context.Context, operation, provider, modelName string,
 ) (context.Context, trace.Span) {

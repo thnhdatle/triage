@@ -21,8 +21,6 @@ func (s *Server) handleChat(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 	req.Headers = requestHeaders(r.Header)
-	// The decision id is chosen here so streamed responses can announce it with
-	// their first byte; the pipeline adopts it via route.WithDecisionID.
 	req.ID = s.newID()
 	if req.Stream {
 		s.streamChat(w, r, req)
@@ -45,7 +43,6 @@ func (s *Server) streamChat(w http.ResponseWriter, r *http.Request, req chat.Req
 	sink.finish(out, err)
 }
 
-// routeError writes a pipeline error before any stream byte was sent.
 func (s *Server) routeError(w http.ResponseWriter, out route.Outcome, err error) {
 	s.setOutcomeHeaders(w, out)
 	writeAPIError(w, fromError(err))

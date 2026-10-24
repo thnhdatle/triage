@@ -25,8 +25,6 @@ import (
 	"github.com/thnhdatle/triage/internal/platform/telemetry"
 )
 
-// Server timeouts. Streams extend their write deadline per
-// chunk; non-streamed answers may take up to dispatch.total_timeout.
 const (
 	DefaultShutdownTimeout = 30 * time.Second
 	readHeaderTimeout      = 10 * time.Second
@@ -38,58 +36,37 @@ const (
 	buildTimeout           = 2 * time.Minute
 )
 
-// ServeOptions configure Serve. Only ConfigPath is required.
+// ServeOptions configures Serve.
 type ServeOptions struct {
-	ConfigPath string
-	// Logger defaults to discarding.
-	Logger *slog.Logger
-	// Clock defaults to the real clock.
-	Clock clock.Clock
-	Env   Env
-	// SpanExporter replaces the OTLP exporter (tests, in-memory exporter).
-	SpanExporter sdktrace.SpanExporter
-	// Reload triggers a configuration reload (SIGHUP in main).
-	Reload <-chan struct{}
-	// WatchInterval is how often the config file is polled for changes; 0
-	// means config.DefaultWatchInterval, negative disables polling.
-	WatchInterval time.Duration
-	// ShutdownTimeout bounds draining in-flight requests (default 30s).
+	ConfigPath      string
+	Logger          *slog.Logger
+	Clock           clock.Clock
+	Env             Env
+	SpanExporter    sdktrace.SpanExporter
+	Reload          <-chan struct{}
+	WatchInterval   time.Duration
 	ShutdownTimeout time.Duration
-	// Started is called with the bound data and admin addresses once both
-	// listeners accept connections.
-	Started func(data, admin net.Addr)
+	Started         func(data, admin net.Addr)
 }
 
-// server is the running process state of Serve.
 type server struct {
-	o       ServeOptions
-	log     *slog.Logger
-	tel     *telemetry.Telemetry
-	tracker *health.Tracker
-	b       *builder
-	lv      *live
-	mgr     *config.Manager
-	api     *httpapi.Server
-	// mu orders reloads against shutdown. The config check and the reload
-	// callback (both also under the Manager's reload lock) hold it while
-	// they build and commit; closeAll holds it while it retires everything,
-	// and sets closed so that later reloads build and commit nothing.
-	mu sync.Mutex
-	// pending is the generation built by the config check, committed by the
-	// reload callback.
+	o        ServeOptions
+	log      *slog.Logger
+	tel      *telemetry.Telemetry
+	tracker  *health.Tracker
+	b        *builder
+	lv       *live
+	mgr      *config.Manager
+	api      *httpapi.Server
+	mu       sync.Mutex
 	pending  *generation
 	closed   bool
 	authKeys atomic.Pointer[httpapi.KeyAuth]
-	// mfCost is the target pricing mf scoring of the current generation.
-	mfCost atomic.Pointer[string]
-	// initial is the configuration the process started with (restart-only keys).
-	initial *config.Config
+	mfCost   atomic.Pointer[string]
+	initial  *config.Config
 }
 
-// Serve runs `triage serve` until ctx is cancelled, then shuts down
-// gracefully: readiness fails, listeners stop accepting, in-flight requests
-// drain (bounded by ShutdownTimeout), background loops stop, strategies,
-// sessions and pools close, the ONNX Runtime is released and spans flushed.
+// Serve runs the server until ctx is canceled, then shuts it down gracefully.
 func Serve(ctx context.Context, o ServeOptions) error {
 	s, err := newServer(ctx, o)
 	if err != nil {
@@ -98,6 +75,7 @@ func Serve(ctx context.Context, o ServeOptions) error {
 	return s.run(ctx)
 }
 
+// newServer builds the server from the configuration.
 func newServer(ctx context.Context, o ServeOptions) (*server, error) {
 	if o.Logger == nil {
 		o.Logger = slog.New(slog.DiscardHandler)
@@ -164,8 +142,6 @@ func telemetryOptions(cfg *config.Config, o ServeOptions) telemetry.Options {
 	}
 }
 
-// check builds the generation of a configuration that passed validation;
-// an error rejects the configuration (missing artifacts, keys, ORT).
 func (s *server) check(ctx context.Context) func(*config.Config) error {
 	return func(cfg *config.Config) error {
 		if cfg.Auth.Enabled {
@@ -184,7 +160,7 @@ func (s *server) check(ctx context.Context) func(*config.Config) error {
 		if err != nil {
 			return err
 		}
-		if s.pending != nil { // a previous check whose swap never happened
+		if s.pending != nil {
 			s.b.retire(ctx, s.pending)
 		}
 		s.pending = g
@@ -192,12 +168,8 @@ func (s *server) check(ctx context.Context) func(*config.Config) error {
 	}
 }
 
-// errServerClosed rejects a reload that arrives once shutdown released the
-// generations and the ONNX Runtime.
 var errServerClosed = errors.New("server is shutting down")
 
-// activate commits the pending generation and the auth keys. The caller
-// holds s.mu (or runs before any reload can start).
 func (s *server) activate(ctx context.Context) {
 	g := s.pending
 	s.pending = nil
@@ -220,7 +192,7 @@ func (s *server) onReload(ctx context.Context) func(config.ReloadEvent) {
 			return
 		}
 		s.mu.Lock()
-		if s.closed { // shutdown retired the pending generation after the check
+		if s.closed {
 			s.mu.Unlock()
 			return
 		}
@@ -234,7 +206,6 @@ func (s *server) onReload(ctx context.Context) func(config.ReloadEvent) {
 	}
 }
 
-// restartOnly lists changed keys that a reload cannot apply.
 func restartOnly(a, b *config.Config) []string {
 	var out []string
 	if a.Server != b.Server {
@@ -258,12 +229,10 @@ func restartOnly(a, b *config.Config) []string {
 	return out
 }
 
-// reloadAuth authenticates against the keys of the current configuration.
 type reloadAuth struct {
 	keys *atomic.Pointer[httpapi.KeyAuth]
 }
 
-// Authenticate implements httpapi.Authenticator.
 func (a reloadAuth) Authenticate(token string) bool {
 	k := a.keys.Load()
 	return k != nil && k.Authenticate(token)
@@ -271,7 +240,6 @@ func (a reloadAuth) Authenticate(token string) bool {
 
 type reloader struct{ m *config.Manager }
 
-// Reload implements httpapi.Reloader.
 func (r reloader) Reload(context.Context) error { return r.m.Reload() }
 
 func (s *server) newAPI(dlog *decisionlog.Log) error {
@@ -351,7 +319,6 @@ func serveHTTP(srv *http.Server, ln net.Listener) error {
 	return nil
 }
 
-// background runs the config watcher, SIGHUP reloads and health probes.
 func (s *server) background(ctx context.Context) error {
 	grp, ctx := errgroup.WithContext(ctx)
 	if s.o.WatchInterval >= 0 {
@@ -373,7 +340,7 @@ func (s *server) background(ctx context.Context) error {
 				case <-ctx.Done():
 					return nil
 				case <-s.o.Reload:
-					_ = s.mgr.Reload() // reported through the reload callback
+					_ = s.mgr.Reload()
 				}
 			}
 		})
@@ -381,8 +348,6 @@ func (s *server) background(ctx context.Context) error {
 	return grp.Wait() //nolint:wrapcheck // the loops never fail
 }
 
-// shutdown drains the listeners: readiness first, then the
-// data plane, then the admin plane.
 func (s *server) shutdown(ctx context.Context, data, admin *http.Server) error {
 	s.api.SetShuttingDown()
 	s.log.Info("shutting down: draining in-flight requests", "component", "serve")
@@ -397,9 +362,6 @@ func (s *server) shutdown(ctx context.Context, data, admin *http.Server) error {
 	return errors.Join(errs...)
 }
 
-// closeAll releases everything built: generations (strategies, sessions,
-// pools), the ONNX Runtime, then flushes telemetry. It waits for a reload in
-// progress, and no reload builds or commits anything after it.
 func (s *server) closeAll(ctx context.Context) {
 	if s.b != nil {
 		s.mu.Lock()

@@ -40,8 +40,7 @@ type Container struct {
 	hc  *http.Client
 }
 
-// Start builds the fakellm image from Dockerfile.fakellm (Docker's layer
-// cache keeps rebuilds short) and starts one container, waiting for /healthz.
+// Start builds the fakellm image and starts a container, waiting until it is healthy.
 func Start(ctx context.Context) (*Container, error) {
 	root, err := repoRoot()
 	if err != nil {
@@ -53,8 +52,6 @@ func Start(ctx context.Context) (*Container, error) {
 		testcontainers.WithDockerfile(testcontainers.FromDockerfile{
 			Context: root, Dockerfile: "Dockerfile.fakellm",
 			Repo: imageRepo, Tag: imageTag,
-			// Packages run in parallel and share the tag; never delete it
-			// under another package's container.
 			KeepImage: true,
 		}),
 		testcontainers.WithExposedPorts(port),
@@ -76,7 +73,6 @@ func Start(ctx context.Context) (*Container, error) {
 	return &Container{ctr: ctr, url: ep, hc: &http.Client{Transport: &http.Transport{}, Timeout: 10 * time.Second}}, nil
 }
 
-// repoRoot is the directory holding go.mod, found from this source file.
 func repoRoot() (string, error) {
 	_, file, _, ok := runtime.Caller(0)
 	if !ok {
@@ -95,13 +91,10 @@ func repoRoot() (string, error) {
 	}
 }
 
-// URL is the root URL of the container (no /v1), e.g. http://127.0.0.1:55001.
 func (c *Container) URL() string { return c.url }
 
-// BaseURL is the OpenAI-compatible base URL (URL + "/v1").
 func (c *Container) BaseURL() string { return c.url + "/v1" }
 
-// Terminate stops and removes the container.
 func (c *Container) Terminate(ctx context.Context) error {
 	c.hc.CloseIdleConnections()
 	if err := c.ctr.Terminate(ctx); err != nil {
@@ -110,8 +103,6 @@ func (c *Container) Terminate(ctx context.Context) error {
 	return nil
 }
 
-// Requests returns the request log entries for model (all entries when
-// model is empty) and the number of entries the ring buffer dropped.
 func (c *Container) Requests(ctx context.Context, model string) ([]fakellm.Record, int, error) {
 	req, err := http.NewRequestWithContext(ctx, http.MethodGet, c.url+"/_fake/requests", http.NoBody)
 	if err != nil {
@@ -148,12 +139,7 @@ func (c *Container) Requests(ctx context.Context, model string) ([]fakellm.Recor
 	return recs, out.Dropped, nil
 }
 
-// RunTests is the body of a TestMain: it starts the container, hands it to
-// set, runs the tests, terminates the container and then verifies that no
-// goroutines leaked (goleak). It returns the process exit code.
 func RunTests(m *testing.M, set func(*Container)) int {
-	// The library's default logger prints every lifecycle step; errors are
-	// returned and reported below instead.
 	tclog.SetDefault(tclog.NewNoopLogger())
 	c, err := Start(context.Background())
 	if err != nil {

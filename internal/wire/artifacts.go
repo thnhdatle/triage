@@ -18,16 +18,12 @@ import (
 	pinned "github.com/thnhdatle/triage/models"
 )
 
-// Artifact entry names in models/manifest.yaml.
 const (
 	entryBERT = "bert"
 	entryMF   = "mf"
 	entryNER  = "ner"
 )
 
-// artifacts locates pulled model files under models.cache_dir. Presence is
-// checked with stat and the local manifest; full SHA-256 verification is
-// `triage models list` (hashing 1.5 GB on every reload would stall it).
 type artifacts struct {
 	cacheDir string
 	pinned   artifact.Manifest
@@ -50,7 +46,6 @@ func loadArtifacts(ctx context.Context, cacheDir string) (*artifacts, error) {
 	return &artifacts{cacheDir: cacheDir, pinned: m, local: local}, nil
 }
 
-// missingError names the pull command that fixes a missing artifact.
 func missingError(name, what, path string) error {
 	return fmt.Errorf("%w: %s %s not found at %s; run \"triage models pull %s\"",
 		artifact.ErrMissing, name, what, path, name)
@@ -61,7 +56,6 @@ func (a *artifacts) dir(name string) string {
 	return filepath.Join(a.cacheDir, e.Name, e.Revision)
 }
 
-// derived returns the recorded derived artifact of a kind whose file exists.
 func (a *artifacts) derived(name string, k artifact.DerivedKind, fallbackFile string) (path, sha string, ok bool) {
 	if e, found := a.local.Entry(name); found {
 		for _, d := range e.Derived {
@@ -93,21 +87,17 @@ func (a *artifacts) requireFile(name, rel string) (string, error) {
 	return p, nil
 }
 
-// bertWeightsFile is the downloaded checkpoint the FP32 graph points into.
 const bertWeightsFile = "model.safetensors"
 
-// bertTokenizer is the XLM-R tokenizer.json of the bert entry.
 func (a *artifacts) bertTokenizer() (string, error) {
 	return a.requireFile(entryBERT, "tokenizer.json")
 }
 
-// bertFiles resolves bert.variant (auto: INT8 if built, else FP32).
 type bertFiles struct {
 	Tokenizer string
 	Model     string
 	Variant   bert.Variant
-	// Key identifies the artifact for strategy reuse across reloads.
-	Key string
+	Key       string
 }
 
 func (a *artifacts) bert(variant string) (bertFiles, error) {
@@ -134,7 +124,6 @@ func (a *artifacts) bert(variant string) (bertFiles, error) {
 	return bertFiles{Tokenizer: tok, Model: p, Variant: bert.VariantFP32, Key: fileKey(p, sha)}, nil
 }
 
-// mfVector is the derived mf vector u.
 func (a *artifacts) mfVector() (path, key string, err error) {
 	p, sha, ok := a.derived(entryMF, artifact.KindMFVector, mf.VectorFileName)
 	if !ok {
@@ -143,7 +132,6 @@ func (a *artifacts) mfVector() (path, key string, err error) {
 	return p, fileKey(p, sha), nil
 }
 
-// ner returns the published dslim/bert-base-NER files.
 func (a *artifacts) ner() (piionnx.Files, string, error) {
 	var f piionnx.Files
 	var err error
@@ -159,8 +147,6 @@ func (a *artifacts) ner() (piionnx.Files, string, error) {
 	return f, fileKey(f.Model, ""), nil
 }
 
-// fileKey identifies an artifact file: its recorded SHA-256 when known, else
-// its path, size and modification time.
 func fileKey(path, sha string) string {
 	if sha != "" {
 		return "sha256:" + sha

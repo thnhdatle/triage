@@ -13,9 +13,6 @@ import (
 	"github.com/thnhdatle/triage/internal/testutil"
 )
 
-// The tests in this file exercise only the slot accounting, so they use a
-// zero Session that is never run; pool runs are tested in session_test.go.
-
 func newTestPool(t *testing.T, qs int) *Pool {
 	t.Helper()
 	p, err := NewPool(&Session{}, PoolConfig{MaxConcurrency: 1, QueueSize: qs})
@@ -23,8 +20,6 @@ func newTestPool(t *testing.T, qs int) *Pool {
 	return p
 }
 
-// acquireAsync starts Acquire in a goroutine the test waits for via the
-// returned channel.
 func acquireAsync(ctx context.Context, p *Pool) <-chan error {
 	ch := make(chan error, 1)
 	go func() {
@@ -73,7 +68,7 @@ func TestPoolAcquireRelease(t *testing.T) {
 	require.ErrorIs(t, err, ErrQueueFull, "queue size 0 rejects when every slot is busy")
 
 	a.Release()
-	a.Release() // idempotent
+	a.Release()
 	assert.Equal(t, PoolStats{InFlight: 1}, p.Stats())
 	b.Release()
 	require.NoError(t, p.Close(t.Context()))
@@ -147,7 +142,7 @@ func TestPoolClose(t *testing.T) {
 func TestPoolLeaseRaceWithClose(t *testing.T) {
 	t.Parallel()
 	p := newTestPool(t, 0)
-	p.slots <- struct{}{} // a slot won at the same moment Close runs
+	p.slots <- struct{}{}
 	ctx, cancel := context.WithCancel(t.Context())
 	cancel()
 	require.ErrorIs(t, p.Close(ctx), context.Canceled, "Close cannot finish while the slot is held")

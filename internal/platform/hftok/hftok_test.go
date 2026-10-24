@@ -198,7 +198,6 @@ func TestEncode_MetaspaceNoSplit(t *testing.T) {
 		`"split":false}`))
 	got, err := tok.Encode("a c", false)
 	require.NoError(t, err)
-	// "a▁c": no prefix, not split; "a" is unknown, "▁c" is a piece.
 	assert.Equal(t, []int{3, 8}, got)
 }
 

@@ -21,7 +21,6 @@ type wireModel struct {
 	OwnedBy string `json:"owned_by"`
 }
 
-// handleModels lists the routes and, with api.expose_targets, the targets.
 func (s *Server) handleModels(w http.ResponseWriter, _ *http.Request) {
 	created := s.started.Unix()
 	out := wireModelList{Object: "list", Data: []wireModel{}}

@@ -111,8 +111,7 @@ func TestPricing_Cost_Table(t *testing.T) {
 			name:    "cached billed at cached rate",
 			pricing: p,
 			u:       chat.Usage{PromptTokens: 1_000_000, CompletionTokens: 1_000_000, CachedPromptTokens: 400_000},
-			// 600k*2 + 400k*0.5 + 1M*8 = 1.2 + 0.2 + 8
-			want: 9.4,
+			want:    9.4,
 		},
 		{
 			name:    "cached above prompt is clamped",

@@ -13,8 +13,6 @@ import (
 	"github.com/thnhdatle/triage/internal/domain/chat"
 )
 
-// chatKnown are the request fields mapped to chat.Request; every other field is
-// passed through in Request.Extra.
 var chatKnown = []string{
 	paramModel, "messages", "tools", "tool_choice", "response_format", "temperature", "top_p", "max_tokens",
 	"max_completion_tokens", "stop", "seed", "user", "stream", "stream_options",
@@ -75,7 +73,6 @@ type wirePart struct {
 	} `json:"image_url"`
 }
 
-// readBody reads the limited request body; an oversize body is 413.
 func readBody(w http.ResponseWriter, r *http.Request, limit int64) ([]byte, *apiError) {
 	b, err := io.ReadAll(http.MaxBytesReader(w, r.Body, limit))
 	var tooBig *http.MaxBytesError
@@ -91,7 +88,6 @@ func readBody(w http.ResponseWriter, r *http.Request, limit int64) ([]byte, *api
 	return b, nil
 }
 
-// decodeChat parses a chat completion request body into a chat.Request.
 func decodeChat(body []byte) (chat.Request, *apiError) {
 	var w wireChatRequest
 	if err := json.Unmarshal(body, &w); err != nil {
@@ -191,7 +187,6 @@ func decodeMessage(m wireMessage) (chat.Message, error) {
 	return msg, nil
 }
 
-// decodeContent reads message content: a plain string or an array of parts.
 func decodeContent(content json.RawMessage) (parts []chat.Part, isString bool, err error) {
 	var s string
 	if json.Unmarshal(content, &s) == nil {
@@ -219,8 +214,6 @@ func decodeParts(content json.RawMessage) ([]chat.Part, error) {
 	}
 	return parts, nil
 }
-
-// Response encoding.
 
 type wireUsage struct {
 	PromptTokens     int                `json:"prompt_tokens"`
@@ -299,8 +292,6 @@ func orElse[T comparable](v, def T) T {
 	}
 	return v
 }
-
-// Streaming chunk encoding.
 
 type wireChunk struct {
 	ID      string            `json:"id"`

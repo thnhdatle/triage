@@ -14,15 +14,8 @@ import (
 	"github.com/thnhdatle/triage/internal/domain/chat"
 )
 
-// maxDatasetLine bounds one JSONL line (a long prompt plus its messages).
 const maxDatasetLine = 16 << 20
 
-// datasetItem is one line of a JSONL dataset. A line carries either
-// messages (OpenAI chat shape, content as a string or text parts) or a single
-// user prompt, plus optional labels:
-//
-//	{"id": "q1", "messages": [{"role": "user", "content": "2+2?"}], "reference": "4", "scorer": "numeric"}
-//	{"id": "q2", "prompt": "Prove that ...", "weak_correct": false, "strong_correct": true}
 type datasetItem struct {
 	ID            string        `json:"id"`
 	Prompt        string        `json:"prompt"`
@@ -43,7 +36,6 @@ type wirePart struct {
 	Text string `json:"text"`
 }
 
-// request converts the item into a chat request for model.
 func (d datasetItem) request(model string) (chat.Request, error) {
 	req := chat.Request{ID: d.ID, Model: model}
 	if len(d.Messages) == 0 {
@@ -89,8 +81,6 @@ func contentText(raw json.RawMessage) (string, error) {
 	return b.String(), nil
 }
 
-// readDataset reads a JSONL file; blank lines are skipped and items without
-// an id are numbered by line.
 func readDataset(path string) ([]datasetItem, error) {
 	f, err := os.Open(path) //nolint:gosec // operator-chosen dataset path
 	if err != nil {

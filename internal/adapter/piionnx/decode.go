@@ -9,12 +9,8 @@ import (
 	"github.com/thnhdatle/triage/internal/domain/privacy"
 )
 
-// window is a slice [start, start+n) of the content tokens scanned in one
-// sequence of the batch, framed by [CLS] and [SEP].
 type window struct{ start, n int }
 
-// windows covers n content tokens with windows of at most size tokens that
-// overlap by overlap tokens. size > overlap >= 0.
 func windows(n, size, overlap int) []window {
 	if n == 0 {
 		return nil
@@ -30,9 +26,6 @@ func windows(n, size, overlap int) []window {
 	}
 }
 
-// owner returns, for every content token, the index of the window whose
-// prediction is used: the one where the token is farthest from an edge, so it
-// has the most context on both sides. Ties go to the earlier window.
 func owner(n int, ws []window) []int {
 	own := make([]int, n)
 	best := make([]int, n)
@@ -50,14 +43,11 @@ func owner(n int, ws []window) []int {
 	return own
 }
 
-// batch holds the model inputs for all windows, padded to the same length.
 type batch struct {
 	rows, cols int
 	ids, mask  []int64
 }
 
-// padID fills positions after [SEP]; the attention mask hides them, and
-// [PAD] is id 0 in BERT vocabularies.
 const padID = 0
 
 func newBatch(ids []int, ws []window, cls, sep int) batch {
@@ -84,8 +74,6 @@ func newBatch(ids []int, ws []window, cls, sep int) batch {
 	return b
 }
 
-// tokenProbs turns the logits [rows, cols, labels] into per-content-token
-// label probabilities, each taken from the token's owning window.
 func tokenProbs(logits []float32, shape []int64, b batch, ws []window, nLabels int) ([][]float64, error) {
 	want := []int64{int64(b.rows), int64(b.cols), int64(nLabels)}
 	if len(shape) != 3 || shape[0] != want[0] || shape[1] != want[1] || shape[2] != want[2] {
@@ -122,15 +110,12 @@ func softmax(x []float32) []float64 {
 	return out
 }
 
-// word is a WordPiece word: a first token and its continuations.
 type word struct {
 	start, end int
 	label      int
 	score      float64
 }
 
-// words groups tokens into words and labels each with the argmax of its
-// tokens' averaged probabilities (HF aggregation "average").
 func words(spans []span, probs [][]float64) []word {
 	var out []word
 	for i := 0; i < len(spans); {
@@ -156,7 +141,6 @@ func words(spans []span, probs [][]float64) []word {
 	return out
 }
 
-// entity is a run of words forming one named entity.
 type entity struct {
 	typ        string
 	raw        string
@@ -165,11 +149,6 @@ type entity struct {
 	n          int
 }
 
-// entities decodes BIO labels over words: B-X starts an entity, I-X extends
-// an open X entity and otherwise starts one (as HF's "simple" grouping), and
-// O or a different type closes it. Entities of ignored types (MISC) are
-// decoded but dropped, as are entities whose mean word score is below
-// minScore. Findings are ordered by start offset.
 func entities(text string, ws []word, labels []label, minScore float64) []privacy.Finding {
 	var out []privacy.Finding
 	var cur *entity

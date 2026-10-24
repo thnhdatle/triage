@@ -11,7 +11,6 @@ type Clock interface {
 	NewTicker(d time.Duration) Ticker
 }
 
-// Ticker is the subset of *time.Ticker the code uses.
 type Ticker interface {
 	C() <-chan time.Time
 	Stop()
@@ -19,7 +18,6 @@ type Ticker interface {
 
 type realClock struct{}
 
-// Real returns the wall clock.
 func Real() Clock { return realClock{} }
 
 func (realClock) Now() time.Time                         { return time.Now() }

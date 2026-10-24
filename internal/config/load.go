@@ -13,8 +13,6 @@ import (
 	"gopkg.in/yaml.v3"
 )
 
-// Default returns the configuration used for every key a file omits. It is not
-// a valid configuration by itself: targets and routes are required.
 func Default() Config {
 	return Config{
 		Server: Server{Listen: "127.0.0.1:8080"},
@@ -70,7 +68,6 @@ func Default() Config {
 	}
 }
 
-// Option values used in several places.
 const (
 	valLocalOnly     = "local_only"
 	valError         = "error"
@@ -78,7 +75,6 @@ const (
 	typeOpenAICompat = "openaicompat"
 )
 
-// Per-route defaults, applied after decoding.
 const (
 	defaultStrategy          = "none"
 	defaultThreshold         = 0.5
@@ -87,8 +83,6 @@ const (
 	defaultPrivacyMode       = "mask"
 )
 
-// applyRouteDefaults fills per-route defaults. thresholdSet[i] reports whether
-// route i has an explicit threshold, so an explicit 0 is kept.
 func (c *Config) applyRouteDefaults(thresholdSet []bool) {
 	for i := range c.Routes {
 		r := &c.Routes[i]
@@ -108,14 +102,12 @@ func (c *Config) applyRouteDefaults(thresholdSet []bool) {
 			r.Privacy.Mode = defaultPrivacyMode
 		}
 		if r.Privacy.MaxClientMode == "" {
-			r.Privacy.MaxClientMode = valLocalOnly // max_client_mode defaults to local_only
+			r.Privacy.MaxClientMode = valLocalOnly
 		}
 	}
 }
 
-// Parse decodes YAML over Default, rejecting unknown keys and multiple
-// documents, then applies per-route defaults. It does not validate; see
-// Validate.
+// Parse decodes YAML over Default and applies per-route defaults.
 func Parse(data []byte) (*Config, error) {
 	cfg := Default()
 	dec := yaml.NewDecoder(bytes.NewReader(data))
@@ -151,8 +143,6 @@ func loadBytes(path string, data []byte) (*Config, error) {
 	return cfg, nil
 }
 
-// explicitThresholds reports, per route, whether the file sets threshold. The
-// data already decoded successfully, so a decode error here yields nil.
 func explicitThresholds(data []byte) []bool {
 	var raw struct {
 		Routes []struct {

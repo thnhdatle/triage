@@ -20,7 +20,6 @@ const (
 	okWordCount       = 6
 )
 
-// okWords is the constant table deterministic completions draw from.
 var okWords = [...]string{
 	"alpha", "bravo", "cedar", "delta", "ember", "flint", "grove", "harbor",
 	"iris", "juniper", "kestrel", "lumen", "meadow", "nectar", "onyx", "prairie",
@@ -45,8 +44,6 @@ type chatRequest struct {
 	} `json:"tools"`
 }
 
-// messageText returns the text of a content value: a string, or the
-// concatenated text parts of an array.
 func messageText(raw json.RawMessage) string {
 	var s string
 	if json.Unmarshal(raw, &s) == nil {
@@ -67,7 +64,6 @@ func messageText(raw json.RawMessage) string {
 	return b.String()
 }
 
-// params are the effective scenario parameters of one request.
 type params struct {
 	scenario   string
 	cutAfter   int
@@ -78,8 +74,6 @@ type params struct {
 	chunkDelay time.Duration
 }
 
-// resolveParams merges the script rule (if any) and the X-Fake-* headers;
-// headers win. A non-nil error message is a client error.
 func resolveParams(h http.Header, rule *scriptRule) (params, error) {
 	p := params{scenario: ScenarioOK, cutAfter: 1, chunkBytes: defaultChunkBytes}
 	if rule != nil {
@@ -131,7 +125,6 @@ func intHeader(h http.Header, name string, def int) (int, error) {
 	return n, nil
 }
 
-// okText derives a few words from SHA-256 over model and messages.
 func okText(model string, req *chatRequest) string {
 	h := sha256.New()
 	h.Write([]byte(model))
@@ -201,7 +194,6 @@ func chatID(model string, n int) string {
 	return "chatcmpl-" + hex.EncodeToString(sum[:8])
 }
 
-// chatCall holds the state of one chat completion request.
 type chatCall struct {
 	s            *Server
 	w            http.ResponseWriter
@@ -241,7 +233,6 @@ func (c *chatCall) serve(ctx context.Context) {
 	c.respond(ctx)
 }
 
-// output is what the scenario produces: text, or a tool call.
 type output struct {
 	text     string
 	toolName string
@@ -325,7 +316,6 @@ func (c *chatCall) plain(o output) {
 	_, _ = c.w.Write(data)
 }
 
-// deltas builds the raw JSON delta objects of a streamed response.
 func (c *chatCall) deltas(o output) []string {
 	var out []string
 	if o.isTool {

@@ -4,8 +4,6 @@ package telemetry
 
 import "sync"
 
-// limiter maps label values to themselves until max distinct values were seen,
-// then to "other".
 type limiter struct {
 	mu   sync.Mutex
 	seen map[string]struct{}

@@ -12,10 +12,8 @@ import (
 	"github.com/thnhdatle/triage/internal/domain/privacy"
 )
 
-// ID is the identifier of the composite detector.
 const ID = "piiregex"
 
-// Finding types (and sub-detector ids) produced by this package.
 const (
 	TypeCreditCard    = "credit_card"
 	TypeIBAN          = "iban"
@@ -34,8 +32,6 @@ type config struct {
 	disabled      []string
 }
 
-// IDs returns every detector id, in scan order. street_address is last and is
-// disabled unless WithStreetAddress enables it.
 func IDs() []string {
 	return []string{
 		TypeCreditCard, TypeIBAN, TypeEmail, TypeIP, TypeUSSSN, TypeSecret, TypeKRRRN, TypePhone, TypeVNCCCD,
@@ -43,30 +39,24 @@ func IDs() []string {
 	}
 }
 
-// WithDisabled removes the named detectors from the composite. New fails for
-// an id that is not in IDs.
 func WithDisabled(ids ...string) Option {
 	return func(c *config) { c.disabled = append(c.disabled, ids...) }
 }
 
-// Option configures New.
 type Option func(*config)
 
-// WithStreetAddress enables or disables the street-address heuristic, which is
-// disabled by default.
 func WithStreetAddress(enabled bool) Option {
 	return func(c *config) { c.streetAddress = enabled }
 }
 
-// Detector is the composite regex, checksum and structural PII detector. It is
-// immutable after New and safe for concurrent use.
+// Detector is the composite regex PII detector.
 type Detector struct {
 	rules []*rule
 }
 
 var _ privacy.Detector = (*Detector)(nil)
 
-// New builds the composite detector.
+// New returns a Detector with all rules enabled except the ones the options turn off.
 func New(opts ...Option) (*Detector, error) {
 	var c config
 	for _, o := range opts {
@@ -92,11 +82,8 @@ func New(opts ...Option) (*Detector, error) {
 	return d, nil
 }
 
-// ID returns "piiregex".
 func (d *Detector) ID() string { return ID }
 
-// Detectors returns the sub-detectors in scan order. Each reports its own id
-// in Finding.DetectorID, which allows per-detector precision and recall.
 func (d *Detector) Detectors() []privacy.Detector {
 	out := make([]privacy.Detector, len(d.rules))
 	for i, r := range d.rules {
@@ -105,10 +92,7 @@ func (d *Detector) Detectors() []privacy.Detector {
 	return out
 }
 
-// Detect scans text with every sub-detector and returns the non-overlapping
-// findings ordered by start offset. Overlaps are resolved in favour of the
-// higher class (checksum, structural, context, heuristic), then the longer
-// span. It returns early with a wrapped context error when ctx is cancelled.
+// Detect returns the PII findings in text.
 func (d *Detector) Detect(ctx context.Context, text string) ([]privacy.Finding, error) {
 	p := newProfile(text)
 	var cands []candidate
@@ -123,14 +107,11 @@ func (d *Detector) Detect(ctx context.Context, text string) ([]privacy.Finding, 
 	return resolve(cands), nil
 }
 
-// candidate is a finding with the class of the detector that produced it.
 type candidate struct {
 	privacy.Finding
 	class class
 }
 
-// resolve drops overlapping candidates deterministically and returns the
-// survivors ordered by start offset.
 func resolve(cands []candidate) []privacy.Finding {
 	if len(cands) == 0 {
 		return nil

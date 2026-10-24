@@ -73,7 +73,7 @@ func TestStream_ChunksArriveInOrder_ThenDone(t *testing.T) {
 		if err := sink.Chunk(content("Hel")); err != nil {
 			return err
 		}
-		<-release // the client must already have the first events: each chunk is flushed
+		<-release
 		if err := sink.Chunk(content("lo")); err != nil {
 			return err
 		}
@@ -153,7 +153,7 @@ func TestStream_ToolCallDeltas_Comment_AndFlush(t *testing.T) {
 		if err := sink.Start(weakTarget); err != nil {
 			return err
 		}
-		if err := sink.Start(weakTarget); err != nil { // idempotent
+		if err := sink.Start(weakTarget); err != nil {
 			return err
 		}
 		if err := sink.Comment("note\nsecond"); err != nil {
@@ -247,7 +247,6 @@ func TestStream_NoPayloadSuccess_StillStartsAndTerminates(t *testing.T) {
 	assert.Equal(t, "data: [DONE]\n\n", rec.Body.String())
 }
 
-// failingWriter fails every write after the headers.
 type failingWriter struct {
 	*httptest.ResponseRecorder
 	fail bool

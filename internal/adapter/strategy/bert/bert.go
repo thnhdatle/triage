@@ -14,55 +14,39 @@ import (
 	"github.com/thnhdatle/triage/internal/platform/onnxrt"
 )
 
-// Name is the strategy name used in configuration and decisions.
 const Name = "bert"
 
-// MaxInputTokens is the training maximum length and the upper bound of
-// bert.max_input_tokens, including <s> and </s>.
 const MaxInputTokens = 512
 
-// Graph input and output names (research/README.md, graph contract).
 const (
 	InputIDs      = "input_ids"
 	AttentionMask = "attention_mask"
 	OutputLogits  = "logits"
 )
 
-// numLogits is the size of the classifier head: p_strong is class 0.
 const numLogits = 3
 
-// Variant is the ONNX artifact a Strategy runs.
 type Variant string
 
-// Variants (bert.variant; "auto" is resolved by the caller from the
-// artifacts present).
 const (
 	VariantFP32 Variant = "fp32"
 	VariantINT8 Variant = "int8"
 )
 
-// Errors of the strategy.
 var (
-	// ErrInvalidConfig is returned for invalid constructor arguments.
 	ErrInvalidConfig = errors.New("bert: invalid config")
-	// ErrBadOutput is returned when the model output is not 3 finite logits.
-	ErrBadOutput = errors.New("bert: unexpected model output")
+	ErrBadOutput     = errors.New("bert: unexpected model output")
 )
 
-// Tokenizer encodes text into XLM-R token ids; *hftok.Tokenizer implements it.
 type Tokenizer interface {
 	Encode(text string, addSpecial bool) ([]int, error)
 }
 
-// Runner runs the graph; *onnxrt.Pool implements it. Errors meaning the work
-// was refused without running (onnxrt.ErrQueueFull) implement Rejected() bool
-// and are returned wrapped, so the route stage records cause "rejected".
 type Runner interface {
 	Run(ctx context.Context, inputs ...onnxrt.Tensor) ([]onnxrt.Tensor, error)
 }
 
-// Strategy is the bert difficulty strategy. It is safe for concurrent use;
-// concurrency is bounded by the Runner.
+// Strategy scores prompt difficulty with a BERT classifier.
 type Strategy struct {
 	tok       Tokenizer
 	run       Runner
@@ -73,14 +57,11 @@ type Strategy struct {
 
 var _ difficulty.Strategy = (*Strategy)(nil)
 
-// Option configures a Strategy.
 type Option func(*Strategy)
 
-// WithMaxInputTokens sets bert.max_input_tokens (1..512, default 512).
 func WithMaxInputTokens(n int) Option { return func(s *Strategy) { s.maxTokens = n } }
 
-// New returns a Strategy over a tokenizer and a runner of the given variant.
-// The caller owns tok and run; Close does nothing for such a Strategy.
+// New returns a Strategy.
 func New(tok Tokenizer, run Runner, variant Variant, opts ...Option) (*Strategy, error) {
 	s := &Strategy{tok: tok, run: run, variant: variant, maxTokens: MaxInputTokens}
 	for _, o := range opts {
@@ -102,14 +83,10 @@ func New(tok Tokenizer, run Runner, variant Variant, opts ...Option) (*Strategy,
 	return s, nil
 }
 
-// Name implements difficulty.Strategy.
 func (*Strategy) Name() string { return Name }
 
-// Variant returns the artifact variant the strategy runs.
 func (s *Strategy) Variant() Variant { return s.variant }
 
-// QueueDepth returns the number of scoring calls waiting for a pool slot
-// (triage_scoring_queue_depth), or 0 when the Runner reports no statistics.
 func (s *Strategy) QueueDepth() int {
 	if st, ok := s.run.(interface{ Stats() onnxrt.PoolStats }); ok {
 		return st.Stats().Queued
@@ -117,10 +94,7 @@ func (s *Strategy) QueueDepth() int {
 	return 0
 }
 
-// Score implements difficulty.Strategy: the scored text is tokenised with
-// <s>/</s>, right-truncated to the maximum keeping the final </s>, run as a
-// batch of one with an all-ones attention mask, and p_strong is
-// softmax(logits)[0] computed in float64.
+// Score returns the probability that the prompt needs the strong model.
 func (s *Strategy) Score(ctx context.Context, req chat.Request) (difficulty.Score, error) {
 	if err := ctx.Err(); err != nil {
 		return difficulty.Score{}, fmt.Errorf("bert: %w", err)
@@ -178,7 +152,7 @@ func (s *Strategy) logits(ctx context.Context, ids []int) ([]float32, error) {
 	return nil, fmt.Errorf("%w: no %q output", ErrBadOutput, OutputLogits)
 }
 
-// PStrong returns softmax(logits)[0] in float64 (RouteLLM: 1 - sum(softmax[-2:])).
+// PStrong returns softmax(logits)[0] in float64.
 func PStrong(logits []float32) float64 {
 	m := math.Inf(-1)
 	for _, x := range logits {
@@ -191,8 +165,6 @@ func PStrong(logits []float32) float64 {
 	return math.Exp(float64(logits[0])-m) / sum
 }
 
-// Close releases the pool and session opened by Load, waiting for runs in
-// flight until ctx ends. It does nothing for a Strategy built with New.
 func (s *Strategy) Close(ctx context.Context) error {
 	if s.closer == nil {
 		return nil

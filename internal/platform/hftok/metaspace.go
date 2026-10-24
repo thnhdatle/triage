@@ -10,8 +10,6 @@ import (
 	"unicode/utf8"
 )
 
-// whitespaceSplit splits on Unicode White_Space (Rust char::is_whitespace,
-// which equals Go's unicode.IsSpace), dropping the whitespace.
 type whitespaceSplit struct{}
 
 func (whitespaceSplit) split(words []string) []string {
@@ -22,10 +20,6 @@ func (whitespaceSplit) split(words []string) []string {
 	return out
 }
 
-// metaspace ports HF Metaspace with prepend_scheme "always" or "never": spaces
-// become the replacement, the replacement is prepended unless the word
-// already starts with it, and with split the word is cut before every
-// replacement (MergedWithNext).
 type metaspace struct {
 	replacement string
 	prepend     bool
@@ -69,7 +63,6 @@ func (m *metaspace) split(words []string) []string {
 			out = append(out, w)
 			continue
 		}
-		// Cut before every replacement except one at the start of the word.
 		for start := 0; start < len(w); {
 			_, size := utf8.DecodeRuneInString(w[start:])
 			j := strings.Index(w[start+size:], m.replacement)

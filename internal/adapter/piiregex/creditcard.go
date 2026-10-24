@@ -12,7 +12,6 @@ const (
 	ccConf      = 0.95
 )
 
-// A run of digits optionally separated by single spaces or dashes.
 var creditCardRe = newRunMatcher(`\d(?:[ -]?\d){12,}`, 0)
 
 func newCreditCard() *rule {
@@ -34,9 +33,6 @@ func scanCreditCard(p *profile) []privacy.Finding {
 	return out
 }
 
-// creditCardWindow picks the longest group-aligned window of a digit run that
-// is a Luhn-valid number with a plausible issuer prefix. Multi-group numbers
-// must start with a 4-digit group (4-4-4-4, 4-6-5 and similar layouts).
 func creditCardWindow(text string, ms, me int) (start, end int, ok bool) {
 	var groups [][2]int
 	for i := ms; i < me; {
@@ -76,21 +72,29 @@ func luhnValid(d string) bool {
 	return sum%10 == 0
 }
 
-// plausibleIIN checks the issuer identification number and length of a
-// digits-only card number against the major card schemes.
 func plausibleIIN(d string) bool {
 	n := len(d)
 	if d[0] == '4' {
 		return n == 13 || n == 16 || n == 19
 	}
 	schemes := [...]struct{ digits, lo, hi, minLen, maxLen int }{
-		{2, 51, 55, 16, 16}, {4, 2221, 2720, 16, 16}, // Mastercard
-		{2, 34, 34, 15, 15}, {2, 37, 37, 15, 15}, // Amex
-		{4, 6011, 6011, 16, 19}, {2, 65, 65, 16, 19}, {3, 644, 649, 16, 19}, // Discover
-		{2, 62, 62, 16, 19},                                             // UnionPay
-		{4, 3528, 3589, 16, 19},                                         // JCB
-		{3, 300, 305, 14, 19}, {2, 36, 36, 14, 19}, {2, 38, 39, 14, 19}, // Diners
-		{2, 50, 50, 13, 19}, {2, 56, 58, 13, 19}, {2, 60, 60, 13, 19}, {2, 63, 63, 13, 19}, {2, 67, 67, 13, 19}, // Maestro
+		{2, 51, 55, 16, 16},
+		{4, 2221, 2720, 16, 16},
+		{2, 34, 34, 15, 15},
+		{2, 37, 37, 15, 15},
+		{4, 6011, 6011, 16, 19},
+		{2, 65, 65, 16, 19},
+		{3, 644, 649, 16, 19},
+		{2, 62, 62, 16, 19},
+		{4, 3528, 3589, 16, 19},
+		{3, 300, 305, 14, 19},
+		{2, 36, 36, 14, 19},
+		{2, 38, 39, 14, 19},
+		{2, 50, 50, 13, 19},
+		{2, 56, 58, 13, 19},
+		{2, 60, 60, 13, 19},
+		{2, 63, 63, 13, 19},
+		{2, 67, 67, 13, 19},
 	}
 	for _, sc := range schemes {
 		if p := atoi(d[:sc.digits]); p >= sc.lo && p <= sc.hi {
@@ -100,8 +104,6 @@ func plausibleIIN(d string) bool {
 	return false
 }
 
-// cardIsolated is stricter than isolated: a card window must not continue a
-// longer group sequence across a space or dash (for example inside an IBAN).
 func cardIsolated(text string, s, e int) bool {
 	if !isolated(text, s, e) {
 		return false
@@ -116,9 +118,6 @@ func cardIsolated(text string, s, e int) bool {
 	return !isAlnum(text[e]) && !glued
 }
 
-// longestCardFrom tries windows that start at group i and end at later groups,
-// stopping once more than 19 digits are covered, and returns the end offset
-// of the longest valid one.
 func longestCardFrom(text string, groups [][2]int, i int) (end int, ok bool) {
 	total := 0
 	for j := i; j < len(groups); j++ {

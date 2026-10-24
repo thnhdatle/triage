@@ -4,16 +4,6 @@
 
 package piionnx
 
-// This test runs the real dslim/bert-base-NER export. It is opt-in:
-//
-//	triage models pull ner   # or make bootstrap + models pull
-//	go test -race -count=1 -tags realmodel -run RealModel ./internal/adapter/piionnx/
-//
-// The model is read from TRIAGE_NER_MODEL_DIR (the directory holding
-// model.onnx, tokenizer.json and config.json) or from the pinned cache
-// location ~/.cache/rayld/triage/models/ner/<revision>/onnx. A missing file
-// fails the test with instructions; it is never skipped.
-
 import (
 	"context"
 	"os"
@@ -28,7 +18,6 @@ import (
 	"github.com/thnhdatle/triage/internal/domain/privacy"
 )
 
-// nerRevision is the pinned revision in models/manifest.yaml.
 const nerRevision = "d1a3e8f13f8c3566299d95fcfc9a8d2382a9affc"
 
 func realFiles(t *testing.T) Files {

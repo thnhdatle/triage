@@ -14,30 +14,20 @@ import (
 	"github.com/thnhdatle/triage/internal/domain/difficulty"
 )
 
-// Result is the outcome of a calibration run.
 type Result struct {
-	// Strategy is the name of the strategy that scored the sample.
-	Strategy string
-	// Threshold is the route threshold: p >= Threshold routes to strong.
-	Threshold difficulty.Threshold
-	// AchievedRatio is the fraction of the sample with p >= Threshold.
+	Strategy      string
+	Threshold     difficulty.Threshold
 	AchievedRatio float64
-	// N is the sample size.
-	N int
+	N             int
 }
 
-// Snippet returns the YAML configuration snippet that sets the calibrated threshold on route.
-// The route name is written verbatim.
+// Snippet renders the YAML routes snippet for the configuration.
 func (r Result) Snippet(route string) string {
 	return "routes:\n  - name: " + route + "\n    threshold: " +
 		strconv.FormatFloat(float64(r.Threshold), 'g', -1, 64) + "\n"
 }
 
-// Calibrate scores every request of sample with strategy and returns the threshold whose strong-call
-// ratio (the fraction of scores p >= threshold) is closest to strongRatio. Only thresholds equal to a
-// sample score are candidates (ties are never split), plus one just above the maximum for ratio 0;
-// when two candidates are equally close the lower ratio wins, so the target is not exceeded. The
-// requests are scored sequentially; a strategy error aborts the run and is returned wrapped.
+// Calibrate picks the route threshold whose strong-call share is closest to ratio.
 func Calibrate(
 	ctx context.Context, strategy difficulty.Strategy, sample []chat.Request, strongRatio float64,
 ) (Result, error) {
@@ -70,8 +60,6 @@ func Calibrate(
 	}, nil
 }
 
-// thresholdForRatio mirrors eval.ThresholdForStrongRatio; app packages may not import each other
-// (depguard), so the few lines are repeated here.
 func thresholdForRatio(scores []float64, ratio float64) float64 {
 	sorted := make([]float64, len(scores))
 	copy(sorted, scores)

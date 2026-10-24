@@ -35,9 +35,6 @@ func TestWindows(t *testing.T) {
 	}
 }
 
-// TestWindows_Property checks that windows cover every token, never exceed
-// the size, overlap their predecessor by exactly overlap tokens, and that
-// every token is owned by a window holding it.
 func TestWindows_Property(t *testing.T) {
 	t.Parallel()
 	rapid.Check(t, func(t *rapid.T) {
@@ -66,7 +63,6 @@ func TestWindows_Property(t *testing.T) {
 func TestOwner_PrefersCentralWindow(t *testing.T) {
 	t.Parallel()
 	ws := []window{{0, 4}, {2, 4}}
-	// Token 2: edge distance 1 in w0, 0 in w1. Token 3: 0 in w0, 1 in w1.
 	assert.Equal(t, []int{0, 0, 0, 1, 1, 1}, owner(6, ws))
 }
 
@@ -84,8 +80,6 @@ func TestTokenProbs_UsesOwningWindow(t *testing.T) {
 	t.Parallel()
 	ws := []window{{0, 2}, {1, 1}}
 	b := newBatch([]int{7, 8}, ws, 1, 2)
-	// Two labels; rows: [CLS] t0 t1 [SEP] | [CLS] t1 [SEP] pad. Token 1 is
-	// at an edge of both windows, so the earlier window owns it.
 	logits := []float32{
 		0, 0, 5, 0, 0, 5, 0, 0,
 		0, 0, 9, 0, 0, 0, 0, 0,

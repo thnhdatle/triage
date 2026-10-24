@@ -16,7 +16,6 @@ import (
 	"github.com/thnhdatle/triage/internal/platform/hftok"
 )
 
-// Strategy names as written in the configuration.
 const (
 	strategyNone   = "none"
 	strategyRandom = "random"
@@ -25,23 +24,15 @@ const (
 	strategyMF     = mf.Name
 )
 
-// plan is a configuration resolved against the filesystem and the
-// environment: which artifacts each strategy uses and which routes fall back
-// to length. It is computed before anything is built, so `config validate`
-// and reloads report every problem at once.
 type plan struct {
-	cacheDir string
-	// strategies maps route name to the effective strategy.
-	strategies map[string]string
-	// tokenizer is the tokenizer.json for selection.tokenizer; "" = estimate.
-	tokenizer string
-	bert      *bertFiles
-	mfVector  string
-	mfKey     string
-	// mfFallback is the strategy used instead of mf for privacy reasons.
-	mfFallback string
-	ner        *nerFiles
-	// mfCostTarget prices mf embeddings (F9); "" means cost 0.
+	cacheDir     string
+	strategies   map[string]string
+	tokenizer    string
+	bert         *bertFiles
+	mfVector     string
+	mfKey        string
+	mfFallback   string
+	ner          *nerFiles
 	mfCostTarget string
 	warnings     []string
 }
@@ -55,13 +46,11 @@ func (p *plan) warn(format string, args ...any) {
 	p.warnings = append(p.warnings, fmt.Sprintf(format, args...))
 }
 
-// usesStrategy reports whether a route of cfg names the strategy.
 func usesStrategy(cfg *config.Config, name string) bool {
 	return slices.ContainsFunc(cfg.Routes, func(r config.Route) bool { return r.Strategy == name })
 }
 
-// resolve checks cfg against the artifacts and the environment. Problems are
-// returned together as a *config.ValidationError.
+// resolve checks cfg against the artifacts and the environment.
 func resolve(ctx context.Context, cfg *config.Config, env Env) (*plan, error) {
 	var problems []string
 	add := func(path string, err error) { problems = append(problems, path+": "+err.Error()) }
@@ -95,9 +84,6 @@ func resolve(ctx context.Context, cfg *config.Config, env Env) (*plan, error) {
 	return p, nil
 }
 
-// routeStrategies sets the effective strategy of every route: a strategy
-// whose artifacts are missing fails, or uses length under
-// difficulty.missing_artifact: fallback (never for mf egress problems).
 func (p *plan) routeStrategies(cfg *config.Config, fallback bool, bertErr, mfErr error) []string {
 	var problems []string
 	for _, r := range cfg.Routes {
@@ -118,8 +104,6 @@ func (p *plan) routeStrategies(cfg *config.Config, fallback bool, bertErr, mfErr
 	return problems
 }
 
-// resolveMFFallback picks difficulty.mf.fallback: bert if its artifacts
-// exist, else length.
 func (p *plan) resolveMFFallback(cfg *config.Config, bertErr error) {
 	if !slices.Contains(mapValues(p.strategies), strategyMF) {
 		return
@@ -146,11 +130,9 @@ func (p *plan) needsBERT() bool {
 	return slices.Contains(mapValues(p.strategies), strategyBERT) || p.mfFallback == strategyBERT
 }
 
-// errNoONNX is the missing-runtime error of a noonnx build.
 var errNoONNX = errors.New("this binary was built without ONNX Runtime (-tags noonnx or CGO_ENABLED=0); " +
 	"use a release build or strategy length")
 
-// errEgress marks mf problems that difficulty.missing_artifact never relaxes.
 var errEgress = errors.New("mf data egress")
 
 func (p *plan) resolveBERT(cfg *config.Config, arts *artifacts) error {
@@ -217,7 +199,6 @@ func (p *plan) resolveTokenizer(cfg *config.Config, arts *artifacts, env Env, fa
 		}
 	}
 	if err == nil {
-		// Load it now so an unsupported tokenizer.json fails validation, not only startup.
 		if _, lerr := hftok.Load(path); lerr != nil {
 			err = fmt.Errorf("tokenizer file %s: %w", path, lerr)
 		}

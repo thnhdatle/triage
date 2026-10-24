@@ -9,10 +9,9 @@ import (
 	"strings"
 )
 
-// Scorer decides whether a model answer is correct given the item's reference.
+// Scorer reports whether an answer matches the reference.
 type Scorer func(answer, reference string) bool
 
-// Scorer names accepted by ScorerByName.
 const (
 	ScorerGSM8K   = "gsm8k"
 	ScorerMMLU    = "mmlu"
@@ -21,9 +20,6 @@ const (
 	ScorerNumeric = "numeric"
 )
 
-// ScorerByName returns the scorer registered under name: gsm8k, mmlu, or the user scorers exact
-// (trimmed string equality), regex (the reference is a regular expression that must match somewhere in
-// the answer; an invalid expression never matches) and numeric (same as gsm8k).
 func ScorerByName(name string) (Scorer, error) {
 	switch name {
 	case ScorerGSM8K:
@@ -40,13 +36,10 @@ func ScorerByName(name string) (Scorer, error) {
 	return nil, fmt.Errorf("eval: unknown scorer %q", name)
 }
 
-// ScoreExact reports whether answer and reference are equal after trimming surrounding whitespace.
 func ScoreExact(answer, reference string) bool {
 	return strings.TrimSpace(answer) == strings.TrimSpace(reference)
 }
 
-// ScoreRegex reports whether the regular expression in reference matches answer. An invalid expression
-// never matches.
 func ScoreRegex(answer, reference string) bool {
 	re, err := regexp.Compile(reference)
 	if err != nil {
@@ -55,19 +48,10 @@ func ScoreRegex(answer, reference string) bool {
 	return re.MatchString(answer)
 }
 
-// ScoreNumeric is ScoreGSM8K under its user-facing name.
 func ScoreNumeric(answer, reference string) bool { return ScoreGSM8K(answer, reference) }
 
 var numberRE = regexp.MustCompile(`(-?)\s?\$?(-?)(\d{1,3}(?:,\d{3})+|\d+)(\.\d+)?`)
 
-// ScoreGSM8K reports whether the final number of answer equals the final number of reference.
-//
-// The final number is the first number after the last "####" marker when there is one (GSM8K's
-// answer delimiter), otherwise the last number of the whole text. A number may carry a leading minus (also
-// after a "$"), thousands commas ("1,234"), a "$" prefix, a decimal part, and any trailing unit or
-// period ("12 dollars", "7."). A minus glued to a preceding letter or digit ("3-4") is a hyphen, not
-// a sign. Values compare exactly as rationals, so "3.50" equals "3.5" and "1,234" equals "1234". A text
-// without a number never matches.
 func ScoreGSM8K(answer, reference string) bool {
 	a, ok := finalNumber(answer)
 	if !ok {
@@ -91,7 +75,7 @@ func finalNumber(text string) (*big.Rat, bool) {
 		loc := locs[i]
 		neg := loc[3] > loc[2] || loc[5] > loc[4]
 		if loc[3] > loc[2] && loc[0] > 0 && isAlnum(text[loc[0]-1]) {
-			neg = loc[5] > loc[4] // hyphen between words or digits, not a sign
+			neg = loc[5] > loc[4]
 		}
 		digits := strings.ReplaceAll(text[loc[6]:loc[7]], ",", "")
 		if loc[8] >= 0 {
@@ -118,19 +102,6 @@ var (
 	mmluMarkedRE = regexp.MustCompile(`(?:^|[^A-Za-z0-9])(?:\(([A-D])\)|\*\*([A-D])\*\*|([A-D])(?:[.):]|$))`)
 )
 
-// ScoreMMLU reports whether the letter chosen in answer equals the letter of reference.
-//
-// A letter is extracted by the first rule that applies:
-//  1. the last "answer [is|:] X" phrase (case-insensitive, optional "(", "**", quotes around X), so
-//     "The answer is (B)", "Answer: b" and "**Answer:** C" work; a lower-case letter followed by
-//     another word ("the answer is a dog") is an article and is skipped;
-//  2. the whole trimmed text is one letter once markup ("*", "_", brackets, quotes, final punctuation)
-//     is stripped ("B.", "**B**", "(b)");
-//  3. the last upper-case letter A-D that is marked as a choice: "(B)", "**B**", "B." "B)" "B:" or the
-//     final character of the text.
-//
-// The reference goes through the same extraction, so it may be "B", "(B)" or "The answer is B". Text
-// without a letter, or a reference without one, never matches.
 func ScoreMMLU(answer, reference string) bool {
 	a, ok := finalLetter(answer)
 	if !ok {
@@ -177,7 +148,6 @@ func answerPhraseLetter(text string) (byte, bool) {
 	return 0, false
 }
 
-// followedByWord reports whether rest starts with spaces and then a letter.
 func followedByWord(rest string) bool {
 	rest = strings.TrimLeft(rest, " \t")
 	return rest != "" && (rest[0] >= 'a' && rest[0] <= 'z' || rest[0] >= 'A' && rest[0] <= 'Z')

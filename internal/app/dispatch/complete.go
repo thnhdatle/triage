@@ -10,10 +10,7 @@ import (
 	"github.com/thnhdatle/triage/internal/domain/model"
 )
 
-// Complete runs a non-streaming request through the fallback chain. On
-// success the Result carries the final response (unmasked when its attempt
-// was masked, Usage summed over all attempts). On failure it returns the
-// Result so far and an *Error wrapping the last error.
+// Complete runs the plan's chain until one target answers.
 func (d *Dispatcher) Complete(ctx context.Context, plan Plan) (Result, error) {
 	r := d.newRun(plan)
 	ctx, stop := watch(ctx, d.clk, d.opts.TotalTimeout, ErrTotalTimeout)
@@ -31,8 +28,6 @@ func (d *Dispatcher) Complete(ctx context.Context, plan Plan) (Result, error) {
 	}
 }
 
-// completeAttempt runs one non-streaming attempt on t and reports whether it
-// succeeded.
 func (r *run) completeAttempt(ctx context.Context, t model.Target) (chat.Response, bool, bool) {
 	a := attempt{target: t, start: r.d.clk.Now()}
 	req, masked, err := r.prepare(ctx, t, false, "")

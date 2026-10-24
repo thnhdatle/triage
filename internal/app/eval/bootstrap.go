@@ -8,11 +8,7 @@ import (
 	"sort"
 )
 
-// Bootstrap returns the 95% percentile confidence interval of stat over resamples bootstrap resamples
-// of n items drawn with replacement. stat receives the resampled item indices (len n); the slice is
-// reused between calls and must not be retained. The result is deterministic for a given seed
-// (PCG source). Statistics that are NaN are skipped; lo and hi are NaN when n or resamples is not
-// positive or no statistic is finite.
+// Bootstrap returns a 95 percent confidence interval for stat.
 func Bootstrap(n, resamples int, seed int64, stat func(idx []int) float64) (lo, hi float64) {
 	if n <= 0 || resamples <= 0 {
 		return math.NaN(), math.NaN()

@@ -13,36 +13,24 @@ import (
 	"time"
 )
 
-// DefaultWatchInterval is how often Run polls the config file.
 const DefaultWatchInterval = time.Second
 
-// ReloadEvent describes one reload attempt. Old is the Config in effect before
-// the attempt; New is nil when Err is set (the old Config stays in effect).
 type ReloadEvent struct {
 	Old *Config
 	New *Config
 	Err error
 }
 
-// Option configures a Manager.
 type Option func(*Manager)
 
-// WithOnReload registers a callback invoked after every reload attempt, after
-// the swap. Calls are serialised; the callback must not call Reload.
 func WithOnReload(fn func(ReloadEvent)) Option {
 	return func(m *Manager) { m.onReload = fn }
 }
 
-// WithCheck registers an extra check run on every valid Config before it is
-// swapped in, at NewManager and on every reload (e.g. artifact presence, which
-// Validate does not check because it never touches the filesystem). An error
-// rejects the Config exactly like a validation error: the old one stays in
-// effect. Calls are serialised with reloads.
 func WithCheck(fn func(*Config) error) Option {
 	return func(m *Manager) { m.check = fn }
 }
 
-// WithWatchInterval sets the polling interval of Run (default one second).
 func WithWatchInterval(d time.Duration) Option {
 	return func(m *Manager) {
 		if d > 0 {
@@ -51,9 +39,7 @@ func WithWatchInterval(d time.Duration) Option {
 	}
 }
 
-// Manager owns the live configuration. Current is lock-free; in-flight
-// requests keep the *Config they started with, so a swap never changes a
-// request midway.
+// Manager holds the live configuration and reloads it.
 type Manager struct {
 	path     string
 	cur      atomic.Pointer[Config]
@@ -61,11 +47,11 @@ type Manager struct {
 	onReload func(ReloadEvent)
 	check    func(*Config) error
 
-	mu       sync.Mutex // serialises Reload and guards the fields below
+	mu       sync.Mutex
 	lastHash [sha256.Size]byte
 }
 
-// NewManager loads and validates the file at path. It starts no goroutines.
+// NewManager loads and validates the file at path.
 func NewManager(path string, opts ...Option) (*Manager, error) {
 	m := &Manager{path: path, interval: DefaultWatchInterval}
 	for _, o := range opts {
@@ -84,16 +70,11 @@ func NewManager(path string, opts ...Option) (*Manager, error) {
 	return m, nil
 }
 
-// Path returns the config file path.
 func (m *Manager) Path() string { return m.path }
 
-// Current returns the live configuration. Callers must not modify it.
 func (m *Manager) Current() *Config { return m.cur.Load() }
 
-// Reload re-reads the file, and on success atomically swaps it in. An invalid
-// or unreadable file leaves the old configuration in effect and returns the
-// error (also reported to the WithOnReload callback). It is safe to call
-// concurrently, e.g. from a SIGHUP handler and the admin endpoint.
+// Reload re-reads the file and swaps in the new configuration if it is valid.
 func (m *Manager) Reload() error {
 	m.mu.Lock()
 	defer m.mu.Unlock()
@@ -119,7 +100,6 @@ func (m *Manager) reloadLocked(data []byte) error {
 	return nil
 }
 
-// load parses, validates and runs the WithCheck hook.
 func (m *Manager) load(path string, data []byte) (*Config, error) {
 	cfg, err := loadBytes(path, data)
 	if err != nil {
@@ -139,9 +119,7 @@ func (m *Manager) report(ev ReloadEvent) {
 	}
 }
 
-// Run polls the file every watch interval and reloads when its content
-// changes, until ctx is cancelled. A changed-but-invalid file is reported once
-// and not retried until it changes again. Run always returns ctx.Err().
+// Run polls the file and reloads it when its content changes, until ctx is canceled.
 func (m *Manager) Run(ctx context.Context) error {
 	t := time.NewTicker(m.interval)
 	defer t.Stop()
@@ -158,7 +136,6 @@ func (m *Manager) Run(ctx context.Context) error {
 func (m *Manager) poll() {
 	data, err := os.ReadFile(m.path) //nolint:gosec // operator-chosen config path
 	if err != nil {
-		// Editors replace files non-atomically; wait for the next tick.
 		return
 	}
 	m.mu.Lock()
@@ -166,7 +143,7 @@ func (m *Manager) poll() {
 	if bytes.Equal(m.lastHash[:], hashOf(data)) {
 		return
 	}
-	_ = m.reloadLocked(data) // the error is delivered through the callback
+	_ = m.reloadLocked(data)
 }
 
 func hashOf(data []byte) []byte {

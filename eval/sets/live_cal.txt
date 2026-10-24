@@ -1,0 +1,17 @@
+# Live calibration set: 8 GSM8K + 7 MMLU test items
+# seed 7, contaminated prompts excluded; regenerate with research/src/triage_research/make_eval_sets.py
+gsm8k/test:103
+gsm8k/test:154
+gsm8k/test:198
+gsm8k/test:317
+gsm8k/test:674
+gsm8k/test:759
+gsm8k/test:819
+gsm8k/test:1109
+mmlu/test:college_chemistry:73
+mmlu/test:college_mathematics:49
+mmlu/test:computer_security:16
+mmlu/test:high_school_macroeconomics:108
+mmlu/test:management:13
+mmlu/test:moral_scenarios:520
+mmlu/test:sociology:148

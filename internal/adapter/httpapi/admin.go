@@ -12,7 +12,6 @@ import (
 	"github.com/thnhdatle/triage/internal/platform/buildinfo"
 )
 
-// Pagination bounds.
 const (
 	defaultLimit = 50
 	maxLimit     = 500
@@ -66,8 +65,6 @@ func usageView(u chat.Usage) usageJSON {
 	return usageJSON{u.PromptTokens, u.CompletionTokens, u.CachedPromptTokens}
 }
 
-// decisionView is the admin representation of a decision; it holds counts and
-// names only, never prompt text or finding values.
 func decisionView(d decision.Decision) decisionJSON {
 	out := decisionJSON{
 		ID: d.ID, Route: d.Route, Time: d.Time, Operation: d.Operation, Privacy: string(d.Privacy),

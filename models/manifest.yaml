@@ -9,7 +9,7 @@ entries:
     revision: 86237e3df400762178ea98379477b8296e66d5e4
     base_model: xlm-roberta-base  # config.json _name_or_path; the repo has no model card
     training_data: >-
-      not stated in the repo (no model card); the RouteLLM paper (arXiv:2406.18665)
+      not stated in the repo (no model card); the paper arXiv:2406.18665
       describes the gpt4_augmented set as Chatbot Arena preference data augmented
       with GPT-4-judged data
     files:
@@ -38,7 +38,7 @@ entries:
     revision: 5eb3dc745cbe7cb16ca342ceb83b7f6ecf8c77c5
     base_model: none stated (the repo has no model card)
     training_data: >-
-      not stated in the repo (no model card); the RouteLLM paper (arXiv:2406.18665)
+      not stated in the repo (no model card); the paper arXiv:2406.18665
       describes the gpt4_augmented set as Chatbot Arena preference data augmented
       with GPT-4-judged data
     files:

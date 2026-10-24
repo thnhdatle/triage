@@ -19,14 +19,11 @@ import (
 	"github.com/thnhdatle/triage/internal/domain/provider"
 )
 
-// upstream is a provider adapter with a connection pool.
 type upstream interface {
 	provider.Provider
 	CloseIdleConnections()
 }
 
-// clientSpec is everything a provider client is built from. Two equal specs
-// share one client (and its connection pool) across reloads.
 type clientSpec struct {
 	Provider string                       `json:"provider"`
 	Type     string                       `json:"type"`
@@ -36,7 +33,7 @@ type clientSpec struct {
 	Timeout  time.Duration                `json:"timeout"`
 	Headers  map[string]map[string]string `json:"headers"`
 
-	key string // the API key itself; never part of the cache key
+	key string
 }
 
 func (s clientSpec) cacheKey() string {
@@ -78,14 +75,8 @@ func newUpstream(s clientSpec) (upstream, error) {
 	}
 }
 
-// providerLayout assigns every target a client. Targets of one provider
-// share a client; a target whose extra_headers conflict with another target
-// of the same provider and model gets its own client, keyed
-// "<provider>#<target>" (model.Target.Provider is that key).
 type providerLayout struct {
-	// specs by client key (provider name or provider#target).
-	specs map[string]clientSpec
-	// targetClient maps target name to client key.
+	specs        map[string]clientSpec
 	targetClient map[string]string
 }
 
@@ -133,9 +124,6 @@ func hashKey(k string) string {
 	return hex.EncodeToString(sum[:8])
 }
 
-// providerTimeout bounds a client's non-streaming calls and stream headers:
-// the largest attempt timeout of its targets, so dispatch's per-attempt
-// timeout (F7) is the one that fires.
 func providerTimeout(cfg *config.Config, name, mfProvider string) time.Duration {
 	d := time.Duration(cfg.Dispatch.AttemptTimeout)
 	for _, t := range cfg.Targets {
@@ -149,8 +137,6 @@ func providerTimeout(cfg *config.Config, name, mfProvider string) time.Duration 
 	return d
 }
 
-// probe returns the active health probe of a client: GET /models
-// (any 200 succeeds) or a one-token completion of model.
 func probe(p provider.Provider, kind, modelName string) func(context.Context) error {
 	if kind == "completion" {
 		return func(ctx context.Context) error {

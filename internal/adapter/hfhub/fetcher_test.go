@@ -123,7 +123,7 @@ func TestRedirectToPlainHTTPRejected(t *testing.T) {
 func TestRedirectToNonAllowListedHost(t *testing.T) {
 	t.Parallel()
 	hub := httptest.NewServer(http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
-		http.Redirect(w, r, "http://localhost:1/x", http.StatusFound) // loopback http but not allow-listed
+		http.Redirect(w, r, "http://localhost:1/x", http.StatusFound)
 	}))
 	defer hub.Close()
 	f := newFetcher(t, hub)
@@ -310,14 +310,14 @@ func TestMkdirAndRenameFailures(t *testing.T) {
 	f := newFetcher(t, srv)
 	file := file("sub/a.bin", body)
 	dir := t.TempDir()
-	if err := os.WriteFile(filepath.Join(dir, "sub"), nil, 0o600); err != nil { // "sub" is a file
+	if err := os.WriteFile(filepath.Join(dir, "sub"), nil, 0o600); err != nil {
 		t.Fatal(err)
 	}
 	if err := f.Fetch(context.Background(), entry(file), file, dir); err == nil {
 		t.Fatal("expected mkdir error")
 	}
 	dir2 := t.TempDir()
-	if err := os.MkdirAll(filepath.Join(dir2, "sub", "a.bin", "x"), 0o750); err != nil { // target is a non-empty dir
+	if err := os.MkdirAll(filepath.Join(dir2, "sub", "a.bin", "x"), 0o750); err != nil {
 		t.Fatal(err)
 	}
 	if err := f.Fetch(context.Background(), entry(file), file, dir2); err == nil {

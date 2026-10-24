@@ -20,8 +20,6 @@ import (
 const okBody = `{"id":"x","model":"m","created":1,` +
 	`"choices":[{"index":0,"message":{"role":"assistant","content":"hi"},"finish_reason":"stop"}]}`
 
-// captureServer records request bodies and answers with okBody, or with an
-// empty SSE stream for streaming requests.
 type captureServer struct {
 	mu     sync.Mutex
 	bodies [][]byte

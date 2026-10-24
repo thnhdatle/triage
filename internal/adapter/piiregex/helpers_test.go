@@ -11,7 +11,6 @@ import (
 	"github.com/thnhdatle/triage/internal/domain/privacy"
 )
 
-// scanAll runs the composite detector (street address enabled).
 func scanAll(t *testing.T, text string) []privacy.Finding {
 	t.Helper()
 	d, err := New(WithStreetAddress(true))
@@ -21,7 +20,6 @@ func scanAll(t *testing.T, text string) []privacy.Finding {
 	return fs
 }
 
-// scanOne runs one sub-detector, selected by id.
 func scanOne(t *testing.T, id, text string) []privacy.Finding {
 	t.Helper()
 	d, err := New(WithStreetAddress(true))

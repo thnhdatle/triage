@@ -4,5 +4,4 @@
 
 package wire
 
-// onnxBuilt reports whether this binary can load ONNX Runtime.
 const onnxBuilt = false

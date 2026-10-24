@@ -9,7 +9,6 @@ import (
 	"github.com/thnhdatle/triage/internal/domain/privacy"
 )
 
-// class orders detectors for overlap resolution: a higher class wins.
 type class int
 
 const (
@@ -19,8 +18,6 @@ const (
 	classChecksum
 )
 
-// profile holds the cheap byte-level facts about a text that the literal
-// prefilter uses to skip rules that cannot match.
 type profile struct {
 	text   string
 	digits int
@@ -46,20 +43,15 @@ func newProfile(text string) profile {
 	return p
 }
 
-// rule is one sub-detector. It implements privacy.Detector on its own so
-// precision and recall can be measured per detector.
 type rule struct {
 	id    string
 	class class
-	// gate is the literal prefilter: false means the scan cannot match.
-	gate func(p *profile) bool
-	scan func(p *profile) []privacy.Finding
+	gate  func(p *profile) bool
+	scan  func(p *profile) []privacy.Finding
 }
 
-// ID returns the sub-detector id, which equals the finding type it produces.
 func (r *rule) ID() string { return r.id }
 
-// Detect scans text with this sub-detector only.
 func (r *rule) Detect(ctx context.Context, text string) ([]privacy.Finding, error) {
 	if err := ctx.Err(); err != nil {
 		return nil, fmt.Errorf("piiregex: %s: %w", r.id, err)
@@ -94,8 +86,6 @@ func isAlnum(b byte) bool {
 
 func isNumSep(b byte) bool { return b == '-' || b == '.' || b == '/' }
 
-// isolated reports whether text[s:e] is not glued to further digits, either
-// directly or across one '-', '.' or '/'.
 func isolated(text string, s, e int) bool {
 	if s > 0 {
 		if isDigit(text[s-1]) || (s > 1 && isNumSep(text[s-1]) && isDigit(text[s-2])) {
@@ -110,7 +100,6 @@ func isolated(text string, s, e int) bool {
 	return true
 }
 
-// digitsOf returns the ASCII digits of s.
 func digitsOf(s string) string {
 	b := make([]byte, 0, len(s))
 	for i := range len(s) {

@@ -23,11 +23,8 @@ import (
 	"github.com/thnhdatle/triage/internal/platform/onnxrt"
 )
 
-// highScore is softmax(6, 0 x 8) at the labelled class.
 const highScore = 0.98055
 
-// testWords are the words the tiny model labels; every other token is O.
-// All pieces of a word get the same row.
 var testWords = []struct {
 	word  string
 	label int
@@ -57,8 +54,6 @@ func newRuntime(t *testing.T) *onnxrt.Runtime {
 	return rt
 }
 
-// newFixture writes the tiny model (labels output classes, input names
-// inputs) and dslim's config.json to a temporary directory.
 func newFixture(t *testing.T, labels int, inputs []string) fixture {
 	t.Helper()
 	tok, al := testTokenizer(t)
@@ -88,7 +83,6 @@ func newDetector(t *testing.T, f fixture, opts ...Option) *Detector {
 	return d
 }
 
-// syncBuffer is a log sink safe for concurrent writes.
 type syncBuffer struct {
 	mu  sync.Mutex
 	buf bytes.Buffer
@@ -225,8 +219,8 @@ func TestDetector_Detect_Unavailable(t *testing.T) {
 	tests := []struct {
 		name   string
 		opts   []Option
-		hold   bool // hold the only run slot during Detect
-		close  bool // close the detector first
+		hold   bool
+		close  bool
 		status string
 	}{
 		{name: "too many tokens", opts: []Option{WithMaxTokens(3)}, status: reasonTooLong},
@@ -335,8 +329,6 @@ func TestDetector_Probe_LabelMismatch(t *testing.T) {
 
 func TestDetector_Probe_InputNameMismatch(t *testing.T) {
 	t.Parallel()
-	// ORT checks input names when a session runs, so New succeeds and Probe
-	// reports the wrong export.
 	d := newDetector(t, newFixture(t, numLabels, []string{"ids", "mask", "types"}))
 	err := d.Probe(context.Background())
 	require.Error(t, err)

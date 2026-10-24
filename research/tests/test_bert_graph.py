@@ -1,5 +1,5 @@
 # SPDX-License-Identifier: Apache-2.0
-"""Tests for build_bert_graph and export_bert on a small random model (no downloads)."""
+"""Tests for the graph builder and the INT8 export on a small random model."""
 
 from __future__ import annotations
 
@@ -16,9 +16,33 @@ import yaml
 from safetensors.numpy import save_file
 
 from triage_research import build_bert_graph as bbg
-from triage_research import export_bert, fetch, make_fixtures
+from triage_research import export_bert, fetch
 
-SMALL = {**make_fixtures.TINY_CONFIG, "vocab_size": 64}
+SMALL: dict[str, Any] = {
+    "architectures": ["XLMRobertaForSequenceClassification"],
+    "attention_probs_dropout_prob": 0.1,
+    "bos_token_id": 0,
+    "classifier_dropout": None,
+    "eos_token_id": 2,
+    "hidden_act": "gelu",
+    "hidden_dropout_prob": 0.1,
+    "hidden_size": 8,
+    "id2label": {"0": "LABEL_0", "1": "LABEL_1", "2": "LABEL_2"},
+    "initializer_range": 0.02,
+    "intermediate_size": 16,
+    "label2id": {"LABEL_0": 0, "LABEL_1": 1, "LABEL_2": 2},
+    "layer_norm_eps": 1e-05,
+    "max_position_embeddings": 514,
+    "model_type": "xlm-roberta",
+    "num_attention_heads": 2,
+    "num_hidden_layers": 1,
+    "pad_token_id": 1,
+    "position_embedding_type": "absolute",
+    "problem_type": "single_label_classification",
+    "torch_dtype": "float32",
+    "type_vocab_size": 1,
+    "vocab_size": 64,
+}
 
 
 def _checkpoint(root: Path, config: dict[str, Any] = SMALL, seed: int = 3) -> Path:

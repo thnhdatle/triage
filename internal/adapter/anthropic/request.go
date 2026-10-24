@@ -35,7 +35,6 @@ type wireMessage struct {
 	Content []wireBlock `json:"content"`
 }
 
-// wireBlock is a request content block: text, image, tool_use or tool_result.
 type wireBlock struct {
 	Type      string           `json:"type"`
 	Text      string           `json:"text,omitempty"`
@@ -67,7 +66,6 @@ type wireToolChoice struct {
 	DisableParallelToolUse bool   `json:"disable_parallel_tool_use,omitempty"`
 }
 
-// Content block and role names of the Messages API.
 const (
 	blockText       = "text"
 	blockImage      = "image"
@@ -80,14 +78,10 @@ const (
 	jsonNull        = "null"
 )
 
-// emptySchema is sent for a tool without parameters; input_schema is required.
 var emptySchema = json.RawMessage(`{"type":"object","properties":{}}`)
 
-// imageMediaTypes are the base64 image types the Messages API accepts.
 var imageMediaTypes = map[string]bool{"image/jpeg": true, "image/png": true, "image/gif": true, "image/webp": true}
 
-// encodeRequest translates req. OpenAI-only fields (seed, unknown extra
-// fields) are dropped; response_format other than text is refused.
 func (c *Client) encodeRequest(req chat.Request, stream bool) ([]byte, error) {
 	w := wireRequest{
 		Model: req.Model, MaxTokens: req.RequestedOutputTokens(), StopSequences: req.Stop,
@@ -133,9 +127,6 @@ func checkResponseFormat(raw json.RawMessage) error {
 	return nil
 }
 
-// encodeMessages extracts system messages into the system prompt, maps the
-// rest to Messages API turns and merges consecutive turns of the same role
-// (tool results become user turns).
 func encodeMessages(msgs []chat.Message) (string, []wireMessage, error) {
 	var (
 		system []string
@@ -171,7 +162,7 @@ func encodeMessage(m chat.Message) (string, []wireBlock, error) {
 		return roleUser, []wireBlock{{Type: blockToolResult, ToolUseID: m.ToolCallID, Content: m.Text()}}, nil
 	case chat.RoleUser, chat.RoleAssistant:
 	case chat.RoleSystem:
-		return "", nil, unsupported("system message inside the conversation") // extracted by encodeMessages
+		return "", nil, unsupported("system message inside the conversation")
 	default:
 		return "", nil, unsupported("unsupported role " + strconv.Quote(string(m.Role)))
 	}
@@ -195,8 +186,6 @@ func encodeMessage(m chat.Message) (string, []wireBlock, error) {
 	return string(m.Role), blocks, nil
 }
 
-// encodePart maps a content part; empty text parts are dropped because the
-// Messages API rejects empty text blocks.
 func encodePart(p chat.Part) (wireBlock, bool, error) {
 	switch p.Type {
 	case chat.PartText:
@@ -208,8 +197,6 @@ func encodePart(p chat.Part) (wireBlock, bool, error) {
 	return wireBlock{}, false, unsupported("unsupported content part type " + strconv.Quote(string(p.Type)))
 }
 
-// imageSource maps a data: URL to a base64 source and an http(s) URL to a
-// url source.
 func imageSource(u string) (*wireImageSource, error) {
 	if strings.HasPrefix(u, "https://") || strings.HasPrefix(u, "http://") {
 		return &wireImageSource{Type: "url", URL: u}, nil
@@ -229,8 +216,6 @@ func imageSource(u string) (*wireImageSource, error) {
 	return &wireImageSource{Type: "base64", MediaType: mediaType, Data: data}, nil
 }
 
-// toolInput turns OpenAI tool-call arguments (a JSON string) into the
-// tool_use input object.
 func toolInput(args string) (json.RawMessage, error) {
 	trimmed := bytes.TrimSpace([]byte(args))
 	if len(trimmed) == 0 {
@@ -259,8 +244,6 @@ func encodeTools(tools []chat.Tool) ([]wireTool, error) {
 	return out, nil
 }
 
-// encodeToolChoice maps OpenAI tool_choice ("auto", "none", "required" or a
-// named function) and parallel_tool_calls: false.
 func encodeToolChoice(raw, parallel json.RawMessage) (*wireToolChoice, error) {
 	noParallel := string(bytes.TrimSpace(parallel)) == "false"
 	if len(bytes.TrimSpace(raw)) == 0 || string(raw) == jsonNull {

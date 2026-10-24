@@ -85,8 +85,6 @@ func emailDetector() *fakedetector.Detector {
 	return fakedetector.NewLiteral("fake", "email", secret)
 }
 
-// fakeDispatcher records plans and answers with the first chain target, or
-// with fn when set.
 type fakeDispatcher struct {
 	mu    sync.Mutex
 	plans []dispatch.Plan
@@ -141,12 +139,10 @@ func (f *fakeDispatcher) calls() int {
 	return len(f.plans)
 }
 
-// healthSet marks the named targets unhealthy.
 type healthSet map[string]bool
 
 func (h healthSet) IsHealthy(name string) bool { return !h[name] }
 
-// observer records events.
 type observer struct {
 	mu     sync.Mutex
 	events []route.Event
@@ -170,12 +166,10 @@ func (o *observer) kinds(k route.EventKind) []route.Event {
 	return out
 }
 
-// counter is an exact TokenCounter returning a fixed count per text.
 type counter struct{ n int }
 
 func (c counter) CountTokens(string) int { return c.n }
 
-// setup configures newEnv.
 type setup struct {
 	targets    model.Pool
 	routes     []route.Route
@@ -195,7 +189,6 @@ type env struct {
 	obs  *observer
 }
 
-// testingT is satisfied by *testing.T and *rapid.T.
 type testingT interface {
 	require.TestingT
 	Helper()
@@ -226,7 +219,6 @@ func newEnv(t testingT, s setup) env {
 	return e
 }
 
-// only returns the single recorded decision.
 func (e env) only(t testingT) decision.Decision {
 	t.Helper()
 	ds := e.rec.Decisions()
@@ -242,7 +234,6 @@ func names(ts []model.Target) []string {
 	return out
 }
 
-// sink is a dispatch.Sink that records the start target.
 type sink struct {
 	mu      sync.Mutex
 	started []string

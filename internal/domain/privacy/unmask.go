@@ -9,18 +9,8 @@ import (
 	"github.com/thnhdatle/triage/internal/domain/chat"
 )
 
-// Unmask restores every exact placeholder of the mapping in text produced by
-// a masked attempt. partial reports a placeholder-like token
-// ((?i)\[{1,2}\s*<TYPE>_\d+\s*\]{1,2} for a TYPE of the mapping) that is not an
-// exact placeholder of the mapping, e.g. "[[email_1]]", "[EMAIL_1]" or an
-// unknown index; such tokens are returned as produced. Placeholders absent
-// from text are not partial.
 func (m *Mapping) Unmask(text string) (out string, partial bool) { return m.unmask(text, false) }
 
-// UnmaskJSONString is Unmask for tool-call arguments, which are JSON text: a
-// placeholder inside a JSON string literal is restored with the value
-// JSON-string-escaped ('"' as \", '\' as \\, control characters escaped, no
-// HTML escaping); a placeholder outside string literals is restored verbatim.
 func (m *Mapping) UnmaskJSONString(text string) (out string, partial bool) {
 	return m.unmask(text, true)
 }
@@ -31,9 +21,7 @@ func (m *Mapping) unmask(text string, jsonMode bool) (string, bool) {
 	return out, u.partial
 }
 
-// UnmaskResponse returns a copy of resp with the text parts and tool-call
-// arguments of every choice unmasked, and whether any of them was partial.
-// resp is not modified.
+// UnmaskResponse restores the original values in resp.
 func (m *Mapping) UnmaskResponse(resp chat.Response) (chat.Response, bool) {
 	out := resp
 	out.Choices = make([]chat.Choice, len(resp.Choices))
@@ -80,24 +68,15 @@ func (m *Mapping) unmaskToolCalls(calls []chat.ToolCall) ([]chat.ToolCall, bool)
 	return out, partial
 }
 
-// unmaskStream restores placeholders in one output stream (a choice's content
-// or one tool call's arguments). It holds back at most maxKeyLen-1 bytes: the
-// shortest suffix that is a proper prefix of a placeholder.
 type unmaskStream struct {
-	m    *Mapping
-	json bool
-	// hold is the pending suffix that may begin a placeholder.
-	hold string
-	// inString and escaped track the JSON lexer state of the emitted upstream
-	// bytes (json mode only); placeholders contain neither '"' nor '\'.
+	m                 *Mapping
+	json              bool
+	hold              string
 	inString, escaped bool
-	// scan is the upstream text since the last byte that cannot occur in a
-	// partial-pattern match; it is checked when such a byte arrives or on flush.
-	scan    []byte
-	partial bool
+	scan              []byte
+	partial           bool
 }
 
-// write consumes an upstream delta and returns the bytes that can be emitted.
 func (u *unmaskStream) write(delta string) string {
 	u.observe(delta)
 	buf := u.hold + delta
@@ -128,7 +107,6 @@ func (u *unmaskStream) write(delta string) string {
 	return b.String()
 }
 
-// flush returns the held bytes and completes partial detection.
 func (u *unmaskStream) flush() string {
 	var b strings.Builder
 	u.emit(&b, u.hold)
@@ -162,17 +140,12 @@ func (u *unmaskStream) restore(v string) string {
 	return v
 }
 
-// observe feeds upstream bytes to partial detection. A partial-pattern match
-// never spans a byte outside the token byte set, so the text before the last
-// such byte can be checked now and dropped, with the same result as checking
-// the reassembled stream.
 func (u *unmaskStream) observe(delta string) {
 	if len(u.m.tokens) == 0 {
 		return
 	}
 	old := len(u.scan)
 	u.scan = append(u.scan, delta...)
-	// Only the new bytes can hold a splitter: the old ones were cut at one.
 	for i := len(u.scan) - 1; i >= old; i-- {
 		c := u.scan[i]
 		if int(c) < len(u.m.tokenBytes) && !u.m.tokenBytes[c] {
@@ -184,8 +157,6 @@ func (u *unmaskStream) observe(delta string) {
 }
 
 func (u *unmaskStream) check(seg []byte) {
-	// Every partial-pattern match holds a '['; without one the (lazily
-	// compiled) pattern is not needed.
 	if len(u.m.tokens) == 0 || u.partial || bytes.IndexByte(seg, '[') < 0 {
 		return
 	}
@@ -197,8 +168,6 @@ func (u *unmaskStream) check(seg []byte) {
 	}
 }
 
-// keyAt returns the placeholder rest starts with, if any. A placeholder's
-// body has no brackets, so its first ']' is followed by its closing ']'.
 func (m *Mapping) keyAt(rest string) (string, bool) {
 	window := rest[:min(len(rest), m.maxKeyLen)]
 	end := strings.IndexByte(window, ']')
@@ -210,8 +179,6 @@ func (m *Mapping) keyAt(rest string) (string, bool) {
 	return k, ok
 }
 
-// isKeyPrefix reports whether rest is a proper prefix of a placeholder. The
-// length check keeps the lookup O(maxKeyLen) instead of hashing all of rest.
 func (m *Mapping) isKeyPrefix(rest string) bool {
 	if len(rest) >= m.maxKeyLen {
 		return false

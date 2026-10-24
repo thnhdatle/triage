@@ -30,7 +30,6 @@ func TestMain(m *testing.M) {
 	goleak.VerifyTestMain(m)
 }
 
-// epoch is the start of every fake clock.
 var epoch = time.Date(2026, 10, 19, 12, 0, 0, 0, time.UTC)
 
 const (
@@ -67,8 +66,6 @@ func plan(req chat.Request, chain ...model.Target) dispatch.Plan {
 	return dispatch.Plan{Request: req, Chain: chain, Localities: model.AllLocalities()}
 }
 
-// maskedPlan returns a plan whose request contains secret, with the mapping
-// and detectors of mask mode.
 func maskedPlan(t *testing.T, chain ...model.Target) dispatch.Plan {
 	t.Helper()
 	req := userRequest("mail " + secret + " please")
@@ -81,7 +78,6 @@ func maskedPlan(t *testing.T, chain ...model.Target) dispatch.Plan {
 	return p
 }
 
-// newMapping returns the mapping of req with one finding of typ per value.
 func newMapping(req chat.Request, typ string, values ...string) *privacy.Mapping {
 	fs := make([]privacy.Finding, 0, len(values))
 	for _, v := range values {
@@ -116,18 +112,14 @@ var (
 	errCtxLen      = provErr(provider.ErrContextLength, 400, 0)
 )
 
-// scripted returns a fake provider answering with the outcomes in order.
 func scripted(outs ...fakeprovider.Outcome) *fakeprovider.Provider {
 	return fakeprovider.New(fakeprovider.WithOutcomes(outs...))
 }
 
-// stream scripts a stream of chunks ending with err (io.EOF when nil).
 func stream(chunks []chat.Chunk, err error) fakeprovider.Outcome {
 	return fakeprovider.StreamChunks(chunks, err)
 }
 
-// textChunks returns a role chunk, one content chunk per part and a finish
-// chunk, all with id and model.
 func textChunks(modelName string, parts ...string) []chat.Chunk {
 	out := []chat.Chunk{{
 		ID: "id-" + modelName, Model: modelName, Created: 7,
@@ -145,7 +137,6 @@ func textChunks(modelName string, parts ...string) []chat.Chunk {
 	})
 }
 
-// cutChunks returns the role chunk and the content parts, without finish.
 func cutChunks(modelName string, parts ...string) []chat.Chunk {
 	c := textChunks(modelName, parts...)
 	return c[:len(c)-1]
@@ -163,8 +154,6 @@ func response(modelName, text string, u chat.Usage) chat.Response {
 	}
 }
 
-// sink records what the relay writes. It is used from the Stream goroutine
-// and read by the test after Stream returned, or under mu.
 type sink struct {
 	mu       sync.Mutex
 	starts   []model.Target
@@ -172,9 +161,8 @@ type sink struct {
 	comments []string
 	errs     []error
 
-	startErr error
-	chunkErr error
-	// failChunkAt makes the n-th Chunk call (1-based) fail with chunkErr.
+	startErr    error
+	chunkErr    error
 	failChunkAt int
 }
 
@@ -212,7 +200,6 @@ func (s *sink) Error(err error) error {
 	return nil
 }
 
-// text returns the relayed content of choice 0.
 func (s *sink) text() string {
 	s.mu.Lock()
 	defer s.mu.Unlock()
@@ -231,7 +218,6 @@ func (s *sink) chunkCount() int {
 	return len(s.chunks)
 }
 
-// health records Report calls.
 type health struct {
 	mu      sync.Mutex
 	reports []string
@@ -253,9 +239,6 @@ func (h *health) all() []string {
 	return append([]string(nil), h.reports...)
 }
 
-// blocking is a provider whose calls block until their context ends. Streams
-// first deliver chunks, then block. Every time a call starts blocking it
-// signals on entered.
 type blocking struct {
 	chunks  []chat.Chunk
 	entered chan struct{}
@@ -325,7 +308,6 @@ func waitEntered(t *testing.T, b *blocking) {
 	}
 }
 
-// waitWaiters waits until the fake clock has at least n pending timers.
 func waitWaiters(t *testing.T, clk *clock.Fake, n int) {
 	t.Helper()
 	testutil.Eventually(t, func() bool { return clk.Waiters() >= n }, waitLimit)
@@ -364,7 +346,6 @@ func statuses(res dispatch.Result) []string {
 	return out
 }
 
-// requestText returns every text part and tool-call argument of req.
 func requestText(req chat.Request) string {
 	var b strings.Builder
 	for _, m := range req.Messages {

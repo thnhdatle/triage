@@ -122,8 +122,9 @@ privacy modes, fallback and evaluation are covered in the [guides](docs/guides).
 
 ## Performance
 
-MacBook Pro M3 Pro, zero-latency fake upstream, medians of 3 runs. Method and full results in
-[bench/RESULTS.md](bench/RESULTS.md).
+MacBook Pro M3 Pro 36 GB, Triage v0.1.0, zero-latency fake upstream, `length` strategy with `mask`,
+medians of 3 runs. Overhead is paired: each request goes at the same instant directly to the fake
+upstream and through Triage.
 
 | Scenario | Result |
 |---|---|

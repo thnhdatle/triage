@@ -22,7 +22,6 @@ import (
 	pinned "github.com/thnhdatle/triage/models"
 )
 
-// Converter image defaults.
 const (
 	envModelsImage     = "RAYLD_TRIAGE_MODELS_IMAGE"
 	defaultModelsImage = "ghcr.io/thnhdatle/triage-models"
@@ -34,6 +33,7 @@ type modelsFlags struct {
 	int8                          bool
 }
 
+// models runs the models subcommand.
 func (c *CLI) models(ctx context.Context, args []string) error {
 	if len(args) == 0 || (args[0] != "pull" && args[0] != "list") {
 		return usagef("models pull [bert|mf|ner|all] [--int8] | models list")
@@ -74,7 +74,6 @@ func (c *CLI) models(ctx context.Context, args []string) error {
 	return c.modelsPull(ctx, svc, names, f.int8)
 }
 
-// parseInterspersed parses flags and positional arguments in any order.
 func parseInterspersed(fs interface {
 	Parse([]string) error
 	Args() []string
@@ -109,7 +108,6 @@ func (c *CLI) optionalConfig(flagPath string) (*config.Config, error) {
 	return cfg, nil
 }
 
-// neededArtifacts lists the entries the configuration uses.
 func neededArtifacts(cfg *config.Config) []string {
 	var out []string
 	if usesStrategy(cfg, strategyBERT) || cfg.Selection.Tokenizer == strategyBERT ||

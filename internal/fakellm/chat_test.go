@@ -405,7 +405,6 @@ func TestServer_Chat_ChunkDelay(t *testing.T) {
 			"X-Fake-Answer": "abcdef", "X-Fake-Chunk-Bytes": "3", "X-Fake-Chunk-Delay-Ms": "100",
 		})
 	}()
-	// 2 content chunks + finish chunk: two delays.
 	for range 2 {
 		testutil.Eventually(t, func() bool { return e.clk.Waiters() == 1 }, 5*time.Second)
 		e.clk.Advance(100 * time.Millisecond)

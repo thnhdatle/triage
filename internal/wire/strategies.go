@@ -22,18 +22,13 @@ import (
 	"github.com/thnhdatle/triage/internal/platform/telemetry"
 )
 
-// observedStrategy records the score histogram and the scoring queue depth
-// around a strategy. Errors pass through unchanged, so the route
-// stage still sees Rejected() and timeouts.
 type observedStrategy struct {
 	next difficulty.Strategy
 	tel  *telemetry.Telemetry
 }
 
-// Name implements difficulty.Strategy.
 func (s observedStrategy) Name() string { return s.next.Name() }
 
-// Score implements difficulty.Strategy.
 func (s observedStrategy) Score(ctx context.Context, req chat.Request) (difficulty.Score, error) {
 	if q, ok := s.next.(interface{ QueueDepth() int }); ok {
 		s.tel.SetScoringQueueDepth(s.next.Name(), q.QueueDepth())
@@ -45,19 +40,15 @@ func (s observedStrategy) Score(ctx context.Context, req chat.Request) (difficul
 	return sc, err //nolint:wrapcheck // decorator: the route stage inspects the error
 }
 
-// tokenCounter adapts hftok to chat.TokenCounter (selection.tokenizer, F3).
 type tokenCounter struct{ tok *hftok.Tokenizer }
 
-// CountTokens implements chat.TokenCounter.
 func (c tokenCounter) CountTokens(text string) int { return c.tok.Count(text) }
 
-// ortHolder opens the process-wide ONNX Runtime once, on first need,
-// and closes it at shutdown.
 type ortHolder struct {
-	path string // onnx.library_path at startup
+	path string
 	log  *slog.Logger
 
-	mu sync.Mutex // guards rt
+	mu sync.Mutex
 	rt *onnxrt.Runtime
 }
 
@@ -90,7 +81,6 @@ func (h *ortHolder) close() error {
 	return nil
 }
 
-// bertConfig sizes the bert scoring pool from difficulty.bert.
 func bertConfig(files bertFiles, c config.BERT) bert.Config {
 	conc := c.MaxConcurrency
 	if conc <= 0 {
@@ -108,7 +98,6 @@ func bertKey(c bert.Config, artifactKey string) string {
 		c.MaxConcurrency, c.QueueSize)
 }
 
-// simpleStrategy builds the artifact-free strategies.
 func simpleStrategy(name string, cfg *config.Config, counter chat.TokenCounter) (difficulty.Strategy, error) {
 	switch name {
 	case strategyRandom:
@@ -131,8 +120,6 @@ func simpleStrategy(name string, cfg *config.Config, counter chat.TokenCounter) 
 	return nil, fmt.Errorf("strategy %q needs artifacts", name)
 }
 
-// newMF builds mf over an embeddings provider: UsageEmbedder (usage for F9)
-// under the LRU cache.
 func newMF(p mf.EmbedProvider, vectorPath string, cacheSize int) (*mf.Strategy, error) {
 	u, err := mf.LoadVector(vectorPath)
 	if err != nil {

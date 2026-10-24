@@ -13,7 +13,6 @@ import (
 	"github.com/thnhdatle/triage/internal/app/route"
 )
 
-// metrics holds every collector of the process, registered on one registry.
 type metrics struct {
 	reg *prometheus.Registry
 
@@ -100,12 +99,10 @@ func newMetrics(version, commit, goVersion string) *metrics {
 	return m
 }
 
-// Observer returns the route.Observer that records pipeline events.
 func (t *Telemetry) Observer() route.Observer { return observer{t.m} }
 
 type observer struct{ m *metrics }
 
-// Observe implements route.Observer.
 func (o observer) Observe(e route.Event) {
 	m := o.m
 	switch e.Kind {
@@ -133,7 +130,6 @@ func (o observer) Observe(e route.Event) {
 	}
 }
 
-// tierLabel and reasonLabel bound label values that come from a closed set.
 func tierLabel(v string) string {
 	switch v {
 	case "weak", "strong":
@@ -150,18 +146,14 @@ func reasonLabel(v string) string {
 	return otherLabel
 }
 
-// ObserveScore records a strategy's difficulty score in [0, 1].
 func (t *Telemetry) ObserveScore(strategy string, score float64) {
 	t.m.score.WithLabelValues(t.m.strategies.get(strategy)).Observe(score)
 }
 
-// SetScoringQueueDepth sets the number of waiting scoring calls of a strategy.
 func (t *Telemetry) SetScoringQueueDepth(strategy string, depth int) {
 	t.m.queueDepth.WithLabelValues(t.m.strategies.get(strategy)).Set(float64(depth))
 }
 
-// ObserveUpstream records one upstream request. status is a short outcome
-// such as "ok", "error" or an HTTP status code, never a message.
 func (t *Telemetry) ObserveUpstream(provider, modelName, status string, d time.Duration) {
 	t.m.upstream.WithLabelValues(t.m.providers.get(provider), t.m.models.get(modelName), t.statusLabel(status)).
 		Observe(d.Seconds())
@@ -177,17 +169,14 @@ func (t *Telemetry) statusLabel(s string) string {
 	return s
 }
 
-// ObserveFallback counts a fallback attempt; reason is an error code.
 func (t *Telemetry) ObserveFallback(routeName, reason string) {
 	t.m.fallbacks.WithLabelValues(t.m.routes.get(routeName), t.statusLabel(reason)).Inc()
 }
 
-// AddTargetInflight adds delta (+1 or -1) to a target's in-flight gauge.
 func (t *Telemetry) AddTargetInflight(target string, delta int) {
 	t.m.targetFlight.WithLabelValues(t.m.targets.get(target)).Add(float64(delta))
 }
 
-// SetTargetHealth records whether a target is healthy.
 func (t *Telemetry) SetTargetHealth(target string, healthy bool) {
 	v := 0.0
 	if healthy {
@@ -196,8 +185,6 @@ func (t *Telemetry) SetTargetHealth(target string, healthy bool) {
 	t.m.targetHealthy.WithLabelValues(t.m.targets.get(target)).Set(v)
 }
 
-// ObserveConfigReload counts a reload; result is "success" or "error"
-// ("failure" is accepted as a synonym of "error").
 func (t *Telemetry) ObserveConfigReload(result string) {
 	switch result {
 	case "success", "error":
@@ -209,8 +196,6 @@ func (t *Telemetry) ObserveConfigReload(result string) {
 	t.m.reloads.WithLabelValues(result).Inc()
 }
 
-// ObserveCost adds usd to triage_cost_usd_total{route,target}. Zero and
-// negative amounts are ignored.
 func (t *Telemetry) ObserveCost(routeName, target string, usd float64) {
 	if !(usd > 0) {
 		return
@@ -218,10 +203,8 @@ func (t *Telemetry) ObserveCost(routeName, target string, usd float64) {
 	t.m.cost.WithLabelValues(t.m.routes.get(routeName), t.m.targets.get(target)).Add(usd)
 }
 
-// MetricsHandler serves the Prometheus exposition (httpapi.WithMetrics).
 func (t *Telemetry) MetricsHandler() http.Handler {
 	return promhttp.HandlerFor(t.m.reg, promhttp.HandlerOpts{Registry: t.m.reg})
 }
 
-// Gatherer returns the registry, for tests and extra collectors.
 func (t *Telemetry) Gatherer() prometheus.Gatherer { return t.m.reg }

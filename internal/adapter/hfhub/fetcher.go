@@ -23,35 +23,25 @@ import (
 	"github.com/thnhdatle/triage/internal/domain/artifact"
 )
 
-// DefaultBaseURL is the Hugging Face hub.
 const DefaultBaseURL = "https://huggingface.co"
 
-// maxRedirects bounds the redirect chain (resolve -> CDN is one or two hops).
 const maxRedirects = 5
 
-// headerTimeout bounds the wait for response headers; the body is bounded by
-// the context only because checkpoints are large.
 const headerTimeout = 30 * time.Second
 
-// forbiddenFile is never downloaded (2.22 GB, not needed).
 const forbiddenFile = "optimizer.pt"
 
 var (
-	// ErrDownload is returned for a failed transfer (bad status, redirect to a
-	// host that is not allow-listed, short or oversized body).
 	ErrDownload = errors.New("hfhub: download failed")
-	// ErrInvalid is returned for an invalid entry, file or option.
-	ErrInvalid = errors.New("hfhub: invalid argument")
+	ErrInvalid  = errors.New("hfhub: invalid argument")
 
 	revisionRE = regexp.MustCompile(`^[0-9a-f]{40}$`)
 	repoRE     = regexp.MustCompile(`^[A-Za-z0-9][A-Za-z0-9._-]*/[A-Za-z0-9][A-Za-z0-9._-]*$`)
 )
 
-// defaultHosts are the hosts a download may touch: the hub and its CDNs
-// (cdn-lfs*.hf.co, cas-bridge.xethub.hf.co). A leading dot matches subdomains.
 func defaultHosts() []string { return []string{"huggingface.co", ".hf.co"} }
 
-// Fetcher implements artifact.Fetcher.
+// Fetcher downloads and verifies model files from Hugging Face.
 type Fetcher struct {
 	base   *url.URL
 	hosts  []string
@@ -60,7 +50,6 @@ type Fetcher struct {
 
 var _ artifact.Fetcher = (*Fetcher)(nil)
 
-// Option configures a Fetcher.
 type Option func(*config)
 
 type config struct {
@@ -69,16 +58,10 @@ type config struct {
 	client *http.Client
 }
 
-// WithBaseURL overrides the hub URL (tests). Its host must also be allow-listed
-// with WithAllowedHosts.
 func WithBaseURL(u string) Option { return func(c *config) { c.base = u } }
 
-// WithAllowedHosts replaces the host allow-list. An entry starting with "." matches
-// every subdomain; other entries match exactly. Ports are ignored.
 func WithAllowedHosts(hosts ...string) Option { return func(c *config) { c.hosts = hosts } }
 
-// WithHTTPClient sets the transport (default: a client with a header timeout).
-// Its redirect policy is replaced by the allow-list check.
 func WithHTTPClient(h *http.Client) Option { return func(c *config) { c.client = h } }
 
 // New returns a Fetcher.
@@ -119,8 +102,6 @@ func New(opts ...Option) (*Fetcher, error) {
 	return f, nil
 }
 
-// checkURL enforces https (http only for loopback, for tests) and the host
-// allow-list.
 func (f *Fetcher) checkURL(u *url.URL) error {
 	host := strings.ToLower(u.Hostname())
 	switch {
@@ -146,7 +127,6 @@ func isLoopback(host string) bool {
 	return ip != nil && ip.IsLoopback()
 }
 
-// validate guards the request before any network access.
 func validate(e artifact.Entry, f artifact.File) error {
 	switch {
 	case !repoRE.MatchString(e.HFRepo):
@@ -184,8 +164,7 @@ func (f *Fetcher) fileURL(e artifact.Entry, file artifact.File) string {
 	return u.String()
 }
 
-// Fetch implements artifact.Fetcher. The file is written to dir/<file.Path>
-// only after its size and SHA-256 match; otherwise nothing is left behind.
+// Fetch downloads one file into dir and verifies its size and SHA-256.
 func (f *Fetcher) Fetch(ctx context.Context, e artifact.Entry, file artifact.File, dir string) error {
 	if err := validate(e, file); err != nil {
 		return err
@@ -209,8 +188,6 @@ func (f *Fetcher) Fetch(ctx context.Context, e artifact.Entry, file artifact.Fil
 	return writeVerified(resp.Body, target, file)
 }
 
-// writeVerified streams r into a temp file next to target, verifies it and
-// renames it into place.
 func writeVerified(r io.Reader, target string, file artifact.File) (err error) {
 	tmp, err := os.CreateTemp(filepath.Dir(target), filepath.Base(target)+".*.part")
 	if err != nil {
@@ -223,7 +200,6 @@ func writeVerified(r io.Reader, target string, file artifact.File) (err error) {
 		}
 	}()
 	h := sha256.New()
-	// Read one byte more than expected to detect an oversized body.
 	n, err := io.Copy(io.MultiWriter(tmp, h), io.LimitReader(r, file.Size+1))
 	if err != nil {
 		return fmt.Errorf("download %s: %w", file.Path, err)

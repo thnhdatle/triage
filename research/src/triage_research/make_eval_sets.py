@@ -1,20 +1,5 @@
 # SPDX-License-Identifier: Apache-2.0
-"""Convert the fetched evaluation data and draw the committed item-id sets.
-
-``convert`` turns the Parquet files that ``scripts/fetch_eval_data.sh`` downloaded into the
-JSONL layout read by ``triage eval``::
-
-    gsm8k/test.jsonl            {"question", "answer"}            line i is item ``gsm8k/test:i``
-    mmlu/test/<subject>.jsonl   {"subject", "question", "choices", "answer"}  (answer is 0..3)
-    routellm/...                RouteLLM label files and contaminated prompts, copied verbatim
-
-``sample`` writes ``eval/sets/trg03_cal.txt``, ``trg03_eval.txt`` (50 GSM8K + 50 MMLU each,
-disjoint) and ``trg10_mmlu.txt`` (2,000 MMLU items present in RouteLLM's label file) with a
-seeded sample (default seed 7). Items in RouteLLM's contaminated-prompt lists are excluded.
-
-Item ids: ``gsm8k/test:<row>`` and ``mmlu/test:<subject>:<row>``, rows zero-based in the
-split (MMLU: within the subject's test split).
-"""
+"""Convert the fetched evaluation data to JSONL and draw the committed item-id sets."""
 
 from __future__ import annotations
 
@@ -31,17 +16,17 @@ from typing import Any
 import pyarrow.parquet as pq
 
 DEFAULT_SEED = 7
-GSM8K_PER_SET = 50
-MMLU_PER_SET = 50
-APGR_SET_SIZE = 2000
+GSM8K_PER_SET = 8
+MMLU_PER_SET = 7
+LABELS_MMLU_SIZE = 300
+LABELS_GSM8K_SIZE = 100
 GSM8K_FILE = Path("hf-gsm8k/main/test-00000-of-00001.parquet")
 LETTERS = "ABCD"
 _CSV_FIELD_LIMIT = 1 << 24
-_MMLU_PARTS = 3  # mmlu/test:<subject>:<row> splits on ":" into 3 parts
+_MMLU_PARTS = 3
 
 
 def mmlu_prompt(question: str, choices: Sequence[str]) -> str:
-    """The prompt text of RouteLLM's MMLU label files for one item."""
     lines = [question] + [f"{LETTERS[i]}. {c}" for i, c in enumerate(choices)]
     return "\n".join(lines) + "\nAnswer:"
 
@@ -96,10 +81,6 @@ def _label_prompts(path: Path) -> set[str]:
 
 
 def candidates(data: Path) -> tuple[list[str], list[str], list[str]]:
-    """Return (gsm8k ids, mmlu ids, mmlu ids present in the RouteLLM label files).
-
-    All lists exclude contaminated prompts and are in id order.
-    """
     rl = data / "routellm"
     bad_gsm = _contaminated(rl / "gsm8k" / "contaminated_prompts.jsonl")
     bad_mmlu = _contaminated(rl / "mmlu" / "contaminated_prompts.jsonl")
@@ -131,28 +112,30 @@ def _sort_key(item: str) -> tuple[str, str, int]:
 
 
 def draw(data: Path, seed: int) -> dict[str, list[str]]:
-    """Draw the three sets with a seeded sample; each returned list is in id order."""
+    """Draw the four item-id sets with a seeded sample."""
     gsm, mmlu, labelled = candidates(data)
-    rng = random.Random(seed)  # noqa: S311  # seeded, reproducible sampling, not security
+    rng = random.Random(seed)  # noqa: S311
     g = rng.sample(gsm, 2 * GSM8K_PER_SET)
     m = rng.sample(mmlu, 2 * MMLU_PER_SET)
-    t10 = random.Random(seed).sample(labelled, APGR_SET_SIZE)  # noqa: S311
+    lm = random.Random(seed).sample(labelled, LABELS_MMLU_SIZE)  # noqa: S311
+    lg = random.Random(seed).sample(gsm, LABELS_GSM8K_SIZE)  # noqa: S311
     return {
-        "trg03_cal.txt": sorted(g[:GSM8K_PER_SET] + m[:MMLU_PER_SET], key=_sort_key),
-        "trg03_eval.txt": sorted(g[GSM8K_PER_SET:] + m[MMLU_PER_SET:], key=_sort_key),
-        "trg10_mmlu.txt": sorted(t10, key=_sort_key),
+        "live_cal.txt": sorted(g[:GSM8K_PER_SET] + m[:MMLU_PER_SET], key=_sort_key),
+        "live_eval.txt": sorted(g[GSM8K_PER_SET:] + m[MMLU_PER_SET:], key=_sort_key),
+        "labels_mmlu.txt": sorted(lm, key=_sort_key),
+        "labels_gsm8k.txt": sorted(lg, key=_sort_key),
     }
 
 
 _HEADERS = {
-    "trg03_cal.txt": "TRG-03 calibration set: 50 GSM8K + 50 MMLU test items",
-    "trg03_eval.txt": "TRG-03 evaluation set: 50 GSM8K + 50 MMLU test items, disjoint",
-    "trg10_mmlu.txt": "TRG-10 set: 2,000 MMLU test items present in RouteLLM's label files",
+    "live_cal.txt": f"Live calibration set: {GSM8K_PER_SET} GSM8K + {MMLU_PER_SET} MMLU test items",
+    "live_eval.txt": f"Live evaluation set: {GSM8K_PER_SET} GSM8K + {MMLU_PER_SET} MMLU test items",
+    "labels_mmlu.txt": f"Labels set: {LABELS_MMLU_SIZE} labelled MMLU test items",
+    "labels_gsm8k.txt": f"Labels set: {LABELS_GSM8K_SIZE} GSM8K test items",
 }
 
 
 def write_sets(data: Path, out: Path, seed: int) -> None:
-    """Write the item-id files into ``out``."""
     out.mkdir(parents=True, exist_ok=True)
     for name, items in draw(data, seed).items():
         header = (

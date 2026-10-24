@@ -1,7 +1,6 @@
 #!/usr/bin/env bash
 # SPDX-License-Identifier: Apache-2.0
-# Installs the pinned command-line tools that `make` needs on a Linux CI runner
-# (amd64 or arm64) into ~/.local/bin and adds that directory to GITHUB_PATH.
+# Installs the pinned tools that make needs on a Linux CI runner.
 set -euo pipefail
 
 GOLANGCI_LINT_VERSION=2.14.0
@@ -32,13 +31,11 @@ esac
 
 gh_release() { echo "https://github.com/$1/releases/download/$2"; }
 
-# untar <url> <member> extracts one file of a release tarball into BIN.
 untar() {
 	curl -fsSL --retry 3 "$1" | tar -xz -C "$tmp" "$2"
 	install -m 0755 "$tmp/$2" "$BIN/$(basename "$2")"
 }
 
-# raw <url> <name> installs a single-binary release asset into BIN.
 raw() {
 	curl -fsSL --retry 3 -o "$BIN/$2" "$1"
 	chmod 0755 "$BIN/$2"

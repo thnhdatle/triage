@@ -24,7 +24,7 @@ First public release.
   types and nineteen formats, optional English NER, per-attempt masking by target
   locality with `[[TYPE_n]]` placeholders, and unmasking of responses, streams and tool-call
   arguments.
-- Difficulty strategies `random`, `length`, `bert` (RouteLLM BERT router, INT8 block-wise
+- Difficulty strategies `random`, `length`, `bert` (pretrained BERT router, INT8 block-wise
   quantisation, ONNX Runtime in process) and optional `mf` with an explicit
   data-egress opt-in. Pure-Go tokenizer with a parity policy.
 - Dispatch with retries, fallback chains and mid-stream continuation.
@@ -42,7 +42,7 @@ First public release.
   `ghcr.io/thnhdatle/fakellm`; `deploy/docker-compose.yml` quickstart and Kubernetes manifests.
 - Guides for configuration, routing strategies, privacy, fallback, models, evaluation,
   operations, troubleshooting and error codes; runnable examples in `examples/`.
-- Benchmarks (`bench/RESULTS.md`): router overhead p99 1.73 ms at 500 RPS and 7,999 RPS
+- Benchmarks: router overhead p99 1.73 ms at 500 RPS and 7,999 RPS
   sustained with `length` and `mask`, against a zero-latency fake upstream on one MacBook Pro
   M3 Pro.
 

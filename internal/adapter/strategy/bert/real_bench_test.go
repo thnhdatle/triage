@@ -18,14 +18,8 @@ import (
 	"github.com/thnhdatle/triage/internal/platform/onnxrt"
 )
 
-// envRealDir names an entry directory produced by `triage models pull bert
-// [--int8]` (graph.onnx, model.safetensors, model.int8.onnx).
 const envRealDir = "TRIAGE_BERT_REAL_DIR"
 
-// BenchmarkScoreReal measures Score latency on the real checkpoint at 128,
-// 256 and 512 tokens with 4 intra-op threads, for each variant present in
-// $TRIAGE_BERT_REAL_DIR. It also proves that a freshly pulled FP32 graph
-// loads. Without the variable it does nothing (a benchmark, not a test).
 func BenchmarkScoreReal(b *testing.B) {
 	dir := os.Getenv(envRealDir)
 	if dir == "" {

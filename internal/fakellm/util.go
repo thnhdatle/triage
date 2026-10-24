@@ -14,7 +14,6 @@ import (
 	"unicode/utf8"
 )
 
-// marshal encodes v as JSON without HTML escaping.
 func marshal(v any) []byte {
 	var buf bytes.Buffer
 	enc := json.NewEncoder(&buf)
@@ -31,7 +30,6 @@ func writeJSON(w http.ResponseWriter, status int, v any) {
 	_, _ = w.Write(marshal(v))
 }
 
-// writeError writes an OpenAI-shaped error body.
 func writeError(w http.ResponseWriter, status int, typ, code, msg string) {
 	var codeVal any
 	if code != "" {
@@ -46,8 +44,6 @@ func badRequest(w http.ResponseWriter, msg string) {
 	writeError(w, http.StatusBadRequest, "invalid_request_error", "", msg)
 }
 
-// readBody reads the request body bounded by limit; ok is false when an error
-// response was already written.
 func readBody(w http.ResponseWriter, r *http.Request, limit int64) ([]byte, bool) {
 	body, err := io.ReadAll(http.MaxBytesReader(w, r.Body, limit))
 	if err != nil {
@@ -57,8 +53,6 @@ func readBody(w http.ResponseWriter, r *http.Request, limit int64) ([]byte, bool
 	return body, true
 }
 
-// quoteBytes JSON-quotes s but passes bytes >= 0x80 through unchanged, so
-// chunks that split a UTF-8 sequence concatenate back to the original bytes.
 func quoteBytes(s string) string {
 	const hexDigits = "0123456789abcdef"
 	var b strings.Builder
@@ -88,8 +82,6 @@ func quoteBytes(s string) string {
 	return b.String()
 }
 
-// splitChunks splits s into pieces of size bytes. Unless splitRunes is set a
-// piece is extended to the next UTF-8 boundary.
 func splitChunks(s string, size int, splitRunes bool) []string {
 	if size < 1 {
 		size = defaultChunkBytes
@@ -108,7 +100,6 @@ func splitChunks(s string, size int, splitRunes bool) []string {
 	return out
 }
 
-// tokenCount is the whitespace token count.
 func tokenCount(s string) int { return len(strings.Fields(s)) }
 
 func waitErr(ctx context.Context) error {
@@ -118,7 +109,6 @@ func waitErr(ctx context.Context) error {
 	return nil
 }
 
-// wait blocks for d on the server clock or until ctx is done.
 func (s *Server) wait(ctx context.Context, d time.Duration) error {
 	if d <= 0 {
 		return waitErr(ctx)

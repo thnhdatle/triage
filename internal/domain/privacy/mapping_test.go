@@ -408,14 +408,12 @@ func TestMapping_Rescan_NothingFound(t *testing.T) {
 
 func TestMapping_MaskJSON_EscapedFormEqualsOtherValue(t *testing.T) {
 	t.Parallel()
-	// The escaped form of `a"b` is the raw value `a\"b`: the raw value keeps
-	// its own placeholder, so its bytes map to NAME_1, never to NAME_2.
 	raw := `a\"b`
 	req := chat.Request{Messages: []chat.Message{toolCallMsg(`{"x":"a\"b"}`)}}
 	m := NewMapping(req, []Finding{finding("name", raw), finding("name", `a"b`)})
 	require.Equal(t, "[[NAME_1]]", m.values[raw])
 	require.Equal(t, "[[NAME_2]]", m.values[`a"b`])
-	want := `{"x":"[[NAME_1]]"}` // byte-exact, not JSONEq
+	want := `{"x":"[[NAME_1]]"}`
 	assert.Equal(t, want, m.MaskRequest(req).Messages[0].ToolCalls[0].Function.Arguments)
 	olds := make([]string, 0, len(m.argForms['a']))
 	for _, f := range m.argForms['a'] {

@@ -21,20 +21,16 @@ import (
 	"github.com/thnhdatle/triage/internal/platform/buildinfo"
 )
 
-// Exit codes (invalid configuration exits 2).
 const (
 	ExitOK      = 0
 	ExitFailure = 1
 	ExitUsage   = 2
 )
 
-// EnvConfig is the environment variable naming the config file.
 const EnvConfig = "TRIAGE_CONFIG"
 
-// defaultDataAddr is probed by healthcheck when no config is available.
 const defaultDataAddr = "127.0.0.1:8080"
 
-// healthcheckTimeout bounds `triage healthcheck`.
 const healthcheckTimeout = 3 * time.Second
 
 const usage = `usage: triage <command> [flags]
@@ -49,30 +45,24 @@ commands:
   version      print the build information
 `
 
-// CLI runs the triage command line. Zero fields take process defaults.
+// CLI runs the triage command line.
 type CLI struct {
 	Stdout, Stderr io.Writer
 	Env            Env
-	// Reload receives SIGHUP-triggered reload requests for serve.
-	Reload <-chan struct{}
-	// Logger overrides the TRIAGE_LOG_FORMAT/TRIAGE_LOG_LEVEL logger.
-	Logger *slog.Logger
-	// Serve overrides ServeOptions fields set by tests (exporter, Started).
-	Serve ServeOptions
+	Reload         <-chan struct{}
+	Logger         *slog.Logger
+	Serve          ServeOptions
 }
 
-// usageError marks command-line and configuration errors (exit code 2).
 type usageError struct{ err error }
 
 func (e *usageError) Error() string { return e.err.Error() }
 func (e *usageError) Unwrap() error { return e.err }
 
-// usagef returns a usageError; %w verbs wrap as in fmt.Errorf.
 func usagef(format string, args ...any) error {
 	return &usageError{err: fmt.Errorf(format, args...)} //nolint:err113 // formatted usage messages
 }
 
-// asUsage marks err (e.g. a configuration load error) as exit code 2.
 func asUsage(err error) error {
 	if err == nil {
 		return nil
@@ -158,7 +148,6 @@ func parse(fs *flag.FlagSet, args []string) error {
 	return nil
 }
 
-// configPath returns --config, else TRIAGE_CONFIG.
 func (c *CLI) configPath(flagValue string) (string, error) {
 	if flagValue != "" {
 		return flagValue, nil
@@ -245,8 +234,6 @@ func (c *CLI) config(ctx context.Context, args []string) error {
 	return usagef("unknown config command %q", args[0])
 }
 
-// healthcheck exits 0 when the data plane's /readyz answers 200 (used by
-// the image HEALTHCHECK, which has no shell or curl).
 func (c *CLI) healthcheck(ctx context.Context, args []string) error {
 	fs := c.flags("healthcheck")
 	url := fs.String("url", "", "readiness URL (default: from the config's server.listen)")
@@ -276,7 +263,6 @@ func (c *CLI) healthcheck(ctx context.Context, args []string) error {
 	return nil
 }
 
-// dataAddr derives a dialable address from the configured data listener.
 func (c *CLI) dataAddr(flagPath string) string {
 	p := flagPath
 	if p == "" {

@@ -26,7 +26,6 @@ func (f fixedCounter) CountTokens(string) int { return int(f) }
 
 func TestScoreCurve(t *testing.T) {
 	t.Parallel()
-	// A midpoint equal to the estimated prompt tokens of the request scores 0.5.
 	midReq := userReq(strings.Repeat("a", 8192))
 	s, err := length.New(midReq.PromptTokens(chat.Estimator{}), length.DefaultSlope)
 	if err != nil {

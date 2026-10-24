@@ -11,7 +11,6 @@ import (
 	"slices"
 )
 
-// Scenario names accepted in X-Fake-Scenario and scripts.
 const (
 	ScenarioOK          = "ok"
 	ScenarioEcho        = "echo"
@@ -31,7 +30,6 @@ var knownScenarios = []string{
 	Scenario429, Scenario500, ScenarioCutStream, ScenarioInvalidJSON,
 }
 
-// scriptParams are the per-rule parameters; nil means unset.
 type scriptParams struct {
 	CutAfter   *int    `json:"cut_after"`
 	LatencyMs  *int    `json:"latency_ms"`
@@ -46,7 +44,6 @@ type scriptEntry struct {
 	Params   scriptParams `json:"params"`
 }
 
-// scriptRule is a script entry with its remaining request budget.
 type scriptRule struct {
 	scriptEntry
 	remaining int
@@ -113,9 +110,6 @@ func (s *Server) handleDeleteScript(w http.ResponseWriter, _ *http.Request) {
 	w.WriteHeader(http.StatusNoContent)
 }
 
-// begin counts a chat request for model and, unless a header scenario is
-// given, consumes the next script rule. It returns the counter value (1 for
-// the first request) and the rule, or ok=false when the model table is full.
 func (s *Server) begin(model string, headerScenario bool) (n int, rule *scriptRule, ok bool) {
 	s.mu.Lock()
 	defer s.mu.Unlock()

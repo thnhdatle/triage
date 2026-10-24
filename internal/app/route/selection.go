@@ -11,19 +11,14 @@ import (
 	"github.com/thnhdatle/triage/internal/domain/privacy"
 )
 
-// filter is the eligibility test of selection.
 type filter struct {
 	localities model.LocalitySet
-	// need is prompt tokens + requested output tokens; checked against the
-	// context window unless skipWindow.
 	need       int
 	skipWindow bool
 	caps       []model.Capability
-	// embeddings selects embedding targets instead of chat targets.
 	embeddings bool
 }
 
-// eligible reports whether t passes every filter.
 func (p *Pipeline) eligible(t model.Target, f filter) bool {
 	if t.IsEmbedding() != f.embeddings || !p.healthy(t) || !f.localities.Allows(t.Locality) {
 		return false
@@ -47,9 +42,6 @@ func (r *request) chatFilter() filter {
 	}
 }
 
-// candidates returns the eligible pool targets of tier in selection order.
-// advance moves the round-robin rotation; it is set for the primary tier
-// only, so one request advances it once.
 func (r *request) candidates(tier model.Tier, f filter, advance bool) []model.Target {
 	ts := r.route.pool.Filter(func(t model.Target) bool {
 		return t.Tier == tier && r.p.eligible(t, f)
@@ -57,7 +49,6 @@ func (r *request) candidates(tier model.Tier, f filter, advance bool) []model.Ta
 	return r.p.order(r.route, tier, ts, advance)
 }
 
-// order sorts eligible targets by the selection mode.
 func (p *Pipeline) order(cr *compiledRoute, tier model.Tier, ts []model.Target, advance bool) []model.Target {
 	if len(ts) < 2 {
 		return ts
@@ -87,9 +78,6 @@ func (p *Pipeline) order(cr *compiledRoute, tier model.Tier, ts []model.Target, 
 	return ts
 }
 
-// selectChain picks the tier's candidates, applies on_tier_unavailable, and
-// appends the fallback entries. Every entry passes the same
-// filter, so the locality constraint holds over the whole chain.
 func (r *request) selectChain() ([]model.Target, error) {
 	f := r.chatFilter()
 	primary := r.candidates(r.tier, f, true)
@@ -117,8 +105,6 @@ func (r *request) selectChain() ([]model.Target, error) {
 	return dedupe(chain), nil
 }
 
-// unavailable returns the alternative tier of on_tier_unavailable, or "" as
-// action when the route fails instead.
 func (r *request) unavailable() (model.Tier, TierAction) {
 	switch a := r.route.OnTierUnavailable; {
 	case a == TierEscalate && r.tier == model.TierWeak:
@@ -129,9 +115,6 @@ func (r *request) unavailable() (model.Tier, TierAction) {
 	return model.TierNone, ""
 }
 
-// noTarget is the selection failure: privacy.ErrNoLocalTarget when the
-// request is restricted to local targets (never relaxed to cloud), else
-// ErrNoEligibleTarget.
 func (r *request) noTarget() error {
 	if r.localOnly {
 		return fmt.Errorf("%w for route %q tier %s", privacy.ErrNoLocalTarget, r.route.Name, r.tier)
@@ -139,10 +122,6 @@ func (r *request) noTarget() error {
 	return fmt.Errorf("%w for route %q tier %s", ErrNoEligibleTarget, r.route.Name, r.tier)
 }
 
-// contextLengthPool returns the targets eligible for the context-length
-// fallback: every eligible chat target of the route's pool, any tier,
-// ignoring the context-window filter, by ascending window (ties in pool
-// order), so dispatch takes the smallest larger window.
 func (r *request) contextLengthPool() []model.Target {
 	f := r.chatFilter()
 	f.skipWindow = true
@@ -151,7 +130,6 @@ func (r *request) contextLengthPool() []model.Target {
 	return ts
 }
 
-// dedupe drops repeated target names, keeping the first occurrence.
 func dedupe(ts []model.Target) []model.Target {
 	seen := make(map[string]bool, len(ts))
 	out := ts[:0:0]

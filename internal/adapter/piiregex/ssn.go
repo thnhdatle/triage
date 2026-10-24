@@ -28,8 +28,6 @@ func newSSN() *rule {
 	}
 }
 
-// validSSN applies the SSA assignment rules: area not 000, 666 or 900-999,
-// group not 00, serial not 0000.
 func validSSN(v string) bool {
 	area, group, serial := atoi(v[:3]), atoi(v[4:6]), atoi(v[7:])
 	return area != 0 && area != 666 && area < 900 && group != 0 && serial != 0

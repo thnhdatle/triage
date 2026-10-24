@@ -1,7 +1,7 @@
 [project]
 name = "triage-research"
 version = "0.1.0"
-description = "Reproducible converters, fetcher and reference implementations for Triage model artifacts."
+description = "Model fetcher, ONNX converters and eval data conversion for Triage."
 requires-python = ">=3.12,<3.13"
 license = "Apache-2.0"
 dependencies = [
@@ -34,7 +34,7 @@ requires = ["hatchling"]
 build-backend = "hatchling.build"
 
 [tool.hatch.build.targets.wheel]
-packages = ["src/triage_research", "routellm_ref"]
+packages = ["src/triage_research"]
 
 [[tool.uv.index]]
 name = "pytorch-cpu"
@@ -48,17 +48,12 @@ torch = [{ index = "pytorch-cpu", marker = "sys_platform == 'linux'" }]
 line-length = 100
 target-version = "py312"
 src = ["src", "tests"]
-# Vendored upstream code (Apache-2.0), kept verbatim apart from marked changes.
-extend-exclude = ["routellm_ref"]
 
 [tool.ruff.lint]
 select = ["E", "F", "W", "I", "N", "UP", "B", "A", "C4", "SIM", "RET", "PT", "ARG", "ERA", "PL", "RUF", "S"]
 
 [tool.ruff.lint.per-file-ignores]
 "tests/**" = ["S101", "PLR2004", "S311"]
-# The tokenizer corpus deliberately contains confusable characters (full-width forms,
-# Arabic-Indic digits, Kelvin sign, ...); invisible ones are written as escapes.
-"src/triage_research/reference_tokenize.py" = ["RUF001"]
 
 [tool.mypy]
 strict = true
@@ -69,12 +64,6 @@ files = ["src", "tests"]
 # onnxruntime and pyarrow ship no type information.
 module = ["onnxruntime", "onnxruntime.*", "pyarrow", "pyarrow.*"]
 ignore_missing_imports = true
-
-[[tool.mypy.overrides]]
-# Vendored upstream code is untyped by design (kept verbatim).
-module = ["routellm_ref", "routellm_ref.*"]
-ignore_errors = true
-follow_untyped_imports = true
 
 [tool.pytest.ini_options]
 testpaths = ["tests"]

@@ -4,8 +4,6 @@
 *.out
 /coverage.*
 /out/
-acceptance/logs/
-acceptance/.build/
 models/manifest.local.yaml
 *.local.yaml
 research/.venv/

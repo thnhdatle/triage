@@ -16,13 +16,6 @@ import (
 	"github.com/thnhdatle/triage/internal/app/dispatch"
 )
 
-// The triage server runs in-process (wire.Serve) against the fakellm
-// container; every upstream request crosses the Docker network.
-
-// itConfig is a two-target configuration over the fakellm container. Upstream
-// model names start with prefix so the shared request log can be filtered per
-// test; smallHeaders are the extra_headers of the local weak target (a
-// fakellm scenario), the cloud strong target always echoes.
 func itConfig(f *fake, prefix, smallHeaders string) string {
 	if smallHeaders == "" {
 		smallHeaders = "{}"
@@ -60,8 +53,6 @@ routes:
 `
 }
 
-// upstream returns the fakellm log entries for model, asserting nothing was
-// dropped.
 func upstream(t *testing.T, f *fake, model string) []fakeRecord {
 	t.Helper()
 	var out []fakeRecord
@@ -201,9 +192,6 @@ const (
 func TestIntegration_Serve_PrivacyMaskingReachesNoUpstream(t *testing.T) {
 	t.Parallel()
 	f := containerFake(t)
-	// The local target echoes the user text and is cut after 32 bytes, so the
-	// relayed partial text (raw, from a local target) contains the e-mail; the
-	// cloud continuation must re-mask it.
 	tr := startTriage(t, itConfig(f, "it-priv", `{ X-Fake-Scenario: cut-stream, X-Fake-Cut-After: "2",
       X-Fake-Chunk-Bytes: "16", X-Fake-Answer: "{user}" }`))
 	secret := itEmail + " is my email and my card is " + itCard + ", thanks"

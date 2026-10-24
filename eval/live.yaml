@@ -1,0 +1,13 @@
+# Live run against a weak/strong LM Studio pair: 15 calibration + 15 evaluation items.
+mode: live
+config: deploy/config.example.yaml
+route: triage-auto
+dataset: { sets: [eval/sets/live_cal.txt, eval/sets/live_eval.txt], prompts: eval/prompts/ }
+targets:
+  weak:   { provider: lmstudio, model: qwen/qwen3-vl-4b, pricing: { input_per_mtok: 0, output_per_mtok: 0 } }
+  strong: { provider: lmstudio, model: gemma-4-26b-a4b-it-qat-mlx, pricing: { input_per_mtok: 1.25, output_per_mtok: 10.0 } }
+generation: { temperature: 0, seed: 7, max_tokens: 1024 }
+strategies: [random, length, bert]
+threshold_rule: { calibration: eval/sets/live_cal.txt, min_accuracy_of_all_strong: 0.96 }
+bootstrap: { resamples: 10000, seed: 7 }
+cache_dir: ~/.cache/rayld/triage/eval

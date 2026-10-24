@@ -24,7 +24,6 @@ import (
 
 var update = flag.Bool("update", false, "update golden files")
 
-// newFake starts a fakellm server and returns its /v1 base URL.
 func newFake(t *testing.T) string {
 	t.Helper()
 	srv, err := fakellm.New(fakellm.WithRecord(true, 100))
@@ -34,7 +33,6 @@ func newFake(t *testing.T) string {
 	return ts.URL + "/v1"
 }
 
-// newServer starts a server answering every request with h.
 func newServer(t *testing.T, h http.HandlerFunc) string {
 	t.Helper()
 	ts := httptest.NewServer(h)
@@ -42,8 +40,6 @@ func newServer(t *testing.T, h http.HandlerFunc) string {
 	return ts.URL
 }
 
-// newClient returns a client for base whose idle connections are closed at
-// the end of the test.
 func newClient(t *testing.T, base string, opts ...openaicompat.Option) *openaicompat.Client {
 	t.Helper()
 	c, err := openaicompat.New(base, opts...)
@@ -52,7 +48,6 @@ func newClient(t *testing.T, base string, opts ...openaicompat.Option) *openaico
 	return c
 }
 
-// scenario returns options selecting a fakellm scenario by header.
 func scenario(name string, extra map[string]string) openaicompat.Option {
 	h := map[string]string{"X-Fake-Scenario": name}
 	for k, v := range extra {
@@ -72,7 +67,6 @@ func userReq(model, text string) chat.Request {
 	return chat.Request{Model: model, Messages: []chat.Message{chat.TextMessage(chat.RoleUser, text)}}
 }
 
-// fakeRequests returns the request log of the fakellm behind base.
 func fakeRequests(t *testing.T, base string) []fakellm.Record {
 	t.Helper()
 	req, err := http.NewRequestWithContext(ctxT(t), http.MethodGet, base[:len(base)-len("/v1")]+"/_fake/requests", nil)
@@ -89,7 +83,6 @@ func fakeRequests(t *testing.T, base string) []fakellm.Record {
 	return out.Requests
 }
 
-// golden compares got with testdata/golden/<name>.golden, rewriting it with -update.
 func golden(t *testing.T, name string, got []byte) {
 	t.Helper()
 	path := filepath.Join("testdata", "golden", name+".golden")

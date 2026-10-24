@@ -63,8 +63,6 @@ func scanPhone(p *profile) []privacy.Finding {
 	return resolve(cands)
 }
 
-// validE164 trims a '+' candidate to at most 15 digits and checks its edges.
-// A leading '+' is context enough.
 func validE164(text string, s, e int) (int, bool) {
 	if s > 0 && (isAlnum(text[s-1]) || text[s-1] == ')') {
 		return 0, false
@@ -82,7 +80,6 @@ func validE164(text string, s, e int) (int, bool) {
 	return e, true
 }
 
-// validUSPhone checks NANP rules: area code and exchange start with 2-9.
 func validUSPhone(d string) bool {
 	if len(d) == 11 {
 		if d[0] != '1' {

@@ -16,18 +16,13 @@ import (
 	"github.com/thnhdatle/triage/internal/domain/provider"
 )
 
-// errEventTooLarge ends a stream whose event exceeds the size limit.
 var errEventTooLarge = errors.New("openaicompat: stream event too large")
 
-// sseReader splits a text/event-stream body into the data of each event.
 type sseReader struct {
 	r   *bufio.Reader
 	max int64
 }
 
-// next returns the data of the next event (multi-line data joined by "\n").
-// At the end of the body it returns io.EOF when no event was pending and
-// io.ErrUnexpectedEOF when one was cut.
 func (s *sseReader) next() (string, error) {
 	var ev sseEvent
 	for {
@@ -49,18 +44,14 @@ func (s *sseReader) next() (string, error) {
 	}
 }
 
-// doneMarker is the data of the terminal OpenAI stream event.
 const doneMarker = "[DONE]"
 
-// sseEvent accumulates the lines of one event.
 type sseEvent struct {
 	data    bytes.Buffer
 	hasData bool
 	pending bool
 }
 
-// atEOF resolves a read error: a pending [DONE] without its blank line is
-// still the end marker, any other pending event was cut.
 func (e *sseEvent) atEOF(err error) (string, error) {
 	if !errors.Is(err, io.EOF) || !e.pending {
 		return "", err
@@ -71,8 +62,6 @@ func (e *sseEvent) atEOF(err error) (string, error) {
 	return "", io.ErrUnexpectedEOF
 }
 
-// add appends a data line; comments, event, id and retry fields carry
-// nothing the adapter uses.
 func (e *sseEvent) add(line []byte, limit int64) error {
 	field, value, _ := bytes.Cut(line, []byte(":"))
 	if string(field) != "data" {
@@ -90,7 +79,6 @@ func (e *sseEvent) add(line []byte, limit int64) error {
 	return nil
 }
 
-// line reads one line without its terminator, bounded by max.
 func (s *sseReader) line() ([]byte, error) {
 	var buf []byte
 	for {
@@ -105,7 +93,6 @@ func (s *sseReader) line() ([]byte, error) {
 		case errors.Is(err, bufio.ErrBufferFull):
 			continue
 		case errors.Is(err, io.EOF) && len(buf) > 0:
-			// A last line without terminator; the next read reports io.EOF.
 			return bytes.TrimRight(buf, "\r\n"), nil
 		default:
 			return nil, err //nolint:wrapcheck // mapped by stream.fail
@@ -113,7 +100,6 @@ func (s *sseReader) line() ([]byte, error) {
 	}
 }
 
-// stream implements provider.Stream over an SSE response.
 type stream struct {
 	body    io.ReadCloser
 	events  sseReader
@@ -137,7 +123,6 @@ func newStream(ctx context.Context, resp *http.Response, maxBytes int64) *stream
 	}
 }
 
-// Recv implements provider.Stream.
 func (s *stream) Recv() (chat.Chunk, error) {
 	if s.err != nil {
 		return chat.Chunk{}, s.err
@@ -178,7 +163,6 @@ func (s *stream) fail(err error) error {
 	return netError(err)
 }
 
-// Close implements provider.Stream; it is idempotent.
 func (s *stream) Close() error {
 	var err error
 	s.once.Do(func() {
@@ -193,7 +177,6 @@ func (s *stream) Close() error {
 	return nil
 }
 
-// errStreamClosed is returned by Recv after Close.
 var errStreamClosed = errors.New("openaicompat: stream closed")
 
 type wireChunk struct {
@@ -221,8 +204,6 @@ type wireChunk struct {
 	Error json.RawMessage `json:"error"`
 }
 
-// decodeChunk translates one stream event; ok is false for events that
-// carry neither choices nor usage.
 func decodeChunk(data []byte, status int) (chat.Chunk, bool, error) {
 	var w wireChunk
 	if err := json.Unmarshal(data, &w); err != nil {
@@ -256,7 +237,6 @@ func decodeChunk(data []byte, status int) (chat.Chunk, bool, error) {
 	return c, true, nil
 }
 
-// streamError maps an error event sent inside a 200 stream.
 func streamError(data []byte, status int) error {
 	info := parseErrorBody(data)
 	e := &provider.Error{Kind: provider.ErrUpstreamUnavailable, StatusCode: status, Message: info.describe(status)}

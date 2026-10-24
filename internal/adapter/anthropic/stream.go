@@ -16,10 +16,8 @@ import (
 	"github.com/thnhdatle/triage/internal/domain/provider"
 )
 
-// errClosed is returned by Recv after Close.
 var errClosed = errors.New("anthropic: stream closed")
 
-// event is one stream event; only the fields the adapter uses are decoded.
 type event struct {
 	Type    string `json:"type"`
 	Index   int    `json:"index"`
@@ -39,8 +37,6 @@ type event struct {
 	Error json.RawMessage `json:"error"`
 }
 
-// stream translates Messages API events into neutral chunks. Tool-use
-// blocks are numbered in order of appearance, as OpenAI tool-call indexes.
 type stream struct {
 	body         io.ReadCloser
 	lines        *bufio.Scanner
@@ -72,7 +68,6 @@ func (c *Client) newStream(ctx context.Context, resp *http.Response, includeUsag
 	}
 }
 
-// Recv implements provider.Stream.
 func (s *stream) Recv() (chat.Chunk, error) {
 	for s.err == nil {
 		data, err := s.nextData()
@@ -97,8 +92,6 @@ func (s *stream) Recv() (chat.Chunk, error) {
 	return chat.Chunk{}, s.err
 }
 
-// nextData returns the data of the next "data:" line. Event names are not
-// needed: every data object carries its type.
 func (s *stream) nextData() ([]byte, error) {
 	for s.lines.Scan() {
 		if v, ok := strings.CutPrefix(s.lines.Text(), "data:"); ok {
@@ -129,8 +122,6 @@ func (s *stream) chunk(choices ...chat.ChunkChoice) chat.Chunk {
 
 func (s *stream) delta(d chat.Delta) chat.Chunk { return s.chunk(chat.ChunkChoice{Delta: d}) }
 
-// translate maps one event; ok is false for events without client-visible
-// content (ping, block stops, thinking deltas, unknown types).
 func (s *stream) translate(ev *event) (chat.Chunk, bool, error) {
 	switch ev.Type {
 	case "message_start":
@@ -158,7 +149,6 @@ func (s *stream) translate(ev *event) (chat.Chunk, bool, error) {
 	return chat.Chunk{}, false, nil
 }
 
-// mustObject wraps a raw error object back into an error envelope.
 func mustObject(raw json.RawMessage) []byte {
 	if len(raw) == 0 {
 		raw = json.RawMessage(jsonNull)
@@ -200,11 +190,9 @@ func (s *stream) blockDelta(ev *event) (chat.Chunk, bool, error) {
 		return s.delta(chat.Delta{ToolCalls: []chat.ToolCallDelta{{Index: idx, Arguments: d.PartialJSON}}}),
 			d.PartialJSON != "", nil
 	}
-	return chat.Chunk{}, false, nil // thinking, signature and citation deltas are not relayed
+	return chat.Chunk{}, false, nil
 }
 
-// mergeUsage applies message_delta usage: output tokens are cumulative, and
-// input counts, when present, replace those of message_start.
 func (s *stream) mergeUsage(u *wireUsage) {
 	if u == nil {
 		return
@@ -221,7 +209,6 @@ func (s *stream) mergeUsage(u *wireUsage) {
 	}
 }
 
-// stop ends the stream: the usage chunk when requested, then io.EOF.
 func (s *stream) stop() (chat.Chunk, bool, error) {
 	if !s.includeUsage {
 		return chat.Chunk{}, false, io.EOF
@@ -233,7 +220,6 @@ func (s *stream) stop() (chat.Chunk, bool, error) {
 	return c, true, nil
 }
 
-// Close implements provider.Stream; it is idempotent.
 func (s *stream) Close() error {
 	var err error
 	s.once.Do(func() {

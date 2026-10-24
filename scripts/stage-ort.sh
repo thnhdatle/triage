@@ -1,8 +1,6 @@
 #!/usr/bin/env bash
 # SPDX-License-Identifier: Apache-2.0
-# Downloads the ONNX Runtime release pinned in models/manifest.yaml for linux/<arch> (default: the
-# host), checks its SHA-256 and stages it into <dest>: libonnxruntime.so, LICENSE and
-# ThirdPartyNotices.txt. Usage: stage-ort.sh <dest> [amd64|arm64]
+# Downloads and stages the pinned ONNX Runtime library into <dest>.
 set -euo pipefail
 cd "$(git rev-parse --show-toplevel)"
 dest="${1:?usage: stage-ort.sh <dest> [amd64|arm64]}"

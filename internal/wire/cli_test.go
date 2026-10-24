@@ -39,8 +39,6 @@ func writeFile(t *testing.T, name, content string) string {
 	return p
 }
 
-// offlineConfig points at an unreachable provider: the commands below never
-// call it.
 func offlineConfig(extra string) string {
 	return `
 auth: { enabled: false }

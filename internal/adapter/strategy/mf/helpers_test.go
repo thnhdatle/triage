@@ -22,8 +22,6 @@ import (
 	"github.com/thnhdatle/triage/internal/domain/provider"
 )
 
-// TestMain checks for leaked goroutines (embedder fakes are called
-// concurrently in some tests).
 func TestMain(m *testing.M) {
 	goleak.VerifyTestMain(m)
 }
@@ -39,15 +37,13 @@ func userReq(text string) chat.Request {
 	}}
 }
 
-// st is one tensor for buildST.
 type st struct {
 	dtype string
 	shape []int
 	f32   []float32
-	raw   []byte // used instead of f32 when set
+	raw   []byte
 }
 
-// buildST serialises tensors in name order (F32 data or raw bytes).
 func buildST(t *testing.T, tensors map[string]st, meta map[string]string) []byte {
 	t.Helper()
 	names := make([]string, 0, len(tensors))
@@ -106,7 +102,6 @@ func loadReference(t *testing.T) reference {
 	return r
 }
 
-// embeddings returns the fixture vectors keyed by meta.json ids.
 func embeddings(t *testing.T) (ids []string, vecs map[string][]float32) {
 	t.Helper()
 	var meta struct {
@@ -132,14 +127,12 @@ func embeddings(t *testing.T) (ids []string, vecs map[string][]float32) {
 	return meta.IDs, vecs
 }
 
-// tableProvider is an EmbedProvider answering from a table, with scripted
-// usage and error; it records the requests.
 type tableProvider struct {
 	mu    sync.Mutex
 	vecs  map[string][]float32
 	usage int
 	err   error
-	extra int // extra vectors appended to every answer
+	extra int
 	reqs  []provider.EmbedRequest
 }
 

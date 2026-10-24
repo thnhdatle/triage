@@ -15,7 +15,6 @@ import (
 	"github.com/thnhdatle/triage/internal/domain/difficulty"
 )
 
-// Stats are the cache's lookup counters, counted per text.
 type Stats struct {
 	Hits   uint64
 	Misses uint64
@@ -26,20 +25,20 @@ type entry struct {
 	vec []float32
 }
 
-// Cache is a bounded LRU decorator around a difficulty.Embedder. It is safe for concurrent use.
+// Cache is an LRU decorator around a difficulty.Embedder.
 type Cache struct {
 	next difficulty.Embedder
 	size int
 
-	mu    sync.Mutex // guards ll, items and stats
-	ll    *list.List // front = most recently used; elements hold *entry
+	mu    sync.Mutex
+	ll    *list.List
 	items map[[sha256.Size]byte]*list.Element
 	stats Stats
 }
 
 var _ difficulty.Embedder = (*Cache)(nil)
 
-// New returns a cache holding at most size vectors in front of next.
+// New returns a Cache holding up to size vectors.
 func New(next difficulty.Embedder, size int) (*Cache, error) {
 	if next == nil {
 		return nil, errors.New("embedcache: nil embedder")
@@ -55,24 +54,19 @@ func New(next difficulty.Embedder, size int) (*Cache, error) {
 	}, nil
 }
 
-// Stats returns the hit and miss counters.
 func (c *Cache) Stats() Stats {
 	c.mu.Lock()
 	defer c.mu.Unlock()
 	return c.stats
 }
 
-// Len returns the number of cached vectors.
 func (c *Cache) Len() int {
 	c.mu.Lock()
 	defer c.mu.Unlock()
 	return c.ll.Len()
 }
 
-// Embed implements difficulty.Embedder. Cached texts are served from memory; the remaining texts go to
-// the upstream embedder in one call, in their original order, and their vectors are cached. An
-// upstream error, or an answer with the wrong number of vectors, is returned and nothing is cached.
-// The returned vectors are copies the caller may modify.
+// Embed returns cached vectors and embeds only the missing texts.
 func (c *Cache) Embed(ctx context.Context, model string, dimensions int, texts []string) ([][]float32, error) {
 	out := make([][]float32, len(texts))
 	keys := make([][sha256.Size]byte, len(texts))
@@ -114,7 +108,6 @@ func (c *Cache) Embed(ctx context.Context, model string, dimensions int, texts [
 	return out, nil
 }
 
-// store inserts or refreshes an entry and evicts the least recently used ones. Callers hold c.mu.
 func (c *Cache) store(key [sha256.Size]byte, vec []float32) {
 	if el, ok := c.items[key]; ok {
 		el.Value.(*entry).vec = slices.Clone(vec) //nolint:forcetypeassert // list only holds *entry.
@@ -129,8 +122,6 @@ func (c *Cache) store(key [sha256.Size]byte, vec []float32) {
 	}
 }
 
-// cacheKey is SHA-256(model 0x00 dimensions 0x00 text); the text comes last so the separators cannot
-// be forged by it.
 func cacheKey(model string, dimensions int, text string) [sha256.Size]byte {
 	h := sha256.New()
 	h.Write([]byte(model))

@@ -12,8 +12,6 @@ import (
 	"github.com/thnhdatle/triage/internal/domain/chat"
 )
 
-// fuzzFindings derives up to 8 findings from picks: each pair of bytes selects
-// a start offset and a length (1..12) of a span of text.
 func fuzzFindings(text string, picks []byte) []Finding {
 	types := []string{"email", "phone", "kr_rrn", "credit_card"}
 	var out []Finding
@@ -25,8 +23,6 @@ func fuzzFindings(text string, picks []byte) []Finding {
 	return out
 }
 
-// survivable reports whether a value may legitimately reappear inside or
-// around a placeholder: it contains a bracket or only placeholder body bytes.
 func survivable(v string) bool {
 	return strings.ContainsAny(v, "[]") || strings.Trim(v, "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789_") == ""
 }

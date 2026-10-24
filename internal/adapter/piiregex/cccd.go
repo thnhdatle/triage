@@ -31,8 +31,6 @@ func newCCCD() *rule {
 	}
 }
 
-// validCCCD checks the province code (001-096) and the century/gender digit
-// (0-3) of a 12-digit citizen identity number.
 func validCCCD(d string) bool {
 	province := atoi(d[:3])
 	return province >= 1 && province <= cccdMaxProvince && d[3] <= '3'

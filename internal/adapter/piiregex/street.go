@@ -38,7 +38,6 @@ func newStreet() *rule {
 	}
 }
 
-// streetOK rejects Korean particle false positives such as "집으로 3개".
 func streetOK(v string) bool {
 	i := strings.IndexAny(v, "0123456789")
 	if i < 0 {

@@ -9,23 +9,15 @@ import (
 	"github.com/thnhdatle/triage/internal/domain/chat"
 )
 
-// DefaultMaxScanBytes is the default privacy.max_scan_bytes (256 KiB).
 const DefaultMaxScanBytes = 256 << 10
 
-// OversizeAction is what happens when the scoped text exceeds MaxScanBytes
-// (privacy.on_oversize).
 type OversizeAction string
 
-// Oversize actions.
 const (
-	// OversizeLocalOnly treats the request as having findings, so only local
-	// targets are eligible, in mask mode too. It is the default.
 	OversizeLocalOnly OversizeAction = "local_only"
-	// OversizeReject rejects the request with ErrScanLimit (413).
-	OversizeReject OversizeAction = "reject"
+	OversizeReject    OversizeAction = "reject"
 )
 
-// ParseOversizeAction parses a privacy.on_oversize value.
 func ParseOversizeAction(s string) (OversizeAction, error) {
 	switch a := OversizeAction(s); a {
 	case OversizeLocalOnly, OversizeReject:
@@ -34,45 +26,22 @@ func ParseOversizeAction(s string) (OversizeAction, error) {
 	return "", fmt.Errorf("privacy: unknown on_oversize %q (want local_only or reject)", s)
 }
 
-// ScanOptions configures Scan.
 type ScanOptions struct {
-	// ScanSystem includes system messages in the scope (privacy.scan_system).
-	ScanSystem bool
-	// MaxScanBytes is the scope limit; values <= 0 mean DefaultMaxScanBytes.
+	ScanSystem   bool
 	MaxScanBytes int
-	// OnOversize applies when the scope exceeds MaxScanBytes. Any value other
-	// than OversizeReject, including "", behaves as OversizeLocalOnly.
-	OnOversize OversizeAction
+	OnOversize   OversizeAction
 }
 
-// Result is the outcome of a request scan. Findings hold values in memory
-// only; Counts (by type) is what decisions, metrics and spans may record.
 type Result struct {
-	// Findings are in scan order: message, then text parts before tool-call
-	// arguments, then detector order. Every finding except ner_unavailable has
-	// a non-empty Value.
 	Findings []Finding
-	// Counts is the number of findings per type, never nil.
-	Counts map[string]int
-	// Oversize reports that the scope exceeded MaxScanBytes and nothing ran.
+	Counts   map[string]int
 	Oversize bool
 }
 
-// HasFindings reports whether the request counts as having findings: any
-// finding (ner_unavailable included) or an oversize scope. In local_only mode
-// this restricts every attempt to local targets.
 func (r Result) HasFindings() bool { return len(r.Findings) > 0 || r.Oversize }
 
-// Constrained reports whether the result forces local-only routing even in
-// mask mode: the scope was oversize or a detector could not scan
-// (ner_unavailable). Ordinary findings do not constrain mask mode; they are
-// masked for cloud attempts instead. For local_only mode use HasFindings, or
-// RequiresLocal for both.
 func (r Result) Constrained() bool { return r.Oversize || r.Counts[TypeNERUnavailable] > 0 }
 
-// RequiresLocal reports whether every attempt must go to a local target under
-// mode: HasFindings for local_only, Constrained for mask, never for off (where
-// findings only steer the mf strategy).
 func (r Result) RequiresLocal(mode Mode) bool {
 	switch mode {
 	case ModeLocalOnly:
@@ -84,16 +53,7 @@ func (r Result) RequiresLocal(mode Mode) bool {
 	return false
 }
 
-// Scan runs the detectors over the scoped text of req: text parts and
-// tool-call arguments of every non-system message (user, assistant, tool and
-// any other role, fail-closed), plus system messages when opts.ScanSystem.
-// Image parts are never scanned. Each scoped text is scanned separately, so
-// Finding.Start and End are relative to that text.
-//
-// If the scope exceeds opts.MaxScanBytes no detector runs and Oversize is set;
-// with OversizeReject the error is ErrScanLimit. A detector error, a cancelled
-// ctx or a finding without value and valid span is returned wrapped and the
-// result is empty; the caller applies its failure policy.
+// Scan runs the detectors over the request texts.
 func Scan(ctx context.Context, detectors []Detector, req chat.Request, opts ScanOptions) (Result, error) {
 	texts := scopedTexts(req, opts.ScanSystem)
 	limit := opts.MaxScanBytes
@@ -127,8 +87,6 @@ func Scan(ctx context.Context, detectors []Detector, req chat.Request, opts Scan
 	return res, nil
 }
 
-// detect runs one detector and fills Value from the span when the detector
-// left it empty.
 func detect(ctx context.Context, d Detector, text string) ([]Finding, error) {
 	if err := ctx.Err(); err != nil {
 		return nil, fmt.Errorf("privacy: detector %s: %w", d.ID(), err)
@@ -151,7 +109,6 @@ func detect(ctx context.Context, d Detector, text string) ([]Finding, error) {
 	return out, nil
 }
 
-// scopedTexts returns the non-empty texts Scan covers, in order.
 func scopedTexts(req chat.Request, scanSystem bool) []string {
 	var texts []string
 	for _, m := range req.Messages {
@@ -163,8 +120,6 @@ func scopedTexts(req chat.Request, scanSystem bool) []string {
 	return texts
 }
 
-// allTexts returns every non-empty text part and tool-call argument of req,
-// system messages included.
 func allTexts(req chat.Request) []string {
 	var texts []string
 	for _, m := range req.Messages {

@@ -22,8 +22,6 @@ import (
 	"github.com/thnhdatle/triage/internal/testutil/fakeprovider"
 )
 
-// assertStreamIdentity checks that every relayed chunk carries the id and
-// model of the first relayed chunk and that the role appears once.
 func assertStreamIdentity(t *testing.T, s *sink, wantModel string) {
 	t.Helper()
 	roles := 0
@@ -199,9 +197,6 @@ func TestDispatcher_Stream_CutWithoutContinuation(t *testing.T) {
 
 func TestDispatcher_Stream_ContinuationToCloudIsMasked(t *testing.T) {
 	t.Parallel()
-	// The local attempt echoes the finding and produces a new value, then is
-	// cut; the cloud continuation must see neither value, and its output
-	// (with placeholders, one split across chunks) is unmasked for the client.
 	l := scripted(stream(
 		cutChunks("l-up", "to "+secret, " cc "+secretOther), errUnavailable))
 	c := scripted(stream(
@@ -281,8 +276,6 @@ func TestDispatcher_Stream_ContinuationRescanFailure(t *testing.T) {
 
 func TestDispatcher_Stream_ContinuationWithoutFindingsCreatesMapping(t *testing.T) {
 	t.Parallel()
-	// Mask mode without findings in the request: the local output contains a
-	// value, which the cloud continuation must not see.
 	l := scripted(stream(cutChunks("l-up", "write "+secret), errUnavailable))
 	c := scripted(stream(textChunks("c-up", " now"), nil))
 	d, _ := newDispatcher(t, map[string]provider.Provider{"l": l, "c": c}, dispatch.Options{})
@@ -298,8 +291,6 @@ func TestDispatcher_Stream_ContinuationWithoutFindingsCreatesMapping(t *testing.
 
 func TestDispatcher_Stream_MaskedCutFlushesHeldBytes(t *testing.T) {
 	t.Parallel()
-	// The cloud attempt is cut while the unmasker holds a placeholder prefix;
-	// the held bytes are relayed before the continuation.
 	c := scripted(stream(cutChunks("c-up", "hi [[EMA"), errUnavailable))
 	l := scripted(stream(textChunks("l-up", "!"), nil))
 	d, _ := newDispatcher(t, map[string]provider.Provider{"l": l, "c": c}, dispatch.Options{})
@@ -339,7 +330,7 @@ func TestDispatcher_Stream_UsageSummedOverAttempts(t *testing.T) {
 			u1 := chat.Usage{PromptTokens: 10, CompletionTokens: 2}
 			u2 := chat.Usage{PromptTokens: 1000, CompletionTokens: 500, CachedPromptTokens: 400}
 			first := cutChunks("a-up", "par")
-			first[1].Usage = &u1 // usage reported mid-stream before the cut
+			first[1].Usage = &u1
 			a := scripted(stream(first, errUnavailable))
 			b := scripted(stream(
 				append(textChunks("b-up", "tial"), usageChunk("b-up", u2)), nil))
@@ -560,8 +551,6 @@ func TestDispatcher_Stream_ContinuationCyclesToSameTargetAfterBackoff(t *testing
 	done := async(func() (dispatch.Result, error) {
 		return d.Stream(context.Background(), plan(userRequest("x"), local("a")), s)
 	})
-	// total timer, two chunk timers of attempt 1 (role, content) plus the
-	// one that saw the cut, and the backoff wait
 	waitWaiters(t, clk, 5)
 	clk.Advance(dispatch.DefaultBackoffBase)
 	o := await(t, done)

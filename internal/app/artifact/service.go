@@ -20,41 +20,27 @@ import (
 	"github.com/thnhdatle/triage/internal/platform/clock"
 )
 
-// ErrUnknownName is returned for an artifact name not in the manifest.
 var ErrUnknownName = errors.New("artifact: unknown artifact name")
 
-// ErrNoDeriver is returned when the manifest lists a derived kind for which
-// no Deriver was supplied.
 var ErrNoDeriver = errors.New("artifact: no deriver for kind")
 
-// ErrInvalid is returned for invalid constructor or call arguments.
 var ErrInvalid = errors.New("artifact: invalid argument")
 
-// AllName is the pseudo name that expands to every manifest entry.
 const AllName = "all"
 
-// forbiddenFile is never downloaded (2.22 GB, not needed).
 const forbiddenFile = "optimizer.pt"
 
-// LocalStore reads and writes the local manifest (models/manifest.local.yaml).
-// Load returns an empty manifest, not an error, when nothing was saved yet.
 type LocalStore interface {
 	Load(ctx context.Context) (artifact.Manifest, error)
 	Save(ctx context.Context, m artifact.Manifest) error
 }
 
-// Verifier checks a file on disk against its expected SHA-256 and size.
-// It returns an error wrapping fs.ErrNotExist when the file is absent and
-// artifact.ErrChecksum when the content does not match. An empty SHA256 or a
-// zero Size in f is not checked.
 type Verifier interface {
 	Verify(path string, f artifact.File) error
 }
 
-// FileVerifier is the default Verifier using os and crypto/sha256.
 type FileVerifier struct{}
 
-// Verify implements Verifier.
 func (FileVerifier) Verify(p string, f artifact.File) error {
 	fh, err := os.Open(p) //nolint:gosec // path built from cache dir and manifest
 	if err != nil {
@@ -77,22 +63,16 @@ func (FileVerifier) Verify(p string, f artifact.File) error {
 	return nil
 }
 
-// Option configures a Service.
 type Option func(*Service)
 
-// WithClock sets the clock used for durations (default clock.Real).
 func WithClock(c clock.Clock) Option { return func(s *Service) { s.clock = c } }
 
-// WithVerifier sets the file verifier (default FileVerifier).
 func WithVerifier(v Verifier) Option { return func(s *Service) { s.verifier = v } }
 
-// PullOptions are the options of Pull.
 type PullOptions struct {
-	// INT8 also builds the onnx-int8 derived artifact.
 	INT8 bool
 }
 
-// EntryReport reports the pull of one entry.
 type EntryReport struct {
 	Name           string
 	Fetched        []string
@@ -102,13 +82,12 @@ type EntryReport struct {
 	Duration       time.Duration
 }
 
-// Report reports a whole Pull.
 type Report struct {
 	Entries  []EntryReport
 	Duration time.Duration
 }
 
-// Service is the artifacts use case.
+// Service pulls, lists and verifies model artifacts.
 type Service struct {
 	manifest artifact.Manifest
 	fetcher  artifact.Fetcher
@@ -119,9 +98,7 @@ type Service struct {
 	verifier Verifier
 }
 
-// New validates its inputs and returns a Service. A manifest listing the
-// optimizer.pt file, or a path escaping the entry directory, is rejected with
-// artifact.ErrNotAllowed.
+// New returns a Service that works in cacheDir.
 func New(manifest artifact.Manifest, fetcher artifact.Fetcher, derivers []artifact.Deriver,
 	store LocalStore, cacheDir string, opts ...Option,
 ) (*Service, error) {
@@ -162,8 +139,6 @@ func New(manifest artifact.Manifest, fetcher artifact.Fetcher, derivers []artifa
 	return s, nil
 }
 
-// checkAllowed guards a file: it must be on the entry's allow-list, must not
-// be optimizer.pt and must stay inside the entry directory.
 func checkAllowed(e artifact.Entry, f artifact.File) error {
 	listed := false
 	for _, g := range e.Files {
@@ -183,8 +158,6 @@ func (s *Service) entryDir(e artifact.Entry) string {
 	return filepath.Join(s.cacheDir, e.Name, e.Revision)
 }
 
-// resolve expands names (bert, mf, ner, all) to manifest entries, in order and
-// without duplicates.
 func (s *Service) resolve(names []string) ([]artifact.Entry, error) {
 	if len(names) == 0 {
 		return nil, fmt.Errorf("%w: no artifact names", ErrInvalid)
@@ -213,8 +186,7 @@ func (s *Service) resolve(names []string) ([]artifact.Entry, error) {
 	return out, nil
 }
 
-// Pull fetches, verifies and derives the named artifacts. names are manifest
-// entry names or "all". It stops at the first error, which is wrapped.
+// Pull fetches, verifies and derives the named entries and writes the local manifest.
 func (s *Service) Pull(ctx context.Context, names []string, opts PullOptions) (Report, error) {
 	entries, err := s.resolve(names)
 	if err != nil {
@@ -300,8 +272,6 @@ func (s *Service) deriveKinds(ctx context.Context, e artifact.Entry, dir string,
 	return nil
 }
 
-// wantedKinds returns the derived kinds to build for e: those listed in the
-// manifest entry, with onnx-int8 only when requested.
 func (s *Service) wantedKinds(e artifact.Entry, opts PullOptions) ([]artifact.DerivedKind, error) {
 	var out []artifact.DerivedKind
 	for _, d := range e.Derived {
@@ -345,8 +315,6 @@ func findDerived(m artifact.Manifest, name string, k artifact.DerivedKind) (arti
 	return artifact.Derived{}, false
 }
 
-// mergeDerived returns a copy of m with d recorded under entry name,
-// replacing a derived of the same kind. Idempotent.
 func mergeDerived(m artifact.Manifest, name string, d artifact.Derived) artifact.Manifest {
 	out := artifact.Manifest{SchemaVersion: m.SchemaVersion, Entries: make([]artifact.Entry, len(m.Entries))}
 	copy(out.Entries, m.Entries)

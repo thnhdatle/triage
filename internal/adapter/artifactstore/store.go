@@ -18,24 +18,19 @@ import (
 	"github.com/thnhdatle/triage/internal/domain/artifact"
 )
 
-// FileName is the local manifest's file name inside the cache directory.
 const FileName = "manifest.local.yaml"
 
-// SchemaVersion is the schema version written to a new local manifest.
 const SchemaVersion = 1
 
-// ErrInvalid is returned for invalid constructor arguments.
 var ErrInvalid = errors.New("artifactstore: invalid argument")
 
-// Store reads and writes the local manifest. It is safe for concurrent use
-// within one process.
+// Store keeps the local manifest in a YAML file.
 type Store struct {
 	path string
 	mu   sync.Mutex
 }
 
-// New returns a Store keeping its manifest in cacheDir/manifest.local.yaml.
-// The directory is created on the first Save.
+// New returns a Store under cacheDir.
 func New(cacheDir string) (*Store, error) {
 	if cacheDir == "" {
 		return nil, fmt.Errorf("%w: empty cache dir", ErrInvalid)
@@ -43,11 +38,9 @@ func New(cacheDir string) (*Store, error) {
 	return &Store{path: filepath.Join(cacheDir, FileName)}, nil
 }
 
-// Path returns the manifest file path.
 func (s *Store) Path() string { return s.path }
 
-// Load returns the saved manifest, or an empty manifest when none was saved
-// yet. Unknown fields are an error.
+// Load reads the manifest.
 func (s *Store) Load(ctx context.Context) (artifact.Manifest, error) {
 	if err := ctx.Err(); err != nil {
 		return artifact.Manifest{}, fmt.Errorf("load local manifest: %w", err)
@@ -70,7 +63,7 @@ func (s *Store) Load(ctx context.Context) (artifact.Manifest, error) {
 	return m, nil
 }
 
-// Save atomically replaces the manifest.
+// Save writes the manifest atomically.
 func (s *Store) Save(ctx context.Context, m artifact.Manifest) error {
 	if err := ctx.Err(); err != nil {
 		return fmt.Errorf("save local manifest: %w", err)
@@ -92,7 +85,7 @@ func (s *Store) Save(ctx context.Context, m artifact.Manifest) error {
 	if err != nil {
 		return fmt.Errorf("create temp file in %s: %w", dir, err)
 	}
-	defer func() { _ = os.Remove(tmp.Name()) }() // no-op after a successful rename
+	defer func() { _ = os.Remove(tmp.Name()) }()
 	_, werr := tmp.Write(data)
 	serr := tmp.Sync()
 	cerr := tmp.Close()

@@ -15,27 +15,15 @@ import (
 	"github.com/thnhdatle/triage/internal/domain/provider"
 )
 
-// errEmbedTimeout ends an embeddings attempt that exceeded its timeout; it
-// matches provider.ErrTimeout and is retryable.
 var errEmbedTimeout = fmt.Errorf("route: embeddings attempt timeout: %w", provider.ErrTimeout)
 
-// EmbeddingsRequest is a /v1/embeddings request: Request.Model is the route
-// name.
 type EmbeddingsRequest struct {
-	// ID is the request id; empty means the decision id.
-	ID string
-	// Headers holds the X-Triage-* client headers by canonical name.
+	ID      string
 	Headers map[string]string
 	Request provider.EmbedRequest
 }
 
-// Embeddings routes an embeddings request: the route's pool
-// restricted to embedding targets, the privacy stage with mask findings
-// handled as local_only (vectors cannot be unmasked), no rules and no
-// difficulty stage. Eligible targets are tried in selection order, each at
-// most once, up to Options.Embeddings.MaxAttempts, moving on only after a
-// retryable error (provider.IsRetryable). The decision is recorded exactly
-// once.
+// Embeddings routes and runs an embeddings request.
 func (p *Pipeline) Embeddings(ctx context.Context, in EmbeddingsRequest) (Outcome, error) {
 	msgs := make([]chat.Message, len(in.Request.Input))
 	for i, s := range in.Request.Input {
@@ -85,8 +73,6 @@ func (r *request) embed(
 	return r.embedChain(ctx, in, chain)
 }
 
-// embedChain tries the chain in order until an attempt succeeds or fails
-// with a non-retryable error.
 func (r *request) embedChain(
 	ctx context.Context, in provider.EmbedRequest, chain []model.Target,
 ) (provider.EmbedResponse, dispatch.Result, error) {
@@ -150,8 +136,6 @@ func (r *request) embedAttempt(
 	return resp, a, nil
 }
 
-// attemptStatus is the decision status class of an embeddings attempt, in
-// the vocabulary of dispatch.
 func attemptStatus(err error) string {
 	checks := []struct {
 		target error

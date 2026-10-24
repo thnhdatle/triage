@@ -17,34 +17,22 @@ import (
 	"github.com/thnhdatle/triage/internal/platform/clock"
 )
 
-// Defaults of a Client.
 const (
-	// DefaultTimeout bounds a non-streaming call and the wait for a stream's
-	// response headers.
-	DefaultTimeout = 60 * time.Second
-	// DefaultMaxIdleConnsPerHost is the idle connection pool size per host.
+	DefaultTimeout             = 60 * time.Second
 	DefaultMaxIdleConnsPerHost = 16
-	// DefaultMaxResponseBytes bounds a non-streaming response body and one
-	// stream event.
-	DefaultMaxResponseBytes = 32 << 20
+	DefaultMaxResponseBytes    = 32 << 20
 )
 
-// ErrConfig is returned by New for an invalid configuration.
 var ErrConfig = errors.New("openaicompat: invalid configuration")
 
-// Option configures a Client.
 type Option func(*Client)
 
-// WithAPIKey sends key as a bearer token; empty sends no Authorization header.
 func WithAPIKey(key string) Option { return func(c *Client) { c.apiKey = key } }
 
-// WithExtraHeaders adds headers to every request (provider-wide).
 func WithExtraHeaders(h map[string]string) Option {
 	return func(c *Client) { maps.Copy(c.headers, h) }
 }
 
-// WithModelHeaders adds headers to requests whose model is model (per-target
-// extra_headers). They override provider-wide headers.
 func WithModelHeaders(model string, h map[string]string) Option {
 	return func(c *Client) {
 		m := make(map[string]string, len(h))
@@ -53,23 +41,17 @@ func WithModelHeaders(model string, h map[string]string) Option {
 	}
 }
 
-// WithHTTPClient replaces the HTTP client; WithMaxIdleConnsPerHost and the
-// header timeout then have no effect.
 func WithHTTPClient(hc *http.Client) Option { return func(c *Client) { c.hc = hc } }
 
-// WithMaxIdleConnsPerHost sets the idle connection pool size per host.
 func WithMaxIdleConnsPerHost(n int) Option { return func(c *Client) { c.maxIdle = n } }
 
-// WithTimeout bounds non-streaming calls and the wait for stream headers.
 func WithTimeout(d time.Duration) Option { return func(c *Client) { c.timeout = d } }
 
-// WithMaxResponseBytes bounds a response body and one stream event.
 func WithMaxResponseBytes(n int64) Option { return func(c *Client) { c.maxBytes = n } }
 
-// WithClock sets the clock used to interpret HTTP-date Retry-After values.
 func WithClock(clk clock.Clock) Option { return func(c *Client) { c.clk = clk } }
 
-// Client is an OpenAI-compatible provider. It is safe for concurrent use.
+// Client is a provider for an OpenAI-compatible backend.
 type Client struct {
 	base         string
 	apiKey       string
@@ -82,7 +64,7 @@ type Client struct {
 	clk          clock.Clock
 }
 
-// New returns a Client for baseURL (e.g. "http://localhost:1234/v1").
+// New returns a Client for the backend at baseURL.
 func New(baseURL string, opts ...Option) (*Client, error) {
 	u, err := url.Parse(baseURL)
 	if err != nil || (u.Scheme != "http" && u.Scheme != "https") || u.Host == "" {
@@ -123,8 +105,6 @@ func New(baseURL string, opts ...Option) (*Client, error) {
 	return c, nil
 }
 
-// send performs one request and returns the response when its status is 2xx;
-// any failure is already normalised. The caller closes the body.
 func (c *Client) send(ctx context.Context, method, path, model string, body []byte) (*http.Response, error) {
 	var rd io.Reader
 	if body != nil {
@@ -159,7 +139,6 @@ func (c *Client) send(ctx context.Context, method, path, model string, body []by
 	return resp, nil
 }
 
-// call performs a bounded non-streaming request and returns the body.
 func (c *Client) call(ctx context.Context, method, path, model string, body []byte) ([]byte, int, error) {
 	ctx, cancel := context.WithTimeout(ctx, c.timeout)
 	defer cancel()
@@ -178,5 +157,4 @@ func (c *Client) call(ctx context.Context, method, path, model string, body []by
 	return data, resp.StatusCode, nil
 }
 
-// CloseIdleConnections closes idle pooled connections (shutdown, tests).
 func (c *Client) CloseIdleConnections() { c.hc.CloseIdleConnections() }

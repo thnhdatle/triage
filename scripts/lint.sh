@@ -29,11 +29,8 @@ gofmt_check() {
 }
 
 python_checks() {
-	local d
-	for d in research acceptance/sdk/python; do
-		[ -f "$d/pyproject.toml" ] || continue
-		(cd "$d" && uv run ruff format --check . && uv run ruff check . && uv run mypy --strict .) || return 1
-	done
+	[ -f research/pyproject.toml ] || return 0
+	(cd research && uv run ruff format --check . && uv run ruff check . && uv run mypy --strict .)
 }
 
 dockerfiles() {

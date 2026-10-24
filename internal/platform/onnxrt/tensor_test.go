@@ -13,7 +13,7 @@ func TestTensorAccessors(t *testing.T) {
 	t.Parallel()
 	shape := []int64{1, 2}
 	f := Float32Tensor("x", shape, []float32{1, 2})
-	shape[0] = 9 // the tensor keeps its own copy
+	shape[0] = 9
 	assert.Equal(t, "x", f.Name())
 	assert.Equal(t, []int64{1, 2}, f.Shape())
 	assert.Equal(t, Float32, f.DType())

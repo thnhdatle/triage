@@ -1,5 +1,5 @@
 # SPDX-License-Identifier: Apache-2.0
-"""Unit tests for triage_research.fetch using a local HTTP server (no network)."""
+"""Tests for the fetcher using a local HTTP server."""
 
 from __future__ import annotations
 
@@ -65,7 +65,7 @@ def _manifest(tmp_path: Path, extra_files: list[dict[str, object]] | None = None
         },
         {
             "path": "config.json",
-            "sha256": hashlib.sha256(b"expected").hexdigest(),  # server serves other bytes
+            "sha256": hashlib.sha256(b"expected").hexdigest(),
             "size": len(b"expected"),
         },
     ]
@@ -89,7 +89,7 @@ def test_fetch_verifies_and_caches(server: str, tmp_path: Path) -> None:
     n = len(_Handler.hits)
     again = fetch.fetch_file(entry, "model.safetensors", cache, server)
     assert again == got
-    assert len(_Handler.hits) == n  # served from cache
+    assert len(_Handler.hits) == n
 
 
 def test_hash_mismatch_is_rejected_and_not_kept(server: str, tmp_path: Path) -> None:
@@ -140,7 +140,6 @@ def test_real_manifest_is_well_formed() -> None:
 
 def test_cli_fetches_entry(server: str, tmp_path: Path) -> None:
     manifest = _manifest(tmp_path, [])
-    # drop the deliberately corrupt file by rewriting the manifest with only the good one
     data = yaml.safe_load(manifest.read_text(encoding="utf-8"))
     data["entries"][0]["files"] = data["entries"][0]["files"][:1]
     manifest.write_text(yaml.safe_dump(data), encoding="utf-8")

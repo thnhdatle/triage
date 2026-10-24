@@ -19,8 +19,6 @@ import (
 	"github.com/thnhdatle/triage/internal/platform/telemetry"
 )
 
-// GenAI attribute keys (OTel semantic conventions).
-//
 //nolint:gosec // G101: attribute names, not credentials
 const (
 	attrResponseModel = "gen_ai.response.model"
@@ -30,15 +28,11 @@ const (
 	attrRequestModel  = "gen_ai.request.model"
 )
 
-// tracedProvider decorates a provider adapter with the per-attempt GenAI span
-// (`chat <model>` / `embeddings <model>`), the upstream duration histogram and
-// the per-target in-flight gauge.
 type tracedProvider struct {
-	next provider.Provider
-	name string // provider name from the configuration, for labels
-	tel  *telemetry.Telemetry
-	clk  clock.Clock
-	// targets maps an upstream model name to the target name it serves.
+	next    provider.Provider
+	name    string
+	tel     *telemetry.Telemetry
+	clk     clock.Clock
 	targets map[string]string
 }
 
@@ -71,7 +65,6 @@ func (p *tracedProvider) begin(ctx context.Context, op, modelName string) (conte
 	}
 }
 
-// Complete implements provider.Provider.
 func (p *tracedProvider) Complete(ctx context.Context, req chat.Request) (chat.Response, error) {
 	ctx, span, end := p.begin(ctx, "chat", req.Model)
 	capture := p.tel.CaptureContent()
@@ -91,7 +84,6 @@ func (p *tracedProvider) Complete(ctx context.Context, req chat.Request) (chat.R
 	return resp, err //nolint:wrapcheck // decorator: errors pass through unchanged for dispatch
 }
 
-// Stream implements provider.Provider; the span ends when the stream ends.
 func (p *tracedProvider) Stream(ctx context.Context, req chat.Request) (provider.Stream, error) {
 	ctx, span, end := p.begin(ctx, "chat", req.Model)
 	var content *streamContent
@@ -107,7 +99,6 @@ func (p *tracedProvider) Stream(ctx context.Context, req chat.Request) (provider
 	return &tracedStream{next: s, span: span, end: end, content: content}, nil
 }
 
-// Embed implements provider.Provider.
 func (p *tracedProvider) Embed(ctx context.Context, req provider.EmbedRequest) (provider.EmbedResponse, error) {
 	ctx, span, end := p.begin(ctx, "embeddings", req.Model)
 	resp, err := p.next.Embed(ctx, req)
@@ -119,22 +110,19 @@ func (p *tracedProvider) Embed(ctx context.Context, req provider.EmbedRequest) (
 	return resp, err //nolint:wrapcheck // decorator: errors pass through unchanged
 }
 
-// Models implements provider.Provider (health probes: no span).
 func (p *tracedProvider) Models(ctx context.Context) ([]string, error) {
 	return p.next.Models(ctx) //nolint:wrapcheck // decorator: errors pass through unchanged
 }
 
 type tracedStream struct {
-	next  provider.Stream
-	span  trace.Span
-	end   func(error)
-	model string
-	usage *chat.Usage
-	// content is non-nil under tracing.capture_content.
+	next    provider.Stream
+	span    trace.Span
+	end     func(error)
+	model   string
+	usage   *chat.Usage
 	content *streamContent
 }
 
-// Recv implements provider.Stream.
 func (s *tracedStream) Recv() (chat.Chunk, error) {
 	c, err := s.next.Recv()
 	switch {
@@ -161,7 +149,7 @@ func (s *tracedStream) Recv() (chat.Chunk, error) {
 func (s *tracedStream) finish(err error) {
 	if s.content != nil {
 		s.content.set(s.span)
-		s.content = nil // set once; the span ends below
+		s.content = nil
 	}
 	if s.usage != nil {
 		s.span.SetAttributes(attribute.Int(attrInputTokens, s.usage.PromptTokens),
@@ -170,15 +158,12 @@ func (s *tracedStream) finish(err error) {
 	s.end(err)
 }
 
-// Close implements provider.Stream. A stream closed before its end (client
-// gone, cut by dispatch) ends the span without an error status.
 func (s *tracedStream) Close() error {
 	err := s.next.Close()
 	s.finish(nil)
 	return err //nolint:wrapcheck // decorator
 }
 
-// upstreamStatus is the short outcome label of an upstream call.
 func upstreamStatus(err error) string {
 	if err == nil {
 		return "ok"

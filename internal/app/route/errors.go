@@ -12,20 +12,11 @@ import (
 	"github.com/thnhdatle/triage/internal/domain/provider"
 )
 
-// Errors of the routing pipeline. Privacy failures are returned as the
-// privacy sentinels (privacy.ErrModeNotAllowed, privacy.ErrScanLimit,
-// privacy.ErrNoLocalTarget), wrapped with context; dispatch failures as the
-// *dispatch.Error returned by the dispatcher.
 var (
-	// ErrUnknownRoute is returned when the model field names no route
-	// (404 model_not_found).
-	ErrUnknownRoute = errors.New("route: unknown model")
-	// ErrNoEligibleTarget is returned when no target passes selection and the
-	// request is not restricted to local targets (503 no_eligible_target).
+	ErrUnknownRoute     = errors.New("route: unknown model")
 	ErrNoEligibleTarget = errors.New("route: no eligible target")
 )
 
-// Client-facing error codes (docs/guides/errors.md).
 const (
 	CodeModelNotFound         = "model_not_found"
 	CodePrivacyModeNotAllowed = "privacy_mode_not_allowed"
@@ -41,12 +32,8 @@ const (
 	CodeInternal              = "internal_error"
 )
 
-// StatusClientClosedRequest is the non-standard status used for a request
-// the client abandoned.
 const StatusClientClosedRequest = 499
 
-// codeTable is checked in order; privacy sentinels come first because a
-// dispatch failure may wrap them.
 var codeTable = []struct {
 	err    error
 	code   string
@@ -70,11 +57,7 @@ var codeTable = []struct {
 	{provider.ErrUpstreamUnavailable, CodeUpstreamUnavailable, http.StatusBadGateway},
 }
 
-// Code maps an error returned by Pipeline to its client-facing code and HTTP
-// status. The pipeline's own and the privacy codes are fixed (docs/guides/errors.md);
-// the upstream codes (rate limit, timeout, unavailable, bad request, context
-// length) are the provisional registry entries httpapi uses. nil maps to
-// ("", 200); an unknown error to internal_error 500.
+// Code returns the OpenAI error code and HTTP status for err.
 func Code(err error) (code string, status int) {
 	if err == nil {
 		return "", http.StatusOK

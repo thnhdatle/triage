@@ -11,23 +11,17 @@ import (
 	"strings"
 )
 
-// ErrSafetensors is returned for a malformed safetensors file or a tensor of
-// an unexpected name, dtype or shape.
 var ErrSafetensors = errors.New("mf: invalid safetensors")
 
-// maxHeader bounds the JSON header (the format's own limit is 100 MB).
 const maxHeader = 100 << 20
 
-// Element types read as float64.
 const (
 	dtypeF32 = "F32"
 	dtypeF64 = "F64"
 )
 
-// metadataKey is the reserved header entry holding string metadata.
 const metadataKey = "__metadata__"
 
-// elemSize lists the byte size of every safetensors dtype.
 var elemSize = map[string]int{
 	"BOOL": 1, "U8": 1, "I8": 1, "F8_E4M3": 1, "F8_E5M2": 1,
 	"I16": 2, "U16": 2, "F16": 2, "BF16": 2,
@@ -35,14 +29,12 @@ var elemSize = map[string]int{
 	"I64": 8, "U64": 8, dtypeF64: 8,
 }
 
-// Tensor is one tensor of a safetensors file; data aliases the file bytes.
 type Tensor struct {
 	DType string
 	Shape []int
 	data  []byte
 }
 
-// Float64s returns the elements of an F32 or F64 tensor as float64.
 func (t Tensor) Float64s() ([]float64, error) {
 	switch t.DType {
 	case dtypeF32:
@@ -61,7 +53,6 @@ func (t Tensor) Float64s() ([]float64, error) {
 	return nil, fmt.Errorf("%w: dtype %s is not F32 or F64", ErrSafetensors, t.DType)
 }
 
-// File is a parsed safetensors file.
 type File struct {
 	Metadata map[string]string
 	Tensors  map[string]Tensor
@@ -73,9 +64,6 @@ type headerEntry struct {
 	DataOffsets [2]int64 `json:"data_offsets"`
 }
 
-// ParseSafetensors parses a safetensors file held in memory: an 8-byte
-// little-endian header length, a JSON header and the tensor data. Every
-// tensor's byte range must lie inside the data and match its shape.
 func ParseSafetensors(b []byte) (*File, error) {
 	if len(b) < 8 {
 		return nil, fmt.Errorf("%w: %d bytes, shorter than the header length", ErrSafetensors, len(b))
@@ -134,9 +122,6 @@ func parseEntry(name string, msg json.RawMessage, data []byte) (Tensor, error) {
 	return Tensor{DType: h.DType, Shape: h.Shape, data: data[begin:end]}, nil
 }
 
-// encodeF64 serialises one F64 vector tensor with string metadata. The
-// header is padded with spaces to a multiple of 8 bytes, as the reference
-// writer does.
 func encodeF64(name string, v []float64, meta map[string]string) ([]byte, error) {
 	header := map[string]any{
 		name: headerEntry{DType: dtypeF64, Shape: []int{len(v)}, DataOffsets: [2]int64{0, int64(8 * len(v))}},

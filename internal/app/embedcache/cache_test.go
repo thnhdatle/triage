@@ -14,7 +14,6 @@ import (
 	"github.com/thnhdatle/triage/internal/app/embedcache"
 )
 
-// fakeEmbedder returns [len(text), dimensions] and records every call.
 type fakeEmbedder struct {
 	mu    sync.Mutex
 	calls [][]string
@@ -149,14 +148,14 @@ func TestCache_Embed_EvictsLeastRecentlyUsed(t *testing.T) {
 	}
 	embed("a")
 	embed("bb")
-	embed("a")   // a is now most recent
-	embed("ccc") // evicts bb
+	embed("a")
+	embed("ccc")
 	assert.Equal(t, 2, c.Len())
 
 	before := len(f.callLog())
-	embed("a") // still cached
+	embed("a")
 	assert.Len(t, f.callLog(), before)
-	embed("bb") // evicted, refetched
+	embed("bb")
 	assert.Len(t, f.callLog(), before+1)
 }
 
@@ -191,12 +190,12 @@ func TestCache_Embed_ReturnsCopies(t *testing.T) {
 	c := newCache(t, f, 4)
 	first, err := c.Embed(t.Context(), "m", 2, []string{"ab"})
 	require.NoError(t, err)
-	first[0][0] = 99 // mutate the miss result
+	first[0][0] = 99
 
 	second, err := c.Embed(t.Context(), "m", 2, []string{"ab"})
 	require.NoError(t, err)
 	assert.InDelta(t, 2, second[0][0], 0)
-	second[0][1] = 77 // mutate the hit result
+	second[0][1] = 77
 
 	third, err := c.Embed(t.Context(), "m", 2, []string{"ab"})
 	require.NoError(t, err)

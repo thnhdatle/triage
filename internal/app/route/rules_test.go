@@ -116,8 +116,6 @@ func TestPipeline_Chat_Rules(t *testing.T) {
 	}
 }
 
-// TestPipeline_Chat_RuleKeepsPrivacy is the F4 DoD privacy invariant: a rule
-// choosing a tier still selects within the allowed localities.
 func TestPipeline_Chat_RuleKeepsPrivacy(t *testing.T) {
 	t.Parallel()
 	tests := []struct {
@@ -154,11 +152,9 @@ func TestPipeline_Chat_RuleKeepsPrivacy(t *testing.T) {
 	}
 }
 
-// TestPipeline_Chat_ExactTokenCounter is the F3 DoD table: the length rule
-// and the context-window filter use the configured counter's exact count.
 func TestPipeline_Chat_ExactTokenCounter(t *testing.T) {
 	t.Parallel()
-	text := "short" // the estimate counts 2 tokens (+1 for the system message)
+	text := "short"
 	tests := []struct {
 		name       string
 		tokens     chat.TokenCounter

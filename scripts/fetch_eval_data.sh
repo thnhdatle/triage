@@ -1,12 +1,6 @@
 #!/usr/bin/env bash
 # SPDX-License-Identifier: Apache-2.0
-# Fetches the evaluation datasets of `triage eval` at pinned revisions, verifies each file by
-# SHA-256 and converts the Parquet files to the JSONL layout the harness reads:
-#   GSM8K test        openai/gsm8k (Hugging Face datasets), main/test
-#   MMLU test         cais/mmlu (Hugging Face datasets), the 57 subject test splits
-#   RouteLLM evals    lm-sys/RouteLLM routellm/evals (Apache-2.0): label files and contaminated prompts
-# Destination: $EVAL_DATA_DIR (default ~/.cache/rayld/triage/eval/data). Needs curl and uv (for the
-# conversion). Re-running skips verified files.
+
 set -euo pipefail
 cd "$(git rev-parse --show-toplevel)"
 
@@ -19,7 +13,6 @@ sha256_of() {
 	if command -v sha256sum >/dev/null 2>&1; then sha256sum "$1" | awk '{print $1}'; else shasum -a 256 "$1" | awk '{print $1}'; fi
 }
 
-# url_of <manifest path>: the download URL of a file at its pinned revision.
 url_of() {
 	case "$1" in
 	hf-gsm8k/*) echo "https://huggingface.co/datasets/openai/gsm8k/resolve/$GSM8K_REV/${1#hf-gsm8k/}" ;;
@@ -29,7 +22,6 @@ url_of() {
 	esac
 }
 
-# fetch <manifest path> <sha256>: download once into raw/, verify, keep only verified files.
 fetch() {
 	local rel="$1" want="$2" dest tmp got
 	dest="$DATA_DIR/raw/$rel"
@@ -54,7 +46,6 @@ fetch() {
 	echo "fetched  $rel"
 }
 
-# manifest prints "<sha256>  <path>" for every pinned file.
 manifest() {
 	cat <<'MANIFEST'
 ee7b8da9e381df27b9e3f7758a159ab2bdaa4dbaa910546cbbc47e0cb44e4f59  hf-gsm8k/main/test-00000-of-00001.parquet
@@ -182,7 +173,5 @@ while read -r sha rel; do
 	fetch "$rel" "$sha"
 done < <(manifest)
 
-# Convert to the layout read by `triage eval`: gsm8k/test.jsonl, mmlu/test/<subject>.jsonl and
-# routellm/ (copied verbatim).
 (cd research && uv run python -m triage_research.make_eval_sets convert --raw "$DATA_DIR/raw" --out "$DATA_DIR")
 echo "eval data ready in $DATA_DIR"

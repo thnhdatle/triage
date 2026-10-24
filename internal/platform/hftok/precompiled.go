@@ -13,13 +13,6 @@ import (
 	"github.com/sugarme/tokenizer/spm"
 )
 
-// precompiled is SentencePiece's precompiled_charsmap normalizer (nmt_nfkc
-// for XLM-R). The charsmap parsing and double-array layout come from
-// sugarme/tokenizer's spm package; the normalization loop is a port of HF
-// tokenizers' Precompiled::normalize, replacing sugarme's, which drops
-// characters mapped to the empty string (U+200D, U+200B, U+FEFF), rewrites
-// non-spacing marks as "U+XXXX" text and repeats the first rune of graphemes
-// of six or more bytes.
 type precompiled struct {
 	trie       spm.Array
 	normalized string
@@ -47,10 +40,6 @@ func newPrecompiled(raw json.RawMessage) (*precompiled, error) {
 	return &precompiled{trie: trie, normalized: string(normalized)}, nil
 }
 
-// transform returns the replacement of the shortest prefix of chunk present
-// in the charsmap (spm_precompiled's transform: results[0] of the common
-// prefix search). ok is false when no prefix matches; an empty replacement
-// with ok true deletes the chunk.
 func (p *precompiled) transform(chunk string) (string, bool) {
 	arr := p.trie
 	pos := int(arr[0].Offset())

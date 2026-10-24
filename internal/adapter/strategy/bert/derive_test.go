@@ -36,7 +36,6 @@ func sha(b []byte) string {
 	return hex.EncodeToString(s[:])
 }
 
-// entryDir returns a directory holding a copy of the fixture weights.
 func entryDir(t *testing.T) (string, []byte) {
 	t.Helper()
 	dir := t.TempDir()
@@ -173,11 +172,9 @@ func TestNewFP32DeriverRejectsGraph(t *testing.T) {
 	}
 }
 
-// fakeConverter is a CommandRunner standing in for export_bert: it writes
-// body to the --out path and prints `<sha256>  <path>`.
 type fakeConverter struct {
 	body   []byte
-	stdout string // overrides the printed line when set
+	stdout string
 	stderr string
 	err    error
 	name   string

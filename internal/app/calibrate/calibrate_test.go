@@ -16,7 +16,6 @@ import (
 	"github.com/thnhdatle/triage/internal/domain/difficulty"
 )
 
-// fakeStrategy scores a request by the number in its user text, or fails for "boom".
 type fakeStrategy struct {
 	err error
 	bad bool

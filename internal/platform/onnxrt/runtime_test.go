@@ -14,17 +14,10 @@ import (
 	"github.com/stretchr/testify/require"
 )
 
-// The tests in this file are not parallel: they observe the process-wide
-// environment (load, reference count, unload), which parallel tests holding a
-// Runtime would keep loaded. Go runs every top-level parallel test after the
-// sequential ones, so each of these starts with the library unloaded.
-
-// withMinVersion overrides the minimum accepted version.
 func withMinVersion(major, minor int) Option {
 	return func(o *options) { o.minMajor, o.minMinor = major, minor }
 }
 
-// realLibrary returns the path the default lookup would load.
 func realLibrary(t *testing.T) string {
 	t.Helper()
 	for _, c := range Candidates() {
@@ -42,7 +35,6 @@ func envRefs() int {
 	return env.refs
 }
 
-// noEnv isolates a lookup from TRIAGE_ONNX_LIBRARY_PATH and the binary's directory.
 func noEnv() []Option {
 	return []Option{
 		WithGetenv(func(string) string { return "" }),

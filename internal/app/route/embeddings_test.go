@@ -21,7 +21,6 @@ import (
 	"github.com/thnhdatle/triage/internal/testutil/fakeprovider"
 )
 
-// scriptedEmbedder returns errs in order, then a response with usage.
 type scriptedEmbedder struct {
 	mu    sync.Mutex
 	errs  []error
@@ -68,7 +67,7 @@ func embedReq(input ...string) route.EmbeddingsRequest {
 
 func embedTargets() model.Pool {
 	ts := allTargets()
-	ts[4].Pricing.InputPerMTok = 20 // cloud-embed: 1000 tokens => 0.02
+	ts[4].Pricing.InputPerMTok = 20
 	return ts
 }
 

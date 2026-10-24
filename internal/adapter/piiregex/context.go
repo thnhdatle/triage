@@ -7,8 +7,6 @@ import (
 	"unicode/utf8"
 )
 
-// ctxWindow is the number of characters (runes) on each side of a value in
-// which a context word must lie entirely.
 const ctxWindow = 32
 
 const (
@@ -16,7 +14,6 @@ const (
 	ctxTail = `)[^A-Za-z0-9]`
 )
 
-// Context word lists; documented in testdata/pii/README.md.
 var (
 	rrnContext = regexp.MustCompile(ctxHead +
 		`주민등록번호|주민번호|주민등록|rrn|resident registration` + ctxTail)
@@ -28,10 +25,6 @@ var (
 		`cccd|căn cước|can cuoc|cmnd|cmt|số định danh|so dinh danh|citizen id|chứng minh` + ctxTail)
 )
 
-// hasContext reports whether a word matched by re lies entirely within
-// ctxWindow runes before text[s] or after text[e-1]. A virtual space stands in
-// for the value side and the real neighbouring rune (or a space at the text
-// edge) bounds the far side, so a longer word cut by the window never matches.
 func hasContext(re *regexp.Regexp, text string, s, e int) bool {
 	ws := stepBack(text, s, ctxWindow)
 	pre := " "

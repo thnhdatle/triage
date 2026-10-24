@@ -28,7 +28,6 @@ func TestServer_PutScript_AppliesCountsInOrder(t *testing.T) {
 	assert.Equal(t, http.StatusInternalServerError, e.chat(userBody("m", "x", ""), nil).status)
 	assert.Equal(t, "echoed", *decodeCompletion(t, e.chat(userBody("m", "echoed", ""), nil)).Choices[0].Message.Content)
 	assert.Equal(t, "scripted 4", *decodeCompletion(t, e.chat(userBody("m", "x", ""), nil)).Choices[0].Message.Content)
-	// Script exhausted: back to ok.
 	assert.NotEqual(t, "scripted 5", *decodeCompletion(t, e.chat(userBody("m", "x", ""), nil)).Choices[0].Message.Content)
 	assert.Equal(t, http.StatusTooManyRequests, e.chat(userBody("other", "x", ""), nil).status)
 	assert.Equal(t, http.StatusOK, e.chat(userBody("other", "x", ""), nil).status)

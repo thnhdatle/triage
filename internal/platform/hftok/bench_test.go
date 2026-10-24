@@ -8,8 +8,6 @@ import (
 	"github.com/stretchr/testify/require"
 )
 
-// benchText repeats unit until the bert encoding has at least 512 ids
-// (incl. <s> and </s>); the same text is used for the ner benchmarks.
 func benchText(b *testing.B, unit string) string {
 	b.Helper()
 	tok := loadPinned(b, "bert")

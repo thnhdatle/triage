@@ -22,8 +22,6 @@ func rewrite(t *testing.T, path, content string) {
 	require.NoError(t, os.WriteFile(path, []byte(content), 0o600))
 }
 
-// atomicWrite replaces the file via rename, as deployment tools do, so readers
-// never see a truncated file.
 func atomicWrite(t *testing.T, path, content string) {
 	t.Helper()
 	tmp := path + ".tmp"
@@ -96,7 +94,7 @@ func TestRunReloadsOnChange(t *testing.T) {
 	var ok, bad atomic.Int32
 	m, err := config.NewManager(path,
 		config.WithWatchInterval(5*time.Millisecond),
-		config.WithWatchInterval(0), // ignored
+		config.WithWatchInterval(0),
 		config.WithOnReload(func(e config.ReloadEvent) {
 			if e.Err != nil {
 				bad.Add(1)
@@ -157,7 +155,6 @@ func TestReloadWhileReading(t *testing.T) {
 				default:
 				}
 				cfg := m.Current()
-				// A request sees one consistent snapshot, never a mix.
 				if n := cfg.Dispatch.MaxAttempts; n != 3 && n != 4 {
 					assert.Fail(t, "unexpected attempts", n)
 				}
@@ -174,7 +171,6 @@ func TestReloadWhileReading(t *testing.T) {
 			}
 		}()
 	}
-	// Alternate the file contents between two valid versions while reloading.
 	for i := range 50 {
 		n := "3"
 		if i%2 == 1 {

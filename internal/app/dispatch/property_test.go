@@ -21,7 +21,6 @@ import (
 	"github.com/thnhdatle/triage/internal/testutil/fakeprovider"
 )
 
-// discard is a Sink that accepts everything.
 type discard struct{}
 
 func (discard) Start(model.Target) error { return nil }
@@ -29,9 +28,6 @@ func (discard) Chunk(chat.Chunk) error   { return nil }
 func (discard) Comment(string) error     { return nil }
 func (discard) Error(error) error        { return nil }
 
-// propOutcome draws one scripted upstream outcome. Stream outputs repeat the
-// finding values, as a model echoing its prompt would, so continuation
-// bodies carry them.
 func propOutcome(t *rapid.T, values []string, label string) fakeprovider.Outcome {
 	v := rapid.SampledFrom(values).Draw(t, label+"-value")
 	switch rapid.IntRange(0, 5).Draw(t, label+"-kind") {
@@ -51,8 +47,6 @@ func propOutcome(t *rapid.T, values []string, label string) fakeprovider.Outcome
 	return stream(textChunks("up", "ok "+v), nil)
 }
 
-// propChain draws a chain of 1-5 local or cloud targets, each with its own
-// scripted fake provider.
 func propChain(t *rapid.T, values []string) ([]model.Target, map[string]*fakeprovider.Provider) {
 	n := rapid.IntRange(1, 5).Draw(t, "targets")
 	chain := make([]model.Target, 0, n)
@@ -74,7 +68,6 @@ func propChain(t *rapid.T, values []string) ([]model.Target, map[string]*fakepro
 	return chain, fakes
 }
 
-// propPlan draws the request, localities and mask mapping of a plan.
 func propPlan(t *rapid.T, values []string, chain []model.Target) dispatch.Plan {
 	req := userRequest("contact " + strings.Join(values, " and ") + " today")
 	if rapid.Bool().Draw(t, "tool-history") {
@@ -98,14 +91,11 @@ func propPlan(t *rapid.T, values []string, chain []model.Target) dispatch.Plan {
 		p.Mapping = privacy.NewMapping(req, scan.Findings)
 		p.Detectors = []privacy.Detector{det}
 	} else {
-		// Without a mask mapping (local_only mode) the request may only go local.
 		p.Localities.Cloud = false
 	}
 	return p
 }
 
-// checkPrivacy fails when a target outside the localities got a request or a
-// cloud target got a finding value.
 func checkPrivacy(t *rapid.T, p dispatch.Plan, fakes map[string]*fakeprovider.Provider, values []string) {
 	for _, tg := range p.Chain {
 		reqs := fakes[tg.Name].Requests()
@@ -126,10 +116,6 @@ func checkPrivacy(t *rapid.T, p dispatch.Plan, fakes map[string]*fakeprovider.Pr
 	}
 }
 
-// TestDispatcher_Property_PrivacyHolds checks in any fallback
-// path, no request reaches a target outside the allowed localities and no
-// request to a cloud target (continuation bodies included) contains a
-// finding value.
 func TestDispatcher_Property_PrivacyHolds(t *testing.T) {
 	t.Parallel()
 	rapid.Check(t, func(t *rapid.T) {

@@ -17,7 +17,6 @@ type ctxKey int
 
 const requestIDKey ctxKey = 1
 
-// HeaderRequestID is accepted when valid and always echoed.
 const HeaderRequestID = "X-Request-Id"
 
 var validRequestID = regexp.MustCompile(`^[A-Za-z0-9._-]{1,128}$`)
@@ -27,8 +26,6 @@ func requestID(ctx context.Context) string {
 	return id
 }
 
-// chain applies recover, request id, the injected middleware and the access
-// log, in that order.
 func (s *Server) chain(h http.Handler) http.Handler {
 	h = s.accessLogger(h)
 	for i := len(s.wrap) - 1; i >= 0; i-- {
@@ -61,14 +58,13 @@ func (s *Server) recoverer(next http.Handler) http.Handler {
 
 func (s *Server) handlePanic(w http.ResponseWriter, r *http.Request, rec any) {
 	if err, ok := rec.(error); ok && errors.Is(err, http.ErrAbortHandler) {
-		panic(rec) // the server's own way to abort a response quietly
+		panic(rec)
 	}
 	s.log.ErrorContext(r.Context(), "panic in handler", "request_id", requestID(r.Context()), "error", rec,
 		"stack", string(debug.Stack()))
 	writeAPIError(w, internalError())
 }
 
-// statusWriter records the status for the access log and keeps http.ResponseController working.
 type statusWriter struct {
 	http.ResponseWriter
 	status int
@@ -89,7 +85,6 @@ func (w *statusWriter) Write(b []byte) (int, error) {
 	return n, err //nolint:wrapcheck // transparent writer
 }
 
-// Unwrap lets http.ResponseController reach the underlying writer.
 func (w *statusWriter) Unwrap() http.ResponseWriter { return w.ResponseWriter }
 
 func (s *Server) accessLogger(next http.Handler) http.Handler {
@@ -105,7 +100,6 @@ func (s *Server) accessLogger(next http.Handler) http.Handler {
 	})
 }
 
-// method restricts h to one method, answering 405 with Allow otherwise.
 func method(m string, h http.Handler) http.Handler {
 	return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
 		if r.Method != m {
@@ -124,7 +118,6 @@ func notFound(w http.ResponseWriter, r *http.Request) {
 	writeAPIError(w, &apiError{status: http.StatusNotFound, code: CodeNotFound, message: "no such endpoint " + r.URL.Path})
 }
 
-// authed requires a valid bearer token when authentication is enabled.
 func (s *Server) authed(h http.HandlerFunc) http.Handler {
 	return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
 		if s.auth != nil {
@@ -142,12 +135,10 @@ func (s *Server) authed(h http.HandlerFunc) http.Handler {
 	})
 }
 
-// KeyAuth authenticates against a fixed set of keys in constant time.
 type KeyAuth struct {
 	digests [][sha256.Size]byte
 }
 
-// NewKeyAuth returns a KeyAuth for keys; empty keys are ignored.
 func NewKeyAuth(keys []string) *KeyAuth {
 	a := &KeyAuth{}
 	for _, k := range keys {
@@ -158,8 +149,6 @@ func NewKeyAuth(keys []string) *KeyAuth {
 	return a
 }
 
-// Authenticate reports whether token is one of the keys. Every key is compared
-// so the time taken does not depend on which one matched.
 func (a *KeyAuth) Authenticate(token string) bool {
 	d := sha256.Sum256([]byte(token))
 	ok := 0

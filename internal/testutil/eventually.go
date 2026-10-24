@@ -7,8 +7,7 @@ import (
 	"time"
 )
 
-// Eventually polls cond until it returns true or timeout elapses, then fails
-// the test (no time.Sleep for synchronisation).
+// Eventually polls cond until it returns true or the timeout elapses, then fails the test.
 func Eventually(tb testing.TB, cond func() bool, timeout time.Duration) {
 	tb.Helper()
 	deadline := time.Now().Add(timeout)

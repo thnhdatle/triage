@@ -257,8 +257,6 @@ func TestAccessLog_StreamKeepsFlushing(t *testing.T) {
 	assert.Equal(t, "data: [DONE]\n\n", readAll(t, resp.Body))
 }
 
-// Standard and admin endpoints.
-
 type fakeDecisions struct {
 	items []decision.Decision
 	err   error

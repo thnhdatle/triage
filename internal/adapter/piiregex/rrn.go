@@ -9,10 +9,10 @@ import (
 )
 
 const (
-	rrnConfChecksum = 0.95 // separator and valid checksum
-	rrnConfStruct   = 0.8  // separator, checksum invalid (post-Oct-2020 random tail)
-	rrnConfPlain    = 0.9  // 13 plain digits with valid checksum
-	rrnConfContext  = 0.75 // 13 plain digits with context word only
+	rrnConfChecksum = 0.95
+	rrnConfStruct   = 0.8
+	rrnConfPlain    = 0.9
+	rrnConfContext  = 0.75
 )
 
 var rrnRe = newRunMatcher(`\d{6}[- ]\d{7}|\d{13}`, 0)
@@ -53,8 +53,6 @@ func scanRRN(p *profile) []privacy.Finding {
 	return out
 }
 
-// validRRNDate checks YYMMDD and the gender/century digit (1-8) of a 13-digit
-// string: 1,2,5,6 are 19xx and 3,4,7,8 are 20xx.
 func validRRNDate(d string) bool {
 	year := atoi(d[:2])
 	switch d[6] {
@@ -72,8 +70,6 @@ func validRRNDate(d string) bool {
 	return day <= time.Date(year, time.Month(month)+1, 0, 0, 0, 0, 0, time.UTC).Day()
 }
 
-// rrnChecksum verifies the legacy check digit: weights 2..9,2..5 over the
-// first 12 digits, check = (11 - sum mod 11) mod 10.
 func rrnChecksum(d string) bool {
 	const weights = "234567892345"
 	sum := 0

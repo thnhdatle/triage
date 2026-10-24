@@ -11,34 +11,24 @@ import (
 	"unicode/utf8"
 )
 
-// errAlign reports a token whose surface form could not be found in the text.
-// It never carries text: only token positions.
 var errAlign = errors.New("piionnx: token offsets could not be aligned")
 
-// unkLiteral is the unknown token written literally in a text; hftok matches
-// it as an added token, so it has the unk id but a verbatim surface.
 const unkLiteral = "[UNK]"
 
-// contPrefix marks a WordPiece continuation token.
 const contPrefix = "##"
 
-// maxCachedClasses bounds the per-detector cache of non-ASCII rune classes.
 const maxCachedClasses = 1 << 16
 
-// span is the byte range of one token in the original text. cont marks a
-// WordPiece continuation ("##…"), which belongs to the previous token's word.
 type span struct {
 	start, end int
 	cont       bool
 }
 
-// vocabulary maps token ids back to WordPiece strings.
 type vocabulary struct {
-	tokens []string // id -> token; "" for ids without a token
+	tokens []string
 	unk    int
 }
 
-// surface returns the text a token covers and whether it continues a word.
 func (v *vocabulary) surface(id int) (string, bool, error) {
 	if id < 0 || id >= len(v.tokens) || v.tokens[id] == "" {
 		return "", false, fmt.Errorf("%w: id %d outside the vocabulary", errAlign, id)
@@ -50,30 +40,24 @@ func (v *vocabulary) surface(id int) (string, bool, error) {
 	return tok, false, nil
 }
 
-// charClass is how the tokenizer's normalizer and pre-tokenizer treat a rune.
 type charClass uint8
 
 const (
-	classWord    charClass = iota // part of a word
-	classSpace                    // separates words, dropped
-	classRemoved                  // deleted by clean_text (controls, format characters, U+FFFD)
-	classBreak                    // a word on its own (punctuation, CJK ideograph)
+	classWord charClass = iota
+	classSpace
+	classRemoved
+	classBreak
 )
 
-// encoder is the part of hftok.Tokenizer the aligner uses.
 type encoder interface {
 	Encode(text string, addSpecial bool) ([]int, error)
 }
 
-// aligner maps token ids back to byte offsets. Rune classes are not
-// re-implemented: they are read from the tokenizer itself by encoding
-// "a"+r+"a", so they are exactly HF's (frozen Unicode tables).
-// Safe for concurrent use; mu guards classes.
 type aligner struct {
 	*vocabulary
 	enc     encoder
-	a       int   // id of "a"
-	aa      []int // ids of "aa"
+	a       int
+	aa      []int
 	ascii   [utf8.RuneSelf]charClass
 	mu      sync.RWMutex
 	classes map[rune]charClass
@@ -95,7 +79,6 @@ func newAligner(enc encoder, v *vocabulary) (*aligner, error) {
 	return al, nil
 }
 
-// probe classifies r by how the tokenizer encodes "a"+r+"a".
 func (al *aligner) probe(r rune) charClass {
 	ids, err := al.enc.Encode("a"+string(r)+"a", false)
 	switch {
@@ -111,8 +94,6 @@ func (al *aligner) probe(r rune) charClass {
 	return classWord
 }
 
-// class returns the class of the rune decoded as r with width w; invalid
-// UTF-8 becomes U+FFFD in hftok and is removed.
 func (al *aligner) class(r rune) charClass {
 	if r == utf8.RuneError {
 		return classRemoved
@@ -135,13 +116,6 @@ func (al *aligner) class(r rune) charClass {
 	return c
 }
 
-// align maps the ids hftok produced for text (without special tokens) to byte
-// spans of text. The NER tokenizer is cased BERT (BertNormalizer without
-// lowercasing or accent stripping), so every token except [UNK] occurs
-// verbatim in text once removed runes are skipped, and an [UNK] covers one
-// whole word. Spans are on rune boundaries, ordered and non-overlapping. Any
-// mismatch fails with errAlign, which callers treat as "could not scan"
-// (fail-closed).
 func (al *aligner) align(text string, ids []int) ([]span, error) {
 	spans := make([]span, len(ids))
 	pos := 0
@@ -177,9 +151,6 @@ func (al *aligner) alignKnown(text string, pos, id int) (span, error) {
 	return span{start: start, end: end, cont: cont}, nil
 }
 
-// alignUnknown spans an [UNK]: the literal "[UNK]" or a whole word that
-// WordPiece could not split. The word ends before the next space or break
-// rune; a break rune is a word on its own.
 func (al *aligner) alignUnknown(text string, pos int) (span, error) {
 	pos = al.skipBetweenWords(text, pos)
 	if pos >= len(text) {
@@ -207,9 +178,6 @@ func (al *aligner) alignUnknown(text string, pos int) (span, error) {
 	return span{start: pos, end: end}, nil
 }
 
-// matchAt matches s against text from pos, skipping removed runes before and
-// inside the match. It returns the byte range from the first to the last
-// matched rune.
 func (al *aligner) matchAt(text string, pos int, s string) (start, end int, ok bool) {
 	start = -1
 	i := pos
@@ -238,7 +206,6 @@ func (al *aligner) matchAt(text string, pos int, s string) (start, end int, ok b
 	return start, i, true
 }
 
-// skipBetweenWords advances over space and removed runes.
 func (al *aligner) skipBetweenWords(text string, pos int) int {
 	for pos < len(text) {
 		r, w := utf8.DecodeRuneInString(text[pos:])

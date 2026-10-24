@@ -143,7 +143,6 @@ type streamChunk struct {
 	} `json:"usage"`
 }
 
-// sseLines returns the payloads of the data: lines.
 func sseLines(body string) []string {
 	var out []string
 	for _, ev := range strings.Split(body, "\n\n") {

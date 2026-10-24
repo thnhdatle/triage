@@ -11,25 +11,20 @@ import (
 	"strings"
 )
 
-// ErrInvalidFile reports a malformed tokenizer.json or config.json.
 var ErrInvalidFile = errors.New("piionnx: invalid model file")
 
-// Finding types produced by the detector (placeholders [[PERSON_n]],
-// [[LOCATION_n]], [[ORGANIZATION_n]]). MISC entities are ignored.
 const (
 	TypePerson       = "person"
 	TypeLocation     = "location"
 	TypeOrganization = "organization"
 )
 
-// entityTypes maps CoNLL-2003 entity tags to finding types.
 var entityTypes = map[string]string{
 	"PER": TypePerson,
 	"LOC": TypeLocation,
 	"ORG": TypeOrganization,
 }
 
-// tag is the position of a BIO label.
 type tag uint8
 
 const (
@@ -38,16 +33,12 @@ const (
 	tagI
 )
 
-// label is one output class of the token-classification head. typ is the
-// finding type, "" for O and for ignored entities (MISC).
 type label struct {
 	tag    tag
-	entity string // raw entity name, e.g. "PER"
+	entity string
 	typ    string
 }
 
-// readVocabulary reads the WordPiece vocabulary of a tokenizer.json so ids can
-// be mapped back to token strings for offset alignment.
 func readVocabulary(path string) (*vocabulary, error) {
 	data, err := os.ReadFile(path) //nolint:gosec // G304: the path is operator configuration.
 	if err != nil {
@@ -84,8 +75,6 @@ func readVocabulary(path string) (*vocabulary, error) {
 	return v, nil
 }
 
-// readLabels reads id2label from a Hugging Face config.json. Ids must be
-// 0..n-1 and every label "O", "B-<TYPE>" or "I-<TYPE>".
 func readLabels(path string) ([]label, error) {
 	data, err := os.ReadFile(path) //nolint:gosec // G304: the path is operator configuration.
 	if err != nil {

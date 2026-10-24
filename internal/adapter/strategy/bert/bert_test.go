@@ -19,8 +19,6 @@ import (
 	"github.com/thnhdatle/triage/internal/platform/onnxrt"
 )
 
-// TestMain checks for leaked goroutines: ORT runs arm context.AfterFunc and
-// pool waiters may block.
 func TestMain(m *testing.M) {
 	goleak.VerifyTestMain(m)
 }
@@ -31,7 +29,6 @@ func userReq(text string) chat.Request {
 	}}
 }
 
-// fakeTok returns ids [0, 1..n, 2] for a text of n bytes.
 type fakeTok struct {
 	err     error
 	empty   bool
@@ -54,7 +51,6 @@ func (f *fakeTok) Encode(text string, addSpecial bool) ([]int, error) {
 	return append(ids, 2), nil
 }
 
-// fakeRunner records inputs and returns scripted outputs.
 type fakeRunner struct {
 	mu   sync.Mutex
 	in   []onnxrt.Tensor
@@ -110,7 +106,6 @@ func TestNewValidation(t *testing.T) {
 func TestScoreBuildsInputsAndSoftmax(t *testing.T) {
 	t.Parallel()
 	tok := &fakeTok{}
-	// en-001 FP32 logits from testdata/models/README contract.
 	run := &fakeRunner{out: append(
 		[]onnxrt.Tensor{onnxrt.Int64Tensor("other", []int64{1}, []int64{7})},
 		logitsOut(-1.0415518283843994, -0.7435486316680908, 2.643397808074951)...)}
@@ -283,7 +278,6 @@ func TestPStrong(t *testing.T) {
 	}
 }
 
-// pRef is the naive softmax(logits)[0] of float32 values in float64.
 func pRef(a, b, c float32) float64 {
 	ea, eb, ec := math.Exp(float64(a)), math.Exp(float64(b)), math.Exp(float64(c))
 	return ea / (ea + eb + ec)

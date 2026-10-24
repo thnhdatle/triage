@@ -18,77 +18,51 @@ import (
 	"github.com/thnhdatle/triage/internal/platform/clock"
 )
 
-// Dispatcher runs the fallback chain of a plan; *dispatch.Dispatcher
-// implements it.
 type Dispatcher interface {
 	Complete(ctx context.Context, plan dispatch.Plan) (dispatch.Result, error)
 	Stream(ctx context.Context, plan dispatch.Plan, sink dispatch.Sink) (dispatch.Result, error)
 }
 
-// Embedder sends an embeddings request to one provider; provider.Provider
-// implements it.
 type Embedder interface {
 	Embed(ctx context.Context, req provider.EmbedRequest) (provider.EmbedResponse, error)
 }
 
-// Health reports whether a target may receive requests (active and passive
-// health). Implementations must be safe for concurrent use.
 type Health interface {
 	IsHealthy(target string) bool
 }
 
-// Deps are the dependencies of a Pipeline. Optional fields are marked.
 type Deps struct {
-	// Targets is the model pool in priority order.
-	Targets model.Pool
-	// Routes are the configured routes.
-	Routes []Route
-	// Strategies maps strategy names (Route.Strategy) to implementations.
+	Targets    model.Pool
+	Routes     []Route
 	Strategies map[string]difficulty.Strategy
-	// Detectors run in the privacy stage, in order.
-	Detectors []privacy.Detector
-	// Dispatcher runs chat plans.
+	Detectors  []privacy.Detector
 	Dispatcher Dispatcher
-	// Embedders maps provider names (model.Target.Provider) to the provider
-	// serving embeddings; optional when no embedding target is configured.
-	Embedders map[string]Embedder
-	// Recorder stores every decision.
-	Recorder decision.Recorder
-	// Health is optional; nil means every target is healthy.
-	Health Health
-	// Clock is the time source.
-	Clock clock.Clock
-	// NewID returns a new decision id.
-	NewID func() string
-	// Observer is optional; nil means NopObserver.
-	Observer Observer
+	Embedders  map[string]Embedder
+	Recorder   decision.Recorder
+	Health     Health
+	Clock      clock.Clock
+	NewID      func() string
+	Observer   Observer
 }
 
-// Pipeline routes requests: privacy stage, rules,
-// difficulty stage, selection and dispatch, and records one decision per
-// request. It is safe for concurrent use.
+// Pipeline runs the routing stages for a request.
 type Pipeline struct {
-	deps   Deps
-	opts   Options
-	routes map[string]*compiledRoute
-	// inflight counts requests in dispatch per target name (least_inflight);
-	// the map is built in New and never modified.
-	inflight map[string]*atomic.Int64
-	// scoringPrice is the InputPerMTok of Options.Difficulty.MFCostTarget.
+	deps         Deps
+	opts         Options
+	routes       map[string]*compiledRoute
+	inflight     map[string]*atomic.Int64
 	scoringPrice float64
 }
 
-// compiledRoute is a Route with its pool and strategies resolved.
 type compiledRoute struct {
 	Route
 	pool       model.Pool
 	strategy   difficulty.Strategy
 	mfFallback difficulty.Strategy
-	// rr holds the round-robin counter per tier; built in New, never modified.
-	rr map[model.Tier]*atomic.Uint64
+	rr         map[model.Tier]*atomic.Uint64
 }
 
-// New validates deps and opts and returns a Pipeline.
+// New builds a Pipeline from its dependencies and options.
 func New(deps Deps, opts Options) (*Pipeline, error) {
 	if err := checkDeps(deps); err != nil {
 		return nil, err
@@ -176,7 +150,6 @@ func withDefaults(o Options) (Options, error) {
 	return o, nil
 }
 
-// compile validates a route and resolves its pool and strategies.
 func (p *Pipeline) compile(r Route) (*compiledRoute, error) {
 	if r.Name == "" {
 		return nil, errors.New("route: route with empty name")
@@ -208,7 +181,6 @@ func (p *Pipeline) compile(r Route) (*compiledRoute, error) {
 	return cr, nil
 }
 
-// normalise applies route defaults and validates the fields.
 func normalise(r *Route) error {
 	if !r.Privacy.Mode.Valid() {
 		return fmt.Errorf("unknown privacy mode %q", r.Privacy.Mode)
@@ -240,7 +212,6 @@ func normalise(r *Route) error {
 	return checkRules(r)
 }
 
-// checkRules validates the rules and fallback entries of a route.
 func checkRules(r *Route) error {
 	for i, m := range r.Rules.Match {
 		hasLen, hasRe := m.MinPromptTokens > 0, m.LastUserRegex != nil
@@ -280,29 +251,16 @@ func (p *Pipeline) resolveStrategies(cr *compiledRoute) error {
 	return nil
 }
 
-// Outcome is what the HTTP layer needs after a request: the recorded
-// decision and the values of the X-Triage-* headers. It is returned on
-// errors too, as far as the request got.
 type Outcome struct {
-	// Decision is the recorded decision (Decision.Error set on failure).
-	Decision decision.Decision
-	// DecisionID is X-Triage-Decision.
+	Decision   decision.Decision
 	DecisionID string
-	// Route is X-Triage-Route: the route name (the requested model when it
-	// named no route).
-	Route string
-	// Target is the name of the target of the final attempt, "" when none
-	// was attempted. On streams X-Triage-Target comes from dispatch.Sink.Start.
-	Target string
-	// Model is the upstream model name the client sees (F1 response model).
-	Model string
-	// Response is the final chat response (Chat only).
-	Response chat.Response
-	// Embeddings is the final embeddings response (Embeddings only).
+	Route      string
+	Target     string
+	Model      string
+	Response   chat.Response
 	Embeddings provider.EmbedResponse
 }
 
-// healthy reports whether t may receive requests.
 func (p *Pipeline) healthy(t model.Target) bool {
 	return p.deps.Health == nil || p.deps.Health.IsHealthy(t.Name)
 }

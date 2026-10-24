@@ -17,24 +17,18 @@ import (
 	"github.com/thnhdatle/triage/internal/platform/clock"
 )
 
-// run is the state of one dispatch. It is owned by the goroutine that called
-// Complete or Stream; nothing in it is shared.
 type run struct {
-	d    *Dispatcher
-	plan Plan
-	// chain is plan.Chain restricted to plan.Localities.
-	chain []model.Target
-	// mapping is plan.Mapping, or a mapping created for a continuation rescan
-	// when the request had no findings but detectors are set.
+	d       *Dispatcher
+	plan    Plan
+	chain   []model.Target
 	mapping *privacy.Mapping
 	res     Result
 
-	sent      int
-	cursor    int
-	tries     map[string]int
-	notBefore map[string]time.Time
-	excluded  map[string]bool
-	// cloudBlocked skips cloud targets after a mask leak or a failed rescan.
+	sent            int
+	cursor          int
+	tries           map[string]int
+	notBefore       map[string]time.Time
+	excluded        map[string]bool
 	cloudBlocked    bool
 	ctxFallbackUsed bool
 	lastErr         error
@@ -58,9 +52,6 @@ func (d *Dispatcher) newRun(plan Plan) *run {
 	return r
 }
 
-// watch returns a context cancelled with cause after d on clk, and a stop
-// function that ends the watchdog goroutine, waits for it and releases the
-// context. The timer is armed before watch returns.
 func watch(parent context.Context, clk clock.Clock, d time.Duration, cause error) (context.Context, func()) {
 	ctx, cancel := context.WithCancelCause(parent)
 	timer := clk.After(d)
@@ -83,8 +74,6 @@ func watch(parent context.Context, clk clock.Clock, d time.Duration, cause error
 	}
 }
 
-// ctxErr returns why ctx is done (ErrTotalTimeout, the caller's cancellation),
-// or nil.
 func ctxErr(ctx context.Context) error {
 	if ctx.Err() == nil {
 		return nil
@@ -92,8 +81,6 @@ func ctxErr(ctx context.Context) error {
 	return context.Cause(ctx)
 }
 
-// pick returns the target of the next attempt, after waiting for its backoff
-// and Retry-After. It returns false when the dispatch must stop.
 func (r *run) pick(ctx context.Context) (model.Target, bool) {
 	if r.sent >= r.d.opts.MaxAttempts || ctx.Err() != nil {
 		return model.Target{}, false
@@ -119,8 +106,6 @@ func (r *run) pick(ctx context.Context) (model.Target, bool) {
 	return t, true
 }
 
-// nextInChain returns the next usable chain entry, cycling back to the start
-// of the chain, so a short chain still gets MaxAttempts attempts.
 func (r *run) nextInChain() (model.Target, bool) {
 	n := len(r.chain)
 	for i := range n {
@@ -133,7 +118,6 @@ func (r *run) nextInChain() (model.Target, bool) {
 	return model.Target{}, false
 }
 
-// largerContext returns the context-length fallback target, at most once.
 func (r *run) largerContext() (model.Target, bool) {
 	if !r.d.opts.ContextLengthFallback || r.ctxFallbackUsed {
 		return model.Target{}, false
@@ -151,9 +135,6 @@ func (r *run) usable(t model.Target) bool {
 	return !r.excluded[t.Name] && (!r.cloudBlocked || t.Locality != model.LocalityCloud)
 }
 
-// wait blocks for the backoff of a target already tried in this request and
-// for its Retry-After. A target not tried yet is attempted immediately: the
-// backoff protects an upstream from its own retries, not from fallback.
 func (r *run) wait(ctx context.Context, t model.Target) error {
 	var delay time.Duration
 	if n := r.tries[t.Name]; n > 0 {
@@ -175,9 +156,6 @@ func (r *run) wait(ctx context.Context, t model.Target) error {
 	}
 }
 
-// prepare builds the provider request of an attempt on t: the original
-// request (or its continuation with the produced text), masked when t is
-// cloud and the mapping is not empty, with Model = t.Model.
 func (r *run) prepare(
 	ctx context.Context, t model.Target, continuation bool, produced string,
 ) (chat.Request, bool, error) {
@@ -197,9 +175,6 @@ func (r *run) prepare(
 	masked := cloud && r.mapping != nil && !r.mapping.Empty()
 	var req chat.Request
 	if masked {
-		// MaskRequest replaces every mapped value everywhere, including the
-		// partial assistant text of a continuation (values found by Rescan
-		// are in the mapping now).
 		req = r.mapping.MaskRequest(base)
 	} else {
 		req = base.Clone()
@@ -211,9 +186,6 @@ func (r *run) prepare(
 	return req, masked, nil
 }
 
-// rescan adds the values detectors find in the produced text of a
-// continuation to the mapping, creating the mapping when the
-// request itself had no findings.
 func (r *run) rescan(ctx context.Context, produced string) error {
 	if len(r.plan.Detectors) == 0 {
 		return nil
@@ -227,8 +199,6 @@ func (r *run) rescan(ctx context.Context, produced string) error {
 	return nil
 }
 
-// continuationRequest is the original request plus the client-visible text
-// produced so far as an assistant message and ContinuationInstruction.
 func continuationRequest(orig chat.Request, produced string) chat.Request {
 	c := orig.Clone()
 	c.Messages = append(c.Messages,
@@ -237,7 +207,6 @@ func continuationRequest(orig chat.Request, produced string) chat.Request {
 	return c
 }
 
-// attempt describes one attempt for the decision.
 type attempt struct {
 	target       model.Target
 	masked       bool
@@ -248,7 +217,6 @@ type attempt struct {
 	err          error
 }
 
-// record appends the attempt to the result and adds its usage and cost.
 func (r *run) record(a attempt) {
 	cost := a.target.Pricing.Cost(a.usage)
 	status := a.status
@@ -271,8 +239,6 @@ func (r *run) record(a attempt) {
 	r.res.CostUSD += cost
 }
 
-// refuse records a target refused before sending and excludes it (or every
-// cloud target) from the rest of the request.
 func (r *run) refuse(a attempt) {
 	r.record(a)
 	if errors.Is(a.err, ErrUnknownProvider) {
@@ -283,13 +249,11 @@ func (r *run) refuse(a attempt) {
 	r.lastErr, r.lastTarget = a.err, a.target
 }
 
-// begin counts an attempt that is about to be sent.
 func (r *run) begin(t model.Target) {
 	r.sent++
 	r.tries[t.Name]++
 }
 
-// failed notes the failure of a sent attempt and its Retry-After.
 func (r *run) failed(t model.Target, err error) {
 	r.lastErr, r.lastTarget = err, t
 	if ra := provider.RetryAfter(err); ra > 0 {
@@ -301,7 +265,6 @@ func (r *run) failed(t model.Target, err error) {
 	}
 }
 
-// report passes an attempt outcome to the Health port.
 func (r *run) report(ctx context.Context, t model.Target, err error) {
 	h := r.d.opts.Health
 	if h == nil || (err != nil && ctx.Err() != nil) {
@@ -313,8 +276,6 @@ func (r *run) report(ctx context.Context, t model.Target, err error) {
 	h.Report(t.Name, err)
 }
 
-// failure returns the dispatch error: why ctx ended, else the last attempt
-// error, else ErrNoTarget.
 func (r *run) failure(ctx context.Context, started bool) *Error {
 	err := ctxErr(ctx)
 	if err == nil {
@@ -327,9 +288,6 @@ func (r *run) failure(ctx context.Context, started bool) *Error {
 	return &Error{Last: err, Attempts: append([]decision.Attempt(nil), r.res.Attempts...), Started: started}
 }
 
-// classify maps the error of an attempt whose context may have been cancelled
-// by dispatch to the dispatch error: the caller's cancellation or the total
-// timeout from ctx, the attempt timeout from actx.
 func classify(ctx, actx context.Context, err error) error {
 	if err == nil {
 		return nil

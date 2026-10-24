@@ -13,7 +13,6 @@ import (
 	"strings"
 )
 
-// Enumerations of option values.
 var (
 	providerTypes  = []string{typeOpenAICompat, "anthropic"}
 	probeKinds     = []string{"models", "completion"}
@@ -29,8 +28,7 @@ var (
 	bertVariants   = []string{"auto", "int8", "fp32"}
 	mfFallbacks    = []string{valBERT, "length"}
 	streamFailures = []string{"continue", "error"}
-	// detectorIDs mirrors piiregex.IDs (a wire test keeps them equal).
-	detectorIDs = []string{
+	detectorIDs    = []string{
 		"credit_card", "iban", "email", "ip", "us_ssn", "secret", "kr_rrn", "phone", "vn_cccd", "street_address",
 	}
 )
@@ -53,9 +51,7 @@ func (p *problems) positive(path string, ok bool) {
 	}
 }
 
-// Validate checks cfg and returns a *ValidationError listing every problem, or
-// nil. It checks values and cross references only; it does not touch the
-// filesystem or the network.
+// Validate checks cfg and returns a *ValidationError listing every problem.
 func Validate(cfg *Config) error {
 	p := &problems{}
 	p.server(cfg)

@@ -26,8 +26,6 @@ import (
 	"github.com/thnhdatle/triage/internal/wire"
 )
 
-// fake is a fakellm (contract C2): in-process, or the container of the
-// integration tests.
 type fake struct {
 	url string
 	hc  *http.Client
@@ -87,7 +85,6 @@ func (f *fake) do(t *testing.T, method, path string, body []byte, out any) {
 	}
 }
 
-// triage is a Serve run in-process on loopback ports.
 type triage struct {
 	data, admin string
 	hc          *http.Client
@@ -129,14 +126,10 @@ func startTriage(t *testing.T, cfgYAML string, opts ...serveOpt) *triage {
 	return tr
 }
 
-// testEnv is the fake process environment of every Serve in the tests.
 var testEnv = map[string]string{"TRIAGE_TEST_KEYS": "k1,k2", "FAKE_KEY": "sk-test"}
 
 func (tr *triage) stop(t *testing.T) {
 	t.Helper()
-	// A connection the client dialled but never used (a request cancelled
-	// right after the dial) counts as active for http.Server.Shutdown for
-	// 5s; close idle client connections first so draining is immediate.
 	if c, ok := tr.hc.Transport.(*http.Transport); ok {
 		c.CloseIdleConnections()
 	}
@@ -184,8 +177,6 @@ func (tr *triage) call(t *testing.T, method, url string, body any, headers ...st
 	return response{status: resp.StatusCode, header: resp.Header, body: data}
 }
 
-// post sends a JSON body without failing the test, for use off the test
-// goroutine.
 func (tr *triage) post(ctx context.Context, url string, body any) (response, error) {
 	b, err := json.Marshal(body)
 	if err != nil {
@@ -204,8 +195,6 @@ func (tr *triage) post(ctx context.Context, url string, body any) (response, err
 	return response{status: resp.StatusCode, header: resp.Header, body: data}, err
 }
 
-// assertBERTUnavailable checks the error names the fix: the pull command,
-// or the build tag on a binary without ONNX Runtime.
 func assertBERTUnavailable(t *testing.T, msg string) {
 	t.Helper()
 	if !strings.Contains(msg, "triage models pull bert") {
@@ -241,7 +230,6 @@ func decode[T any](t *testing.T, data []byte) T {
 	return v
 }
 
-// sseEvents returns the data payloads of an SSE body.
 func sseEvents(body []byte) []string {
 	var data []string
 	sc := bufio.NewScanner(bytes.NewReader(body))
@@ -253,7 +241,6 @@ func sseEvents(body []byte) []string {
 	return data
 }
 
-// streamText concatenates the delta contents of chunk payloads.
 func streamText(t *testing.T, data []string) string {
 	t.Helper()
 	var b strings.Builder
@@ -309,8 +296,6 @@ func (tr *triage) metrics(t *testing.T) string {
 	return string(r.body)
 }
 
-// baseConfig is a two-target configuration over fakellm: a local weak and a
-// cloud strong target. extra is appended verbatim (routes, overrides).
 func baseConfig(f *fake, extra string) string {
 	return `
 server: { listen: "127.0.0.1:0" }

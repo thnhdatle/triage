@@ -1,26 +1,5 @@
 # SPDX-License-Identifier: Apache-2.0
-"""Build the weight-free bert graph ``models/bert/graph.onnx``.
-
-The XLM-R sequence classifier is exported with the TorchScript ONNX exporter (opset 17, no
-constant folding, ``ir_version`` <= 10). Every initializer that is a checkpoint tensor is then
-rewritten as ONNX external data pointing into the unmodified ``model.safetensors`` (location,
-byte offset, length), after asserting that name, shape and dtype match the safetensors header.
-Initializers with no checkpoint tensor (constants) stay embedded. The graph therefore contains
-no weights; ONNX Runtime reads them from ``model.safetensors`` when the graph file is placed in
-the same directory.
-
-The architecture comes from ``config.json`` alone: the export uses seeded random values (every
-parameter distinct, so the exporter cannot merge equal initializers), never the checkpoint
-weights. The checkpoint is only read to verify the mapping, to hash it and, unless
-``--no-verify``, to compare ONNX Runtime with PyTorch on the real weights.
-
-Graph contract (also used by the ``bert-tiny`` fixture):
-
-- inputs ``input_ids`` and ``attention_mask``: int64 ``[batch, sequence]``;
-- output ``logits``: float32 ``[batch, 3]``; p_strong = softmax(logits)[0];
-- ``metadata_props``: ``triage.weights.file``, ``triage.weights.sha256``,
-  ``triage.weights.size``, ``triage.source``, ``triage.converter``, ``triage.p_strong``.
-"""
+"""Build the weight-free bert graph from the checkpoint."""
 
 from __future__ import annotations
 
@@ -70,8 +49,6 @@ class MappingError(Exception):
 
 @dataclass(frozen=True)
 class TensorInfo:
-    """One safetensors tensor: dtype, shape and absolute byte range in the file."""
-
     dtype: str
     shape: tuple[int, ...]
     offset: int
@@ -80,8 +57,6 @@ class TensorInfo:
 
 @dataclass(frozen=True)
 class BuildResult:
-    """The externalised graph and what was mapped."""
-
     model: onnx.ModelProto
     mapped: tuple[str, ...]
     embedded: tuple[str, ...]
@@ -89,7 +64,6 @@ class BuildResult:
 
 
 def read_safetensors_header(path: Path) -> dict[str, TensorInfo]:
-    """Parse a safetensors header and return tensors with absolute file offsets."""
     with path.open("rb") as fh:
         raw_len = fh.read(_HEADER_LEN)
         if len(raw_len) != _HEADER_LEN:
@@ -114,16 +88,14 @@ def read_safetensors_header(path: Path) -> dict[str, TensorInfo]:
 
 
 def load_config(config_path: Path) -> XLMRobertaConfig:
-    """Load ``config.json`` with eager attention (plain ONNX ops)."""
     raw = json.loads(config_path.read_text(encoding="utf-8"))
     config = XLMRobertaConfig.from_dict(raw, attn_implementation="eager")
-    if not isinstance(config, XLMRobertaConfig):  # from_dict may return (config, kwargs)
+    if not isinstance(config, XLMRobertaConfig):
         raise TypeError("unexpected XLMRobertaConfig.from_dict result")
     return config
 
 
 def skeleton(config: XLMRobertaConfig, seed: int = EXPORT_SEED, std: float = 1.0) -> Any:
-    """Return an eval-mode classifier whose parameters are seeded N(0, std) values."""
     model = XLMRobertaForSequenceClassification(config).eval()  # type: ignore[no-untyped-call]
     gen = torch.Generator().manual_seed(seed)
     with torch.no_grad():
@@ -133,7 +105,6 @@ def skeleton(config: XLMRobertaConfig, seed: int = EXPORT_SEED, std: float = 1.0
 
 
 def export(model: Any) -> onnx.ModelProto:
-    """Export with the TorchScript exporter, opset 17, without constant folding."""
     ids = torch.tensor([[0, 6, 5, 2]], dtype=torch.int64)
     mask = torch.ones_like(ids)
     buf = io.BytesIO()
@@ -143,7 +114,7 @@ def export(model: Any) -> onnx.ModelProto:
         torch.onnx.export(
             model,
             (ids, mask),
-            buf,  # type: ignore[arg-type]  # the TorchScript exporter accepts a file object
+            buf,  # type: ignore[arg-type]
             dynamo=False,
             input_names=[INPUT_IDS, ATTENTION_MASK],
             output_names=[LOGITS],
@@ -169,11 +140,6 @@ def externalize(
     parameters: Sequence[str],
     location: str = WEIGHTS_FILE,
 ) -> BuildResult:
-    """Point every checkpoint initializer at ``location``; keep constants embedded.
-
-    Raises MappingError if an initializer named like a checkpoint tensor differs in shape or
-    dtype, or if a model parameter is not exported as an initializer of its own name.
-    """
     params = set(parameters)
     mapped: list[str] = []
     embedded: list[str] = []
@@ -213,7 +179,6 @@ def externalize(
 
 
 def set_metadata(proto: onnx.ModelProto, values: dict[str, str]) -> None:
-    """Replace ``metadata_props`` with ``values`` in sorted key order."""
     del proto.metadata_props[:]
     for key in sorted(values):
         prop = proto.metadata_props.add()
@@ -222,12 +187,10 @@ def set_metadata(proto: onnx.ModelProto, values: dict[str, str]) -> None:
 
 
 def metadata(proto: onnx.ModelProto) -> dict[str, str]:
-    """Return ``metadata_props`` as a dict."""
     return {p.key: p.value for p in proto.metadata_props}
 
 
 def build_graph(checkpoint_dir: Path, source: str) -> BuildResult:
-    """Build the weight-free graph for the checkpoint in ``checkpoint_dir``."""
     weights = checkpoint_dir / WEIGHTS_FILE
     header = read_safetensors_header(weights)
     model = skeleton(load_config(checkpoint_dir / CONFIG_FILE))
@@ -249,11 +212,6 @@ def build_graph(checkpoint_dir: Path, source: str) -> BuildResult:
 
 @contextlib.contextmanager
 def placed(proto: onnx.ModelProto, checkpoint_dir: Path, tag: str) -> Iterator[Path]:
-    """Write ``proto`` next to the checkpoint under a temporary name and remove it afterwards.
-
-    ONNX Runtime resolves external data relative to the graph file, so the graph must sit in
-    the checkpoint directory.
-    """
     path = checkpoint_dir / f".{tag}-{os.getpid()}.onnx"
     try:
         path.write_bytes(proto.SerializeToString())
@@ -263,19 +221,14 @@ def placed(proto: onnx.ModelProto, checkpoint_dir: Path, tag: str) -> Iterator[P
 
 
 def softmax0(logits: Sequence[float]) -> float:
-    """p_strong = softmax(logits)[0], computed in float64."""
     arr = np.asarray(logits, dtype=np.float64)
     exp = np.exp(arr - arr.max())
     return float(exp[0] / exp.sum())
 
 
 def verify(proto: onnx.ModelProto, checkpoint_dir: Path) -> float:
-    """Compare ONNX Runtime on the placed graph with PyTorch on the checkpoint weights.
-
-    Uses seeded random ids at several lengths (batch 1 and a padded batch of 2) and returns the
-    maximum |p_ort - p_torch|. Raises AssertionError above 1e-5.
-    """
-    import onnxruntime as ort  # noqa: PLC0415  (heavy import, only when verifying)
+    """Compare ONNX Runtime on the placed graph with PyTorch on the checkpoint weights."""
+    import onnxruntime as ort  # noqa: PLC0415
 
     model = XLMRobertaForSequenceClassification.from_pretrained(
         str(checkpoint_dir), attn_implementation="eager"
@@ -290,7 +243,7 @@ def verify(proto: onnx.ModelProto, checkpoint_dir: Path) -> float:
             ids[:, 0], ids[:, -1] = 0, 2
             mask = np.ones_like(ids)
             short = max(2, length // 2)
-            ids[1, short:] = 1  # <pad>
+            ids[1, short:] = 1
             ids[1, short - 1] = 2
             mask[1, short:] = 0
             (got,) = sess.run([LOGITS], {INPUT_IDS: ids, ATTENTION_MASK: mask})
@@ -305,13 +258,11 @@ def verify(proto: onnx.ModelProto, checkpoint_dir: Path) -> float:
 
 
 def default_checkpoint_dir(name: str = "bert") -> Path:
-    """``~/.cache/rayld/triage/models/<name>/<revision>`` from the manifest."""
     entry = fetch.load_manifest()[name]
     return (fetch.DEFAULT_CACHE_DIR / entry.name / entry.revision).expanduser()
 
 
 def default_source(name: str = "bert") -> str:
-    """``<hf_repo>@<revision>`` from the manifest."""
     entry = fetch.load_manifest()[name]
     return f"{entry.hf_repo}@{entry.revision}"
 

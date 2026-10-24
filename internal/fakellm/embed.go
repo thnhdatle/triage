@@ -25,7 +25,6 @@ type embeddingRequest struct {
 	Dimensions *int            `json:"dimensions"`
 }
 
-// parseInputs accepts a string or an array of strings.
 func parseInputs(raw json.RawMessage) ([]string, error) {
 	raw = bytes.TrimSpace(raw)
 	if len(raw) == 0 {
@@ -45,7 +44,6 @@ func parseInputs(raw json.RawMessage) ([]string, error) {
 	return many, nil
 }
 
-// embed returns the L2-normalised deterministic vector for (model, text).
 func embed(model, text string, dim int) []float32 {
 	seed := []byte(model + "\x00" + text)
 	root := sha256.Sum256(seed)

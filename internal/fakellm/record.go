@@ -7,13 +7,11 @@ import (
 	"sync"
 )
 
-// Request kinds stored in the request log.
 const (
 	KindChat       = "chat"
 	KindEmbeddings = "embeddings"
 )
 
-// Record is one entry of the request log returned by GET /_fake/requests.
 type Record struct {
 	Method     string      `json:"method"`
 	Path       string      `json:"path"`
@@ -24,9 +22,7 @@ type Record struct {
 	InputCount int         `json:"input_count"`
 }
 
-// recorder is a bounded ring buffer of Records.
 type recorder struct {
-	// mu protects all fields below.
 	mu      sync.Mutex
 	buf     []Record
 	start   int
@@ -65,7 +61,6 @@ func (r *recorder) clear() {
 	r.dropped = 0
 }
 
-// record stores the request when recording is enabled.
 func (s *Server) record(r *http.Request, body []byte, model, kind string, inputs int) {
 	if s.log == nil {
 		return

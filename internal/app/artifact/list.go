@@ -12,59 +12,46 @@ import (
 	"github.com/thnhdatle/triage/internal/domain/artifact"
 )
 
-// FileState is the verification state of an allow-listed file.
 type FileState string
 
-// File states.
 const (
 	FileOK       FileState = "ok"
 	FileMissing  FileState = "missing"
 	FileMismatch FileState = "checksum-mismatch"
 )
 
-// Variants of the bert scorer reported by List.
 const (
 	VariantNone = "none"
 	VariantAuto = "auto"
 )
 
-// FileStatus is the state of one file.
 type FileStatus struct {
 	Path  string
 	State FileState
 }
 
-// DerivedStatus is the state of one derived artifact per the local manifest.
 type DerivedStatus struct {
 	Kind    artifact.DerivedKind
 	Present bool
 	Path    string
 }
 
-// LatencyHint is an expected scoring latency measured on the reference Mac.
 type LatencyHint struct {
 	Variant string
 	Tokens  int
-	// P50 is the expected median latency, e.g. "61 ms".
-	P50 string
+	P50     string
 }
 
-// Status is the List result for one manifest entry.
 type Status struct {
-	Name     string
-	Revision string
-	Files    []FileStatus
-	Derived  []DerivedStatus
-	// Active is the variant "auto" selects for bert: onnx-int8 if built,
-	// else onnx-fp32 if built, else "none". Empty for other entries.
-	Active string
-	// Latency is the hint table (bert only).
-	Latency []LatencyHint
-	// SuggestedTimeout is a timeout suggestion for the active variant (bert only).
+	Name             string
+	Revision         string
+	Files            []FileStatus
+	Derived          []DerivedStatus
+	Active           string
+	Latency          []LatencyHint
 	SuggestedTimeout string
 }
 
-// Complete reports whether all files are verified.
 func (s Status) Complete() bool {
 	for _, f := range s.Files {
 		if f.State != FileOK {
@@ -74,9 +61,6 @@ func (s Status) Complete() bool {
 	return true
 }
 
-// bertLatency holds measured p50 hints for the pinned checkpoint on an Apple
-// M3 Pro with 4 intra-op threads. 256 and 512 tokens: ONNX Runtime 1.31.0 from
-// Python; 128 tokens: Go BenchmarkScoreReal (mean). Other CPUs differ.
 func bertLatency() []LatencyHint {
 	return []LatencyHint{
 		{Variant: string(artifact.KindONNXINT8), Tokens: 128, P50: "31 ms"},
@@ -102,7 +86,7 @@ func (s *Service) fileState(e artifact.Entry, f artifact.File) (FileState, error
 	}
 }
 
-// List reports the status of every manifest entry.
+// List reports the state of every entry on disk.
 func (s *Service) List(ctx context.Context) ([]Status, error) {
 	local, err := s.store.Load(ctx)
 	if err != nil {
@@ -154,18 +138,15 @@ func activeVariant(ds []DerivedStatus) string {
 func suggestedTimeout(active string) string {
 	switch active {
 	case string(artifact.KindONNXINT8):
-		return "300ms" // about twice the 512-token p50 of 134 ms (difficulty.bert.timeout default)
+		return "300ms"
 	case string(artifact.KindONNXFP32):
-		return "500ms" // about twice the 512-token p50 of 248 ms; set difficulty.bert.timeout
+		return "500ms"
 	default:
 		return ""
 	}
 }
 
-// Require returns nil when the named entry's files are verified and its
-// required derived artifacts (all except onnx-int8) are built. Otherwise it
-// returns artifact.ErrMissing (or artifact.ErrChecksum) wrapped with the hint
-// run "triage models pull <name>".
+// Require returns ErrMissing with a hint when the named entry is not complete.
 func (s *Service) Require(ctx context.Context, name string) error {
 	e, ok := s.manifest.Entry(name)
 	if !ok {

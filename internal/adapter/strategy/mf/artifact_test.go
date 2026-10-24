@@ -59,7 +59,6 @@ func TestDeriver(t *testing.T) {
 	assert.Empty(t, left)
 }
 
-// smallCheckpoint has the real tensor names and a 37-row P, but tiny dims.
 func smallCheckpoint(t *testing.T, out int) []byte {
 	t.Helper()
 	p := make([]float32, 37*2)
@@ -178,11 +177,10 @@ func TestComputeUErrors(t *testing.T) {
 	}
 }
 
-// TestComputeUZeroRow follows torch normalize: a zero row stays zero.
 func TestComputeUZeroRow(t *testing.T) {
 	t.Parallel()
 	p := make([]float32, 37*2)
-	p[24*2], p[24*2+1] = 3, 4 // strong row norm 5, weak row zero
+	p[24*2], p[24*2+1] = 3, 4
 	f, err := mf.ParseSafetensors(buildST(t, map[string]st{
 		mf.TensorModels:     {shape: []int{37, 2}, f32: p},
 		mf.TensorClassifier: {shape: []int{1, 2}, f32: []float32{2, 1}},

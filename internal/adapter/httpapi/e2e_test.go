@@ -22,7 +22,6 @@ import (
 	"github.com/thnhdatle/triage/internal/testutil/fakerecorder"
 )
 
-// pipelineEnv wires the real route pipeline and dispatcher over a fake provider.
 func pipelineEnv(t *testing.T, fp *fakeprovider.Provider) (http.Handler, *fakerecorder.Recorder) {
 	t.Helper()
 	weak := model.Target{

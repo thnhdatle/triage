@@ -8,9 +8,9 @@ import (
 	"time"
 )
 
-// Fake is a manually advanced clock for tests. It is safe for concurrent use.
+// Fake is a manually advanced clock for tests.
 type Fake struct {
-	mu      sync.Mutex // protects now, waiters
+	mu      sync.Mutex
 	now     time.Time
 	waiters []*waiter
 }
@@ -18,20 +18,18 @@ type Fake struct {
 type waiter struct {
 	at     time.Time
 	ch     chan time.Time
-	period time.Duration // > 0 for tickers
+	period time.Duration
 }
 
 // NewFake returns a fake clock set to start.
 func NewFake(start time.Time) *Fake { return &Fake{now: start} }
 
-// Now returns the fake time.
 func (f *Fake) Now() time.Time {
 	f.mu.Lock()
 	defer f.mu.Unlock()
 	return f.now
 }
 
-// After returns a channel that receives when the clock is advanced past d.
 func (f *Fake) After(d time.Duration) <-chan time.Time {
 	f.mu.Lock()
 	defer f.mu.Unlock()
@@ -44,8 +42,6 @@ func (f *Fake) After(d time.Duration) <-chan time.Time {
 	return w.ch
 }
 
-// NewTicker returns a ticker driven by Advance. Ticks that the receiver has
-// not consumed are dropped, like time.Ticker.
 func (f *Fake) NewTicker(d time.Duration) Ticker {
 	if d <= 0 {
 		panic("clock: non-positive ticker interval")
@@ -57,15 +53,12 @@ func (f *Fake) NewTicker(d time.Duration) Ticker {
 	return &fakeTicker{f: f, w: w}
 }
 
-// Waiters returns the number of pending After channels and active tickers,
-// so tests can wait until code under test is blocked on the clock.
 func (f *Fake) Waiters() int {
 	f.mu.Lock()
 	defer f.mu.Unlock()
 	return len(f.waiters)
 }
 
-// Advance moves the clock forward by d, firing due timers in time order.
 func (f *Fake) Advance(d time.Duration) {
 	f.mu.Lock()
 	defer f.mu.Unlock()

@@ -13,30 +13,19 @@ import (
 	"github.com/thnhdatle/triage/internal/domain/difficulty"
 )
 
-// Name is the strategy name used in configuration and decisions.
 const Name = "mf"
 
-// DefaultModel is the embedding model the projection was trained on.
 const DefaultModel = "text-embedding-3-small"
 
-// MaxInputTokens bounds the scored text by its F3 estimate (the embedding
-// model's input limit with margin).
 const MaxInputTokens = 8000
 
-// Errors of the strategy.
 var (
-	// ErrInvalidConfig is returned for invalid constructor arguments.
 	ErrInvalidConfig = errors.New("mf: invalid config")
-	// ErrEmptyText is returned when the last user message has no text: the
-	// embedding API rejects empty input.
-	ErrEmptyText = errors.New("mf: scored text is empty")
-	// ErrBadEmbedding is returned when the embedder answers with the wrong
-	// number of vectors or a vector of the wrong size.
-	ErrBadEmbedding = errors.New("mf: unexpected embedding")
+	ErrEmptyText     = errors.New("mf: scored text is empty")
+	ErrBadEmbedding  = errors.New("mf: unexpected embedding")
 )
 
-// Strategy is the mf difficulty strategy: p_strong = sigmoid(u . e). It is
-// immutable and safe for concurrent use.
+// Strategy scores prompt difficulty from an embedding of the text.
 type Strategy struct {
 	emb       difficulty.Embedder
 	u         []float64
@@ -46,19 +35,13 @@ type Strategy struct {
 
 var _ difficulty.Strategy = (*Strategy)(nil)
 
-// Option configures a Strategy.
 type Option func(*Strategy)
 
-// WithModel replaces DefaultModel (for a compatible deployment name).
 func WithModel(m string) Option { return func(s *Strategy) { s.model = m } }
 
-// WithMaxInputTokens replaces MaxInputTokens.
 func WithMaxInputTokens(n int) Option { return func(s *Strategy) { s.maxTokens = n } }
 
-// New returns a Strategy over an embedder and the vector u (LoadVector).
-// The embedder is normally embedcache over UsageEmbedder, so that
-// Score.EmbeddingInputTokens reports upstream usage on misses and 0 on hits.
-// u is copied.
+// New returns a Strategy.
 func New(emb difficulty.Embedder, u []float64, opts ...Option) (*Strategy, error) {
 	s := &Strategy{emb: emb, u: append([]float64(nil), u...), model: DefaultModel, maxTokens: MaxInputTokens}
 	for _, o := range opts {
@@ -80,13 +63,9 @@ func New(emb difficulty.Embedder, u []float64, opts ...Option) (*Strategy, error
 	return s, nil
 }
 
-// Name implements difficulty.Strategy.
 func (*Strategy) Name() string { return Name }
 
-// Score implements difficulty.Strategy. The scored text is truncated to the
-// token estimate bound and embedded with the vector's dimension;
-// EmbeddingInputTokens is the usage UsageEmbedder recorded for this call (0
-// when the cache answered).
+// Score returns the probability that the prompt needs the strong model.
 func (s *Strategy) Score(ctx context.Context, req chat.Request) (difficulty.Score, error) {
 	if err := ctx.Err(); err != nil {
 		return difficulty.Score{}, fmt.Errorf("mf: %w", err)
@@ -122,7 +101,6 @@ func (s *Strategy) Score(ctx context.Context, req chat.Request) (difficulty.Scor
 	return difficulty.Score{P: Sigmoid(dot), EmbeddingInputTokens: m.tokens()}, nil
 }
 
-// Sigmoid is the logistic function, stable for large |x|.
 func Sigmoid(x float64) float64 {
 	if x >= 0 {
 		return 1 / (1 + math.Exp(-x))
@@ -131,14 +109,10 @@ func Sigmoid(x float64) float64 {
 	return e / (1 + e)
 }
 
-// TruncateEstimate returns the longest prefix of text, cut at a rune
-// boundary, whose chat.EstimateTokens is at most maxTokens.
 func TruncateEstimate(text string, maxTokens int) string {
 	if chat.EstimateTokens(text) <= maxTokens {
 		return text
 	}
-	// EstimateTokens = ceil((3*ascii + 4*nonASCII) / 12) grows with every
-	// byte, so the prefix is found in one pass.
 	budget := 12 * max(maxTokens, 0)
 	cost := 0
 	for i := 0; i < len(text); {

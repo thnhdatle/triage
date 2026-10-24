@@ -15,14 +15,11 @@ import (
 )
 
 const (
-	// RouteSpanName is the server span of a routed request.
 	RouteSpanName = "route request"
 	unmatched     = "unmatched"
 )
 
-// Middleware counts requests, observes their duration and opens the
-// `route request` server span, continuing an incoming W3C trace context.
-// Health, readiness and metrics requests get metrics but no span.
+// Middleware counts requests, observes their duration and opens the request span.
 func (t *Telemetry) Middleware() func(http.Handler) http.Handler {
 	return func(next http.Handler) http.Handler {
 		return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
@@ -80,8 +77,6 @@ func methodLabel(m string) string {
 	return otherLabel
 }
 
-// statusWriter records the status code and keeps http.Flusher and
-// http.ResponseController working for SSE.
 type statusWriter struct {
 	http.ResponseWriter
 	status int
@@ -108,7 +103,6 @@ func (w *statusWriter) Write(b []byte) (int, error) {
 	return w.ResponseWriter.Write(b)
 }
 
-// Flush implements http.Flusher.
 func (w *statusWriter) Flush() {
 	if w.status == 0 {
 		w.status = http.StatusOK
@@ -116,5 +110,4 @@ func (w *statusWriter) Flush() {
 	_ = http.NewResponseController(w.ResponseWriter).Flush()
 }
 
-// Unwrap lets http.ResponseController reach the underlying writer.
 func (w *statusWriter) Unwrap() http.ResponseWriter { return w.ResponseWriter }

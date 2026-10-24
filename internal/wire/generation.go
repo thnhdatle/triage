@@ -16,22 +16,14 @@ import (
 	"github.com/thnhdatle/triage/internal/domain/privacy"
 )
 
-// closeTimeout bounds closing the resources of a retired generation.
 const closeTimeout = 30 * time.Second
 
-// shared is a resource that generations may share across reloads: a provider
-// client, a scoring strategy with an ORT session, the NER detector. refs
-// counts the generations holding it; the last one to become idle closes it.
 type shared struct {
 	value any
 	close func(ctx context.Context) error
 	refs  atomic.Int64
 }
 
-// generation is everything built from one configuration: the pipeline and
-// the resources it uses. Requests hold a reference for their whole lifetime,
-// so a reload never closes a resource an in-flight request still uses
-// (in-flight requests finish on the old configuration).
 type generation struct {
 	cfg        *config.Config
 	plan       *plan
@@ -44,9 +36,7 @@ type generation struct {
 	counter    chat.TokenCounter
 	resources  map[string]*shared
 
-	// refs counts the live reference (1 while current) plus requests.
-	refs atomic.Int64
-	// onIdle runs once when refs drops to zero after retirement.
+	refs   atomic.Int64
 	onIdle atomic.Pointer[func()]
 }
 
@@ -76,9 +66,6 @@ func (g *generation) release() {
 	}
 }
 
-// dispose drops g's reference on each of its resources and closes those no
-// other generation holds.
-// ctx only carries values: closing must finish even after shutdown began.
 func (g *generation) dispose(ctx context.Context) []error {
 	ctx, cancel := context.WithTimeout(context.WithoutCancel(ctx), closeTimeout)
 	defer cancel()
@@ -94,13 +81,10 @@ func (g *generation) dispose(ctx context.Context) []error {
 	return errs
 }
 
-// live holds the current generation.
 type live struct {
 	cur atomic.Pointer[generation]
 }
 
-// acquire returns the current generation with a reference held, or nil
-// after shutdown. The caller must release it.
 func (l *live) acquire() *generation {
 	for {
 		g := l.cur.Load()
@@ -110,6 +94,4 @@ func (l *live) acquire() *generation {
 	}
 }
 
-// swap installs g and returns the previous generation (still holding its
-// live reference, which the caller drops after arranging cleanup).
 func (l *live) swap(g *generation) *generation { return l.cur.Swap(g) }

@@ -85,7 +85,6 @@ func TestDetector_Detect_ByteOffsetsOnUTF8(t *testing.T) {
 
 func TestDetector_Detect_ChecksumBeatsOtherClasses(t *testing.T) {
 	t.Parallel()
-	// A 13-digit string that is a valid Visa number and also a valid-looking RRN.
 	var both string
 	for i := range 100000 {
 		d12 := fmt.Sprintf("4001011%05d", i)
@@ -214,7 +213,6 @@ func TestDetector_Detect_PathologicalInputsFinishQuickly(t *testing.T) {
 			for _, f := range fs {
 				require.Equal(t, text[f.Start:f.End], f.Value)
 			}
-			// Guards super-linear blowup; headroom for -race under parallel package load.
 			assert.Less(t, time.Since(start), 20*time.Second)
 		})
 	}

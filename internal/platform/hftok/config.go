@@ -8,7 +8,6 @@ import (
 	"fmt"
 )
 
-// fileConfig is the subset of tokenizer.json that drives encoding.
 type fileConfig struct {
 	AddedTokens   []addedToken    `json:"added_tokens"`
 	Normalizer    json.RawMessage `json:"normalizer"`
@@ -179,7 +178,6 @@ func parseModel(raw json.RawMessage) (model, error) {
 	}
 }
 
-// templatePiece is one element of TemplateProcessing.single.
 type templatePiece struct {
 	SpecialToken *struct {
 		ID string `json:"id"`

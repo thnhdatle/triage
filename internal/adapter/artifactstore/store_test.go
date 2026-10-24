@@ -49,7 +49,6 @@ func TestRoundTrip(t *testing.T) {
 	if !reflect.DeepEqual(got, sample()) {
 		t.Fatalf("got %+v", got)
 	}
-	// overwrite, and no temp files left behind
 	m := sample()
 	m.SchemaVersion = 0
 	m.Entries[0].Revision = "def"
@@ -83,7 +82,6 @@ func TestLoadErrors(t *testing.T) {
 	if m, err := s.Load(ctx); err != nil || len(m.Entries) != 0 {
 		t.Fatalf("empty file: %+v %v", m, err)
 	}
-	// a directory in place of the file is a read error
 	d2 := t.TempDir()
 	s2, _ := artifactstore.New(d2)
 	if err := os.Mkdir(s2.Path(), 0o750); err != nil {
@@ -103,7 +101,7 @@ func TestSaveErrors(t *testing.T) {
 	if err := os.WriteFile(file, nil, 0o600); err != nil {
 		t.Fatal(err)
 	}
-	s, _ := artifactstore.New(filepath.Join(file, "sub")) // parent is a file
+	s, _ := artifactstore.New(filepath.Join(file, "sub"))
 	if err := s.Save(context.Background(), sample()); err == nil {
 		t.Fatal("expected mkdir error")
 	}

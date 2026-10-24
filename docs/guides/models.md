@@ -82,7 +82,7 @@ validation if that variant is missing.
 - `mf`: no license file. Triage only downloads it; it does not redistribute it.
 - `ner`: no license file; the model card states MIT. English news text (CoNLL-2003).
 
-Both RouteLLM checkpoints were trained with GPT-4 as strong and Mixtral-8x7B as weak.
+Both checkpoints were trained with GPT-4 as strong and Mixtral-8x7B as weak.
 Triage publishes nothing derived from these weights.
 
 ## Builds without ONNX Runtime

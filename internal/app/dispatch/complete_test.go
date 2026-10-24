@@ -90,7 +90,6 @@ func TestDispatcher_Backoff_JitteredExponential(t *testing.T) {
 		}
 		assert.Greater(t, len(seen), 1, "n=%d: jitter", tc.n)
 	}
-	// The default generator is seeded from the clock.
 	d2, err := dispatch.New(nil, clock.NewFake(epoch), dispatch.Options{})
 	require.NoError(t, err)
 	assert.LessOrEqual(t, d2.BackoffForTest(1), dispatch.DefaultBackoffBase)
@@ -215,7 +214,6 @@ func TestDispatcher_Complete_SingleTargetCyclesHonouringRetryAfter(t *testing.T)
 	done := async(func() (dispatch.Result, error) {
 		return d.Complete(context.Background(), plan(userRequest("x"), local("a")))
 	})
-	// total timer, attempt 1 timer, Retry-After wait
 	waitWaiters(t, clk, 3)
 	assert.Len(t, a.Requests(), 1)
 	clk.Advance(ra - time.Millisecond)
@@ -268,9 +266,9 @@ func TestDispatcher_Complete_BackoffUntilMaxAttempts(t *testing.T) {
 	done := async(func() (dispatch.Result, error) {
 		return d.Complete(context.Background(), plan(userRequest("x"), local("a")))
 	})
-	waitWaiters(t, clk, 3) // total, attempt 1, backoff 1 (<= 100ms)
+	waitWaiters(t, clk, 3)
 	clk.Advance(100 * time.Millisecond)
-	waitWaiters(t, clk, 4) // + attempt 2 timer, backoff 2 (<= 200ms); backoff 1 fired
+	waitWaiters(t, clk, 4)
 	clk.Advance(200 * time.Millisecond)
 	o := await(t, done)
 	require.ErrorIs(t, o.err, provider.ErrUpstreamUnavailable)
@@ -389,7 +387,7 @@ func TestDispatcher_Complete_MaskPerAttempt(t *testing.T) {
 	t.Parallel()
 	c1 := scripted(fakeprovider.Fail(errServer))
 	l := scripted(fakeprovider.Fail(errServer))
-	c2 := fakeprovider.New() // echoes the (masked) last user text
+	c2 := fakeprovider.New()
 	d, _ := newDispatcher(t, map[string]provider.Provider{"c1": c1, "l": l, "c2": c2}, dispatch.Options{})
 	p := maskedPlan(t, cloud("c1"), local("l"), cloud("c2"))
 	res, err := d.Complete(context.Background(), p)
@@ -450,8 +448,6 @@ func TestDispatcher_Complete_RefusedTargets(t *testing.T) {
 		wantErr      error
 	}{
 		{
-			// The value "EMAIL" reappears inside its own placeholder, so the
-			// masked request leaks and every cloud target is refused.
 			name: "mask leak", findingValue: "EMAIL", chain: []model.Target{cloud("c"), cloud("c2"), local("l")},
 			wantStatuses: []string{"c:mask_leak", "l:ok"},
 		},
@@ -497,7 +493,6 @@ func TestDispatcher_Complete_UsageAndCost(t *testing.T) {
 	bt.Pricing = model.Pricing{InputPerMTok: 1, OutputPerMTok: 2, CachedInputPerMTok: 0.5}
 	res, err := d.Complete(context.Background(), plan(userRequest("x"), local("a"), bt))
 	require.NoError(t, err)
-	// (600*1 + 400*0.5 + 500*2) / 1e6
 	assert.InDelta(t, 0.0018, res.Attempts[1].CostUSD, 1e-12)
 	assert.InDelta(t, 0.0018, res.CostUSD, 1e-12)
 	assert.Zero(t, res.Attempts[0].CostUSD)

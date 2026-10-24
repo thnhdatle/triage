@@ -16,6 +16,7 @@ import (
 	"github.com/thnhdatle/triage/internal/platform/telemetry"
 )
 
+// calibrate runs the calibrate subcommand.
 func (c *CLI) calibrate(ctx context.Context, args []string) error {
 	fs := c.flags("calibrate")
 	path := fs.String("config", "", "config file (default $"+EnvConfig+")")
@@ -84,7 +85,6 @@ func (c *CLI) calibrationInputs(path, sample string) (*config.Config, []datasetI
 	return cfg, items, nil
 }
 
-// offline is a builder for commands that score or route without serving.
 type offline struct {
 	b   *builder
 	tel *telemetry.Telemetry

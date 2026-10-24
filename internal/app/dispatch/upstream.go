@@ -12,18 +12,11 @@ import (
 	"github.com/thnhdatle/triage/internal/platform/clock"
 )
 
-// recvResult is one Recv outcome handed from the reader to the relay.
 type recvResult struct {
 	chunk chat.Chunk
 	err   error
 }
 
-// upstream owns the reader goroutine of one streaming attempt. The reader
-// opens the stream on the first request and performs one Recv per request,
-// so the relay arms its timer before the reader can block and the time to
-// open the stream counts towards the time to the first chunk. Both channels
-// have capacity 1 and at most one request is outstanding, so neither side
-// ever blocks on a send.
 type upstream struct {
 	reqs   chan struct{}
 	res    chan recvResult
@@ -31,9 +24,6 @@ type upstream struct {
 	wg     sync.WaitGroup
 }
 
-// startUpstream starts the reader for req on p. The stream is opened with a
-// context derived from ctx that stop cancels; providers must return from
-// Stream and Recv once it is cancelled.
 func startUpstream(ctx context.Context, p provider.Provider, req chat.Request) *upstream {
 	actx, cancel := context.WithCancel(ctx)
 	u := &upstream{reqs: make(chan struct{}, 1), res: make(chan recvResult, 1), cancel: cancel}
@@ -47,7 +37,7 @@ func (u *upstream) read(ctx context.Context, p provider.Provider, req chat.Reque
 	var s provider.Stream
 	defer func() {
 		if s != nil {
-			_ = s.Close() // the attempt is over; a close error changes nothing
+			_ = s.Close()
 		}
 	}()
 	for range u.reqs {
@@ -67,8 +57,6 @@ func (u *upstream) read(ctx context.Context, p provider.Provider, req chat.Reque
 	}
 }
 
-// next returns the next chunk, ErrAttemptTimeout when none arrives within d,
-// or why ctx ended. After an error, next must not be called again.
 func (u *upstream) next(ctx context.Context, clk clock.Clock, d time.Duration) (chat.Chunk, error) {
 	timer := clk.After(d)
 	u.reqs <- struct{}{}
@@ -82,8 +70,6 @@ func (u *upstream) next(ctx context.Context, clk clock.Clock, d time.Duration) (
 	}
 }
 
-// stop cancels the attempt, ends the reader and waits for it; the reader
-// closes the stream.
 func (u *upstream) stop() {
 	u.cancel()
 	close(u.reqs)

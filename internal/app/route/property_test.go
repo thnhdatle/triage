@@ -91,10 +91,6 @@ func drawRoute(rt *rapid.T, pool model.Pool) route.Route {
 	return r
 }
 
-// TestPipeline_Chat_SelectionProperty is the F3 DoD property over the whole
-// chain: no unhealthy target, none with a too small context window, none
-// lacking a required capability, none outside the allowed localities, and
-// (F5) only local targets for a local_only request with a finding.
 func TestPipeline_Chat_SelectionProperty(t *testing.T) {
 	t.Parallel()
 	rapid.Check(t, func(rt *rapid.T) {
@@ -130,8 +126,6 @@ func TestPipeline_Chat_SelectionProperty(t *testing.T) {
 	})
 }
 
-// checkPlan asserts the selection invariants over the chain and the
-// context-length pool.
 func checkPlan(rt *rapid.T, plan dispatch.Plan, req chat.Request, health healthSet, localOnly bool) {
 	need := chat.EstimateTokens(req.PromptText()) + req.RequestedOutputTokens()
 	caps := model.RequiredCapabilities(req)
@@ -162,7 +156,6 @@ func checkPlan(rt *rapid.T, plan dispatch.Plan, req chat.Request, health healthS
 
 var emailRe = regexp.MustCompile(`[a-z]{3,8}@example\.com`)
 
-// realPipeline wires the real dispatcher with one fake provider per target.
 func realPipeline(
 	t testingT, r route.Route, outcomes map[string][]fakeprovider.Outcome,
 ) (env, map[string]*fakeprovider.Provider) {
@@ -225,9 +218,6 @@ func drawPrivateRequest(rt *rapid.T) (chat.Request, []string) {
 	return req, values
 }
 
-// TestPipeline_Chat_MaskNeverLeaksProperty is the F5 DoD end to end with the
-// real dispatcher: in mask mode no request a cloud target's provider
-// receives contains a finding value, across fallback paths.
 func TestPipeline_Chat_MaskNeverLeaksProperty(t *testing.T) {
 	t.Parallel()
 	rapid.Check(t, func(rt *rapid.T) {
@@ -253,8 +243,6 @@ func TestPipeline_Chat_MaskNeverLeaksProperty(t *testing.T) {
 	})
 }
 
-// TestPipeline_Chat_LocalOnlyProperty: for any request with a finding in
-// local_only, every attempt's target is local (real dispatcher).
 func TestPipeline_Chat_LocalOnlyProperty(t *testing.T) {
 	t.Parallel()
 	rapid.Check(t, func(rt *rapid.T) {

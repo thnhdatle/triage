@@ -8,9 +8,6 @@ import (
 	"unicode/utf8"
 )
 
-// wordPiece ports HF WordPiece: greedy longest-match-first with the
-// continuing-subword prefix; a word longer than max_input_chars_per_word
-// characters, or with an unmatched remainder, becomes the unk token.
 type wordPiece struct {
 	vocab    map[string]int
 	prefix   string

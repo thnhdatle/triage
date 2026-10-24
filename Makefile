@@ -5,7 +5,7 @@ SHELL := /bin/bash
 .DEFAULT_GOAL := help
 
 PROJECT      := triage
-# Release version shown in the acceptance report and the benchmark results.
+# Release version checked against CHANGELOG.md by release-check.
 RELEASE      ?= v0.1.0
 MODULE       := github.com/thnhdatle/triage
 VERSION      ?= $(shell git describe --tags --always --dirty 2>/dev/null || echo dev)
@@ -18,7 +18,6 @@ GOFILES      := $(shell git ls-files '*.go' 2>/dev/null)
 SHELLFILES   := $(shell git ls-files 'scripts/*.sh' '.githooks/*' 2>/dev/null)
 CACHE_DIR    ?= $(HOME)/.cache/rayld/$(PROJECT)
 FUZZTIME     ?= 30s
-ONLY         ?=
 export CACHE_DIR
 
 # summary runs a command and prints "PASS <name>" or "FAIL <name>" (exit status preserved).
@@ -59,17 +58,9 @@ test-integration: ## integration tests (Testcontainers), -count=1
 coverage: ## coverage with thresholds (80% overall, 90% for domain and app)
 	$(call summary,scripts/coverage.sh,coverage)
 
-.PHONY: mutation
-mutation: ## gremlins on the core routing and privacy packages, score >= 60%
-	$(call summary,scripts/mutation.sh,mutation)
-
-.PHONY: acceptance
-acceptance: ## acceptance suite, writes acceptance/report.md; ONLY=TRG-01,TRG-04 for a subset; CI=1 for CI thresholds
-	@go run ./acceptance/cmd/runner --version "$(RELEASE)" --only "$(ONLY)"
-
-.PHONY: bench
-bench: ## benchmarks, writes bench/RESULTS.md
-	$(call summary,env RELEASE=$(RELEASE) scripts/bench.sh,bench)
+.PHONY: eval
+eval: ## small eval runs: offline labels, then live against LM Studio (about 10 minutes)
+	$(call summary,go run ./cmd/triage eval --config eval/labels-mmlu.yaml && go run ./cmd/triage eval --config eval/labels-gsm8k.yaml && go run ./cmd/triage eval --config eval/live.yaml,eval)
 
 .PHONY: fuzz
 fuzz: ## each fuzz target for FUZZTIME

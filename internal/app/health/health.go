@@ -11,16 +11,13 @@ import (
 	"github.com/thnhdatle/triage/internal/platform/clock"
 )
 
-// Defaults of Options (health.*).
 const (
 	DefaultInterval         = 10 * time.Second
 	DefaultFailureThreshold = 3
 	DefaultCooldown         = 30 * time.Second
-	// MaxProbeTimeout caps the time one probe may take.
-	MaxProbeTimeout = 5 * time.Second
+	MaxProbeTimeout         = 5 * time.Second
 )
 
-// Options are the health.* settings. Zero values take the defaults.
 type Options struct {
 	Interval         time.Duration
 	FailureThreshold int
@@ -40,38 +37,33 @@ func (o Options) withDefaults() Options {
 	return o
 }
 
-// Check is one active probe and the targets its outcome applies to.
 type Check struct {
 	Targets []string
 	Probe   func(ctx context.Context) error
 }
 
-// Option configures a Tracker.
 type Option func(*Tracker)
 
-// WithOnChange registers fn, called with a target's health after each probe
-// round and whenever a report changes it. fn must not block or call back
-// into the Tracker.
 func WithOnChange(fn func(target string, healthy bool)) Option {
 	return func(t *Tracker) { t.onChange = fn }
 }
 
 type state struct {
 	failures int
-	until    time.Time // unhealthy until this instant
+	until    time.Time
 }
 
-// Tracker holds the health of every target. It is safe for concurrent use.
+// Tracker tracks target health from reports and probes.
 type Tracker struct {
 	clk      clock.Clock
 	onChange func(string, bool)
 
-	mu     sync.Mutex // guards opts and states
+	mu     sync.Mutex
 	opts   Options
 	states map[string]*state
 }
 
-// New returns a Tracker. It starts no goroutine; see Run.
+// New returns a Tracker.
 func New(clk clock.Clock, opts Options, o ...Option) (*Tracker, error) {
 	if clk == nil {
 		return nil, errors.New("health: nil clock")
@@ -83,15 +75,13 @@ func New(clk clock.Clock, opts Options, o ...Option) (*Tracker, error) {
 	return t, nil
 }
 
-// SetOptions replaces the settings (configuration reload). Running
-// cooldowns keep their end time.
 func (t *Tracker) SetOptions(opts Options) {
 	t.mu.Lock()
 	t.opts = opts.withDefaults()
 	t.mu.Unlock()
 }
 
-// IsHealthy implements route.Health. Unknown targets are healthy.
+// IsHealthy reports whether the target is out of cooldown.
 func (t *Tracker) IsHealthy(target string) bool {
 	now := t.clk.Now()
 	t.mu.Lock()
@@ -100,8 +90,7 @@ func (t *Tracker) IsHealthy(target string) bool {
 	return !ok || !now.Before(s.until)
 }
 
-// Report implements dispatch.Health: nil resets the failure count, an error
-// counts towards health.failure_threshold.
+// Report records the outcome of an attempt on the target.
 func (t *Tracker) Report(target string, err error) {
 	before := t.IsHealthy(target)
 	t.record(target, err)
@@ -136,9 +125,7 @@ func (t *Tracker) interval() time.Duration {
 	return t.opts.Interval
 }
 
-// Run probes the checks returned by source immediately and then every
-// health.interval until ctx ends. Probes of one round run concurrently, each
-// bounded by min(interval, MaxProbeTimeout). Run returns ctx.Err().
+// Run probes the checks from source until ctx is canceled.
 func (t *Tracker) Run(ctx context.Context, source func() []Check) error {
 	for {
 		t.round(ctx, source())
@@ -162,7 +149,7 @@ func (t *Tracker) round(ctx context.Context, checks []Check) {
 			err := c.Probe(pctx)
 			cancel()
 			if ctx.Err() != nil {
-				return // shutting down: not the target's fault
+				return
 			}
 			for _, name := range c.Targets {
 				t.record(name, err)

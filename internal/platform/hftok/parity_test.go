@@ -34,7 +34,6 @@ type referenceLine struct {
 	IDs []int  `json:"ids"`
 }
 
-// tokenizerDir is TRIAGE_TOKENIZER_DIR or ~/.cache/rayld/triage/tokenizers.
 func tokenizerDir(tb testing.TB) string {
 	tb.Helper()
 	if dir := os.Getenv("TRIAGE_TOKENIZER_DIR"); dir != "" {
@@ -45,8 +44,6 @@ func tokenizerDir(tb testing.TB) string {
 	return filepath.Join(home, ".cache", "rayld", "triage", "tokenizers")
 }
 
-// loadPinned loads a pinned tokenizer.json; absence is a failure, never a
-// skip, so a machine without `make bootstrap` cannot pass silently.
 func loadPinned(tb testing.TB, name string) *hftok.Tokenizer {
 	tb.Helper()
 	path := filepath.Join(tokenizerDir(tb), name, "tokenizer.json")
@@ -127,8 +124,6 @@ func TestTokenizer_Encode_MatchesReference(t *testing.T) {
 	}
 }
 
-// TestTokenizer_Encode_Concurrent checks that one Tokenizer is safe for
-// concurrent use (run under -race) and deterministic.
 func TestTokenizer_Encode_Concurrent(t *testing.T) {
 	t.Parallel()
 	tok := loadPinned(t, "bert")

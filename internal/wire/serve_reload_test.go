@@ -12,8 +12,6 @@ import (
 	"github.com/stretchr/testify/require"
 )
 
-// newReloadServer builds a server (no listeners, no background loops) over a
-// configuration that needs neither network nor model files.
 func newReloadServer(t *testing.T) *server {
 	t.Helper()
 	path := filepath.Join(t.TempDir(), "triage.yaml")
@@ -33,11 +31,6 @@ routes: [{ name: r, strategy: length }]
 	return s
 }
 
-// TestServer_ShutdownConcurrentWithReload checks that shutdown (closeAll) and
-// a configuration reload (the admin endpoint or SIGHUP calling
-// Manager.Reload) are ordered: under -race, unsynchronised access to the
-// pending generation is reported, and in every interleaving nothing stays
-// live or pending once both have returned.
 func TestServer_ShutdownConcurrentWithReload(t *testing.T) {
 	t.Parallel()
 	t.Run("reload after shutdown builds and commits nothing", func(t *testing.T) {
@@ -57,7 +50,7 @@ func TestServer_ShutdownConcurrentWithReload(t *testing.T) {
 			wg.Go(func() {
 				<-start
 				for range 3 {
-					_ = s.mgr.Reload() // succeeds before shutdown, errServerClosed after
+					_ = s.mgr.Reload()
 				}
 			})
 			wg.Go(func() {

@@ -19,7 +19,6 @@ var (
 	_ provider.Stream   = (*stream)(nil)
 )
 
-// wireUsage is the Messages API usage object.
 type wireUsage struct {
 	InputTokens              int `json:"input_tokens"`
 	OutputTokens             int `json:"output_tokens"`
@@ -27,8 +26,6 @@ type wireUsage struct {
 	CacheReadInputTokens     int `json:"cache_read_input_tokens"`
 }
 
-// usage maps to the neutral model: cache reads and writes are prompt
-// tokens, cache reads are the cached prompt tokens.
 func (u wireUsage) usage() chat.Usage {
 	return chat.Usage{
 		PromptTokens:       u.InputTokens + u.CacheCreationInputTokens + u.CacheReadInputTokens,
@@ -54,7 +51,6 @@ type wireResponse struct {
 	Usage      wireUsage     `json:"usage"`
 }
 
-// finishReason maps a stop_reason to the OpenAI vocabulary.
 func finishReason(s string) chat.FinishReason {
 	switch s {
 	case "":
@@ -66,10 +62,9 @@ func finishReason(s string) chat.FinishReason {
 	case "refusal":
 		return chat.FinishContentFilter
 	}
-	return chat.FinishStop // end_turn, stop_sequence, pause_turn
+	return chat.FinishStop
 }
 
-// arguments renders a tool_use input as the OpenAI arguments string.
 func arguments(input json.RawMessage) string {
 	var b bytes.Buffer
 	if len(input) == 0 || json.Compact(&b, input) != nil || b.String() == jsonNull {
@@ -104,7 +99,7 @@ func (c *Client) decodeResponse(data []byte, status int) (chat.Response, error) 
 	}, nil
 }
 
-// Complete implements provider.Provider.
+// Complete sends a message request.
 func (c *Client) Complete(ctx context.Context, req chat.Request) (chat.Response, error) {
 	body, err := c.encodeRequest(req, false)
 	if err != nil {
@@ -117,8 +112,7 @@ func (c *Client) Complete(ctx context.Context, req chat.Request) (chat.Response,
 	return c.decodeResponse(data, status)
 }
 
-// Stream implements provider.Provider. The response headers must arrive within
-// the client timeout; afterwards the stream is bounded by ctx only.
+// Stream sends a streaming message request.
 func (c *Client) Stream(ctx context.Context, req chat.Request) (provider.Stream, error) {
 	body, err := c.encodeRequest(req, true)
 	if err != nil {
@@ -132,15 +126,12 @@ func (c *Client) Stream(ctx context.Context, req chat.Request) (provider.Stream,
 	return c.newStream(ctx, resp, req.IncludeUsage), nil
 }
 
-// Embed implements provider.Provider; the Messages API has no embeddings.
 func (c *Client) Embed(context.Context, provider.EmbedRequest) (provider.EmbedResponse, error) {
 	return provider.EmbedResponse{}, unsupported("embeddings are not supported")
 }
 
-// maxModelPages bounds the pagination of Models.
 const maxModelPages = 20
 
-// Models implements provider.Provider: every id of GET {base}/models.
 func (c *Client) Models(ctx context.Context) ([]string, error) {
 	var names []string
 	after := ""

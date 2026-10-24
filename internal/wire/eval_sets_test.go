@@ -25,11 +25,6 @@ const (
 	labelsStrCol  = "strong-model"
 )
 
-// evalDataFixture writes a small converted data directory: 12 GSM8K rows
-// (row 0 contaminated) and 6 MMLU anatomy rows, with RouteLLM-style label
-// files. The weak model is right on rows below 4 (shorter prompts), the strong
-// model on every row, so calibration thresholds depend on the required
-// fraction of the all-strong accuracy.
 func evalDataFixture(t *testing.T) string {
 	t.Helper()
 	dir := t.TempDir()
@@ -128,8 +123,6 @@ bootstrap: { resamples: 100, seed: 7 }
 	}
 
 	summary, csv, curve := run("")
-	// 12 rows minus the contaminated... the contaminated prompt only matters for the wildcard, so rows
-	// 1..11 and the one MMLU row are evaluated; the calibration items are not.
 	items := len(gsmIDs(7, fixtureRows)) + 1
 	assert.Len(t, strings.Split(strings.TrimSpace(csv), "\n"), 1+2*items, "calibration items are not evaluated")
 	assert.Contains(t, summary, "Threshold: lowest strong-call ratio on "+filepath.Base(cal)+" (")
@@ -184,11 +177,9 @@ bootstrap: { resamples: 50, seed: 7 }
 	assert.Equal(t, wire.ExitUsage, runCLI(t, env, "eval", "--config", conf(missing, ""), "--out", out).code)
 	badID := writeSet(t, "bad.txt", "gsm8k/train:1")
 	assert.Equal(t, wire.ExitUsage, runCLI(t, env, "eval", "--config", conf(badID, ""), "--out", out).code)
-	// Labels mode needs the label columns.
 	nolabels := writeFile(t, "nl.yaml", "mode: labels\nconfig: "+cfg+"\nroute: auto\ndataset: { sets: ["+all+"] }\n"+
 		"strategies: [length]\n")
 	assert.Equal(t, wire.ExitUsage, runCLI(t, env, "eval", "--config", nolabels, "--out", out).code)
-	// A calibration set that swallows every evaluation item leaves nothing to evaluate.
 	assert.Equal(t, wire.ExitUsage, runCLI(t, env, "eval", "--config",
 		conf(all, "threshold_rule: { calibration: "+all+" }\n"), "--out", out).code)
 }
@@ -239,12 +230,10 @@ cache_dir: `+cache+`
 	assert.Contains(t, reqs[2].Body, "A) femur")
 	assert.FileExists(t, filepath.Join(out, "curve.csv"))
 
-	// A different sweep or strategy list reuses the cache.
 	r = runCLI(t, nil, "eval", "--config", ev, "--out", filepath.Join(t.TempDir(), "b"))
 	require.Equal(t, wire.ExitOK, r.code, r.stderr)
 	assert.Len(t, f.requests(t), 12, "no answer is recomputed")
 
-	// Live mode needs prompt templates for sets.
 	noPrompts := writeFile(t, "np.yaml", strings.Replace(mustRead(t, ev), "prompts: "+prompts+", ", "", 1))
 	assert.Equal(t, wire.ExitUsage, runCLI(t, nil, "eval", "--config", noPrompts, "--out", out).code)
 }

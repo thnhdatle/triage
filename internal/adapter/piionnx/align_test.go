@@ -16,9 +16,6 @@ import (
 
 const corpusPath = "../../../testdata/tokenizer/corpus.jsonl"
 
-// checkSpans asserts the alignment invariants: spans are ordered,
-// non-overlapping, on rune boundaries, and each known token's span equals its
-// surface once removed runes are dropped.
 func checkSpans(t *testing.T, v *aligner, text string, ids []int, spans []span) {
 	t.Helper()
 	require.Len(t, spans, len(ids))
@@ -40,8 +37,6 @@ func checkSpans(t *testing.T, v *aligner, text string, ids []int, spans []span) 
 	}
 }
 
-// runeBounds marks the offsets where UTF-8 decoding (invalid bytes as one
-// U+FFFD each) starts a rune, plus len(s).
 func runeBounds(s string) map[int]bool {
 	b := map[int]bool{len(s): true}
 	for i := 0; i < len(s); {
@@ -93,7 +88,7 @@ func TestVocabulary_Align_Cases(t *testing.T) {
 	tests := []struct {
 		name  string
 		text  string
-		want  []string // text[start:end] per token
+		want  []string
 		cont  []bool
 		unks  int
 		noErr bool

@@ -13,25 +13,20 @@ import (
 	"github.com/thnhdatle/triage/internal/domain/difficulty"
 )
 
-// Name is the strategy name used in configuration and decisions.
 const Name = "random"
 
-// Strategy is the random difficulty strategy. It holds no state and is safe
-// for concurrent use.
+// Strategy scores prompts with a random value.
 type Strategy struct {
 	salt uint64
 }
 
 var _ difficulty.Strategy = (*Strategy)(nil)
 
-// Option configures a Strategy.
 type Option func(*Strategy)
 
-// WithSalt mixes salt into the seed, giving an independent stream per salt
-// (used by evaluation runs that need several random baselines).
 func WithSalt(salt uint64) Option { return func(s *Strategy) { s.salt = salt } }
 
-// New returns a random Strategy.
+// New returns a Strategy.
 func New(opts ...Option) (*Strategy, error) {
 	s := &Strategy{}
 	for _, o := range opts {
@@ -43,11 +38,9 @@ func New(opts ...Option) (*Strategy, error) {
 	return s, nil
 }
 
-// Name implements difficulty.Strategy.
 func (*Strategy) Name() string { return Name }
 
-// Score implements difficulty.Strategy. The score depends only on req.ID (and
-// the salt); the request text is ignored.
+// Score returns a random score seeded by the request id.
 func (s *Strategy) Score(ctx context.Context, req chat.Request) (difficulty.Score, error) {
 	if err := ctx.Err(); err != nil {
 		return difficulty.Score{}, fmt.Errorf("random: %w", err)

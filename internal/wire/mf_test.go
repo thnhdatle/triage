@@ -17,8 +17,6 @@ import (
 	pinned "github.com/thnhdatle/triage/models"
 )
 
-// mfCache lays out a models.cache_dir holding the mf vector derived from the
-// mf-tiny fixture (random weights with the real shapes).
 func mfCache(t *testing.T) string {
 	t.Helper()
 	m, err := pinned.Manifest()

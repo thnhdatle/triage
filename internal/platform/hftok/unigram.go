@@ -10,14 +10,8 @@ import (
 	"unicode/utf8"
 )
 
-// unkPenalty is HF's K_UNK_PENALTY: an unknown character scores
-// min_score - 10.
 const unkPenalty = 10.0
 
-// unigram ports HF Unigram::encode_optimized (SentencePiece's Viterbi best
-// path) with fuse_unk. sugarme's Unigram is not used: it caps pieces at 20
-// bytes and adds a 0.1-per-byte length bonus, which changes segmentations
-// (e.g. 中华人民共和国 is one XLM-R piece).
 type unigram struct {
 	ids      map[string]int
 	scores   []float64
@@ -67,7 +61,7 @@ func newUnigram(raw json.RawMessage) (*unigram, error) {
 	}
 	minScore := math.Inf(1)
 	for id, p := range cfg.Vocab {
-		u.ids[p.piece] = id // last duplicate wins, as in HF's token_to_ids
+		u.ids[p.piece] = id
 		u.scores[id] = p.score
 		minScore = min(minScore, p.score)
 		u.maxBytes = max(u.maxBytes, len(p.piece))
@@ -87,9 +81,6 @@ func (u *unigram) tokenize(word string, dst []int) []int {
 	return u.backtrack(word, u.viterbi(word), dst)
 }
 
-// viterbi fills best[end] with the best path ending at byte end; pieces are
-// tried shortest first and replace a node only on a strictly higher score,
-// matching HF's tie-breaking.
 func (u *unigram) viterbi(word string) []bestNode {
 	n := len(word)
 	best := make([]bestNode, n+1)
@@ -122,8 +113,6 @@ func (u *unigram) viterbi(word string) []bestNode {
 	return best
 }
 
-// backtrack appends the best path's ids to dst. Runs of unk nodes are fused
-// into one piece and, as in HF, every piece is mapped to its id by string.
 func (u *unigram) backtrack(word string, best []bestNode, dst []int) []int {
 	first := len(dst)
 	runEnd := -1

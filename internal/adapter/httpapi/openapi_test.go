@@ -147,7 +147,6 @@ func TestOpenAPIMatchesRoutes(t *testing.T) {
 	check("API", s.apiRoutes(), wantAPI, listenerData)
 	check("Admin", s.adminRoutes(), wantAdmin, listenerAdmin)
 
-	// The declared listener must be exactly where the route is registered.
 	api, admin := routeSet(s.apiRoutes()), routeSet(s.adminRoutes())
 	for path, ops := range doc.Paths {
 		for m, op := range ops {
@@ -167,9 +166,6 @@ func TestOpenAPIMatchesRoutes(t *testing.T) {
 	}
 }
 
-// TestOpenAPIOperationsServed sends each documented operation to the handler of
-// its listener and requires that the route exists (neither not_found nor
-// method_not_allowed).
 func TestOpenAPIOperationsServed(t *testing.T) {
 	t.Parallel()
 	doc := loadSpec(t)
@@ -196,7 +192,6 @@ func TestOpenAPIOperationsServed(t *testing.T) {
 	}
 }
 
-// TestOpenAPIUnlistedRoutesAreNotServed checks the converse for an undocumented path.
 func TestOpenAPIUnlistedRoutesAreNotServed(t *testing.T) {
 	t.Parallel()
 	s := fullServer(t)

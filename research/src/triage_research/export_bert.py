@@ -1,36 +1,5 @@
 # SPDX-License-Identifier: Apache-2.0
-"""Derive the INT8 bert ONNX model.
-
-This is the converter that ``triage models pull bert --int8`` runs (through ``uvx`` or the
-``triage-models`` image). It never trains and never downloads anything:
-
-1. take the weight-free FP32 graph (``--graph``, default the committed
-   ``models/bert/graph.onnx`` when present, otherwise the same graph rebuilt in memory from
-   ``config.json`` by ``build_bert_graph``; opset 17, ``ir_version`` <= 10);
-2. check that its ``triage.weights.sha256`` equals the SHA-256 of
-   ``<checkpoint-dir>/model.safetensors`` (so every external-data offset is valid);
-3. load the weights and fold each ``Transpose(weight)`` into a pre-transposed initializer
-   (exact; the graph is exported without constant folding, so without this no MatMul has a
-   constant weight);
-4. quantize with ``--scheme``:
-
-   ``blockwise`` (default)
-       every weight MatMul becomes ``com.microsoft.MatMulNBits`` with 8-bit symmetric weights
-       in blocks of 32 along K and ``accuracy_level`` 4 (activations quantized to int8 per
-       block at run time); the embedding Gathers are quantized with ``quantize_dynamic``
-       (INT8, per tensor);
-   ``dynamic``
-       ``quantize_dynamic`` on every weight MatMul and embedding Gather (INT8 weights per
-       tensor, uint8 activations per tensor). Kept for comparison: on the real checkpoint it
-       agrees with PyTorch on only 91.7% / 88.7% of routing decisions at strong ratios
-       0.3 / 0.5 (the parity check needs 97%);
-
-5. write ``--out`` atomically (``ir_version`` <= 10; the graph's metadata plus
-   ``triage.variant=int8`` and ``triage.int8.scheme``).
-
-The output is a single self-contained ONNX file with the same input/output contract as the
-FP32 graph. The last stdout line is ``<sha256>  <path>``.
-"""
+"""Derive the INT8 bert ONNX model from the weight-free graph and the checkpoint."""
 
 from __future__ import annotations
 
@@ -63,7 +32,6 @@ class ExportError(Exception):
 
 
 def load_graph(graph: Path | None, checkpoint_dir: Path) -> onnx.ModelProto:
-    """Return the FP32 graph: ``graph`` if given or committed, else a fresh in-memory build."""
     path = graph if graph is not None else bbg.DEFAULT_OUT
     if path.is_file():
         return onnx.load(str(path), load_external_data=False)
@@ -73,11 +41,6 @@ def load_graph(graph: Path | None, checkpoint_dir: Path) -> onnx.ModelProto:
 
 
 def fold_weight_transposes(model: onnx.ModelProto) -> int:
-    """Replace ``Transpose(initializer)`` by a pre-transposed initializer; return the count.
-
-    The new initializer is named ``<weight>.T`` and every consumer of the Transpose output is
-    rewired to it. An initializer left without consumers is removed.
-    """
     graph = model.graph
     inits = {init.name: init for init in graph.initializer}
     rename: dict[str, str] = {}
@@ -202,7 +165,7 @@ def quantize(
 
 
 def main(argv: list[str] | None = None) -> int:
-    """CLI: ``python -m triage_research.export_bert [--checkpoint-dir D] [--out F]``."""
+    """CLI entry point that writes the INT8 model."""
     parser = argparse.ArgumentParser(
         prog="triage-export-bert",
         description=__doc__,

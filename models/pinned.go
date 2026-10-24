@@ -1,18 +1,11 @@
 // SPDX-License-Identifier: Apache-2.0
 
-// Package pinned embeds the committed model files the binary needs at run
-// time: the pinned checkpoint manifest (manifest.yaml) and the weight-free
-// bert graph (bert/graph.onnx) that `triage models pull bert` installs next to
-// the downloaded weights. Nothing derived from weights is
-// embedded.
-//
-//	m, err := pinned.Manifest()
-//	graph := pinned.BERTGraph()
+// Package pinned embeds the pinned model manifest and the BERT graph.
 package pinned
 
 import (
 	"bytes"
-	_ "embed" // go:embed of the committed model files
+	_ "embed"
 	"errors"
 	"fmt"
 	"io"
@@ -28,8 +21,7 @@ var manifestYAML []byte
 //go:embed bert/graph.onnx
 var bertGraph []byte
 
-// Manifest parses the embedded models/manifest.yaml. Keys outside the
-// artifact schema (fixture and ONNX Runtime pins used by scripts) are ignored.
+// Manifest parses the embedded manifest.yaml.
 func Manifest() (artifact.Manifest, error) {
 	return ParseManifest(manifestYAML)
 }
@@ -46,5 +38,4 @@ func ParseManifest(data []byte) (artifact.Manifest, error) {
 	return m, nil
 }
 
-// BERTGraph returns a copy of the committed weight-free graph.
 func BERTGraph() []byte { return bytes.Clone(bertGraph) }

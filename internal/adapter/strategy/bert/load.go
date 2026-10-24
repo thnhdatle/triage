@@ -12,36 +12,22 @@ import (
 	"github.com/thnhdatle/triage/internal/platform/onnxrt"
 )
 
-// Defaults of the runtime options.
 const (
 	DefaultIntraOpThreads = 4
 	DefaultQueueSize      = 64
 )
 
-// Config locates the artifacts and sizes the scoring pool.
 type Config struct {
-	// TokenizerPath is the XLM-R tokenizer.json.
-	TokenizerPath string
-	// ModelPath is the FP32 graph.onnx (sitting next to model.safetensors) or
-	// the self-contained INT8 model.int8.onnx.
-	ModelPath string
-	// Variant must match the file: the INT8 file carries triage.variant=int8.
-	Variant Variant
-	// MaxInputTokens is bert.max_input_tokens; 0 means 512.
+	TokenizerPath  string
+	ModelPath      string
+	Variant        Variant
 	MaxInputTokens int
-	// IntraOpThreads is bert.intra_op_threads; 0 means 4.
 	IntraOpThreads int
-	// MaxConcurrency is bert.max_concurrency; at least 1.
 	MaxConcurrency int
-	// QueueSize is bert.queue_size; 0 rejects whenever every slot is busy.
-	QueueSize int
+	QueueSize      int
 }
 
-// Load verifies the artifacts, loads the tokenizer, opens one ORT session
-// with named inputs and outputs and wraps it in a bounded pool. For FP32 the
-// weights file named by the graph metadata must have the recorded size and
-// SHA-256 (every external-data offset is valid only for those bytes). The
-// returned Strategy owns the pool and session: Close it before rt.
+// Load builds a Strategy from the model and tokenizer files in cfg.
 func Load(ctx context.Context, rt *onnxrt.Runtime, cfg Config) (*Strategy, error) {
 	if rt == nil {
 		return nil, fmt.Errorf("%w: nil runtime", ErrInvalidConfig)
@@ -93,8 +79,6 @@ func Load(ctx context.Context, rt *onnxrt.Runtime, cfg Config) (*Strategy, error
 	return s, nil
 }
 
-// checkModel reads the model metadata and checks it against the variant;
-// for FP32 it also verifies the external weights.
 func checkModel(ctx context.Context, path string, v Variant) error {
 	meta, err := ReadMetadataFile(path)
 	if err != nil {

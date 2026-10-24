@@ -114,7 +114,6 @@ func encodeEmbeddings(resp provider.EmbedResponse, b64 bool) wireEmbedResponse {
 	return out
 }
 
-// encodeFloat32s is OpenAI's base64 format: little-endian float32 values.
 func encodeFloat32s(v []float32) string {
 	b := make([]byte, 4*len(v))
 	for i, f := range v {

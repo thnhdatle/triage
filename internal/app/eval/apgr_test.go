@@ -51,7 +51,6 @@ func TestAPGR_APGR_HandComputed(t *testing.T) {
 				{Score: 0.4, WeakCorrect: false, StrongCorrect: true},
 				{Score: 0.2, WeakCorrect: true, StrongCorrect: true},
 			},
-			// acc: .5 .25 .5 .75 .75 ; accW=.5 accS=.75 -> PGR 0 -1 0 1 1
 			want: 0.25 * ((0-1)/2.0 + (-1+0)/2.0 + (0+1)/2.0 + 1),
 		},
 	}
@@ -169,7 +168,7 @@ func TestAPGR_APGR_OracleDominatesProperty(t *testing.T) {
 		}
 		pts := eval.Curve(items)
 		if pts[len(pts)-1].Accuracy <= pts[0].Accuracy {
-			return // PGR flips sign when strong is worse than weak; dominance only holds otherwise
+			return
 		}
 		got, err := eval.APGR(items)
 		best, errBest := eval.APGR(oracle)

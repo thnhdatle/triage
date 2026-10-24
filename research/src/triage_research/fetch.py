@@ -1,9 +1,5 @@
 # SPDX-License-Identifier: Apache-2.0
-"""Fetch allow-listed model files at a pinned revision and verify them by SHA-256.
-
-Only files listed in ``models/manifest.yaml`` are ever downloaded. ``optimizer.pt`` is refused
-unconditionally, even if a manifest were edited to list it.
-"""
+"""Fetch allow-listed model files at a pinned revision and verify them by SHA-256."""
 
 from __future__ import annotations
 
@@ -38,8 +34,6 @@ class VerificationError(FetchError):
 
 @dataclass(frozen=True)
 class FileSpec:
-    """One allow-listed file."""
-
     path: str
     sha256: str
     size: int
@@ -47,8 +41,6 @@ class FileSpec:
 
 @dataclass(frozen=True)
 class Entry:
-    """One manifest entry pinned to a revision."""
-
     name: str
     hf_repo: str
     revision: str
@@ -61,7 +53,7 @@ def _check_name(path: str) -> None:
 
 
 def load_manifest(manifest_path: Path = DEFAULT_MANIFEST) -> dict[str, Entry]:
-    """Parse the manifest and return entries by name; reject forbidden files."""
+    """Parse the manifest and return its entries by name."""
     raw: Any = yaml.safe_load(manifest_path.read_text(encoding="utf-8"))
     entries: dict[str, Entry] = {}
     for item in raw["entries"]:
@@ -80,7 +72,6 @@ def load_manifest(manifest_path: Path = DEFAULT_MANIFEST) -> dict[str, Entry]:
 
 
 def sha256_file(path: Path) -> str:
-    """Return the hex SHA-256 of a file."""
     digest = hashlib.sha256()
     with path.open("rb") as fh:
         while chunk := fh.read(_CHUNK):
@@ -98,10 +89,7 @@ def fetch_file(
     cache_dir: Path = DEFAULT_CACHE_DIR,
     base_url: str = DEFAULT_BASE_URL,
 ) -> Path:
-    """Download one allow-listed file, verify it and return its cached path.
-
-    A cached file that already verifies is reused without a network call.
-    """
+    """Download one allow-listed file, verify it and return its cached path."""
     _check_name(path)
     spec = next((f for f in entry.files if f.path == path), None)
     if spec is None:
@@ -136,7 +124,6 @@ def fetch_entry(
     cache_dir: Path = DEFAULT_CACHE_DIR,
     base_url: str = DEFAULT_BASE_URL,
 ) -> list[Path]:
-    """Fetch every allow-listed file of an entry."""
     return [fetch_file(entry, f.path, cache_dir, base_url) for f in entry.files]
 
 

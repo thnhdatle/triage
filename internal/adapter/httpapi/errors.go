@@ -10,8 +10,6 @@ import (
 	"github.com/thnhdatle/triage/internal/app/route"
 )
 
-// Codes produced by this package itself; the rest come from route.Code.
-// All are registered in docs/guides/errors.md.
 const (
 	CodeInvalidRequest   = "invalid_request"
 	CodeInvalidAPIKey    = "invalid_api_key"
@@ -29,7 +27,6 @@ const (
 	paramModel    = "model"
 )
 
-// apiError is a client-facing error in OpenAI shape with its HTTP status.
 type apiError struct {
 	status  int
 	code    string
@@ -78,8 +75,6 @@ func invalid(param, msg string) *apiError {
 	return &apiError{status: http.StatusBadRequest, code: CodeInvalidRequest, param: param, message: msg}
 }
 
-// fromError maps a pipeline error to an apiError through route.Code. The
-// message of internal errors is generic so nothing internal leaks.
 func fromError(err error) *apiError {
 	code, status := route.Code(err)
 	e := &apiError{status: status, code: code, message: truncate(err.Error())}
@@ -111,5 +106,5 @@ func writeJSON(w http.ResponseWriter, status int, v any) {
 	}
 	w.Header().Set("Content-Type", "application/json")
 	w.WriteHeader(status)
-	_, _ = w.Write(append(b, '\n')) // a failed write means the client is gone
+	_, _ = w.Write(append(b, '\n'))
 }

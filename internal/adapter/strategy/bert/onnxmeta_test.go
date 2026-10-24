@@ -16,7 +16,6 @@ import (
 
 const modelsDir = "../../../../testdata/models/bert-tiny"
 
-// pb builds protobuf wire bytes for the metadata reader tests.
 type pb []byte
 
 func (b pb) tag(num, wt int) pb { return binary.AppendUvarint(b, uint64(num<<3|wt)) }
@@ -46,14 +45,14 @@ func TestReadMetadataFixtures(t *testing.T) {
 
 func TestReadMetadataWire(t *testing.T) {
 	t.Parallel()
-	ok := pb{}.tag(1, 0).varint(8)                // ir_version
-	ok = append(ok.tag(3, 1), make([]byte, 8)...) // fixed64
-	ok = append(ok.tag(4, 5), make([]byte, 4)...) // fixed32
+	ok := pb{}.tag(1, 0).varint(8)
+	ok = append(ok.tag(3, 1), make([]byte, 8)...)
+	ok = append(ok.tag(4, 5), make([]byte, 4)...)
 	ok = ok.bytes(7, []byte("graph bytes"))
 	ok = ok.bytes(14, entry("a", "1"))
 	ok = ok.bytes(14, append(entry("b", "2"), pb{}.bytes(9, []byte("ignored"))...))
 	ok = ok.bytes(14, entry("a", "3"))
-	ok = ok.tag(14, 0).varint(5) // field 14 with another wire type is skipped
+	ok = ok.tag(14, 0).varint(5)
 
 	tests := []struct {
 		name    string

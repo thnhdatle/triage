@@ -8,39 +8,28 @@ import (
 	"sort"
 )
 
-// ErrNoGap is returned by APGR when weak and strong have equal accuracy, so PGR is undefined.
 var ErrNoGap = errors.New("eval: weak and strong accuracy are equal; PGR is undefined")
 
-// ErrNoItems is returned when a computation needs at least one item.
 var ErrNoItems = errors.New("eval: no items")
 
-// Item is one evaluated prompt: the router's score and the correctness of each model's answer.
 type Item struct {
-	// Score is the router score; higher means more likely to need the strong model.
 	Score         float64
 	WeakCorrect   bool
 	StrongCorrect bool
 }
 
-// Point is one point of the cost-quality curve.
 type Point struct {
-	// StrongFraction is k/N, the fraction of items routed to strong.
 	StrongFraction float64
-	// Accuracy is the (tie-averaged) accuracy when the top k scored items go to strong.
-	Accuracy float64
-	// PGR is the performance gap recovered; NaN when acc_strong == acc_weak.
-	PGR float64
+	Accuracy       float64
+	PGR            float64
 }
 
-// Curve returns the N+1 points k = 0..N of the router's curve, see the package documentation for the
-// tie handling. It returns nil for no items.
+// Curve returns the accuracy curve over the number of strong calls.
 func Curve(items []Item) []Point {
 	pts, _ := sweep(items)
 	return pts
 }
 
-// sweep builds the curve and reports, for each k, whether k is a tie-group boundary (a strong count
-// that a threshold can realise exactly).
 func sweep(items []Item) ([]Point, []bool) {
 	n := len(items)
 	if n == 0 {
@@ -62,7 +51,7 @@ func sweep(items []Item) ([]Point, []bool) {
 	boundary := make([]bool, 0, n+1)
 	pts = append(pts, makePoint(0, fn, accW, accW, accS))
 	boundary = append(boundary, true)
-	base := 0 // integer gain of all fully routed groups
+	base := 0
 	for start := 0; start < n; {
 		end := start
 		gain := 0
@@ -97,9 +86,7 @@ func b2i(b bool) int {
 	return 0
 }
 
-// APGR returns the average performance gap recovered of the router that produced items' scores: the
-// trapezoid area under the PGR curve over the strong-call fraction (package documentation). It returns
-// ErrNoItems for an empty list and ErrNoGap when acc_strong == acc_weak.
+// APGR returns the area under the performance gap recovered curve.
 func APGR(items []Item) (float64, error) {
 	pts := Curve(items)
 	if pts == nil {
@@ -115,8 +102,6 @@ func APGR(items []Item) (float64, error) {
 	return area, nil
 }
 
-// RandomExpectedAccuracy is the expected accuracy of a random router that sends fraction r of the
-// calls to strong: (1-r)*accWeak + r*accStrong.
 func RandomExpectedAccuracy(r, accWeak, accStrong float64) float64 {
 	return (1-r)*accWeak + r*accStrong
 }

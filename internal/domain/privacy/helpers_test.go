@@ -10,8 +10,6 @@ import (
 	"github.com/thnhdatle/triage/internal/domain/chat"
 )
 
-// regexDetector is a tiny fake Detector: every match of re is a finding of
-// type typ. With noValue it reports spans only, so Scan must fill Value.
 type regexDetector struct {
 	id      string
 	typ     string
@@ -42,7 +40,6 @@ func phoneDetector() regexDetector {
 	return regexDetector{id: "phone", typ: "phone", re: regexp.MustCompile(`\+[0-9]{6,12}`)}
 }
 
-// staticDetector returns fixed findings or a fixed error.
 type staticDetector struct {
 	id       string
 	findings []Finding
@@ -55,7 +52,6 @@ func (d staticDetector) Detect(context.Context, string) ([]Finding, error) {
 	return d.findings, d.err
 }
 
-// recordingDetector records every text it is asked to scan.
 type recordingDetector struct {
 	mu    sync.Mutex
 	texts []string

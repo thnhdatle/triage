@@ -1,14 +1,6 @@
 #!/usr/bin/env bash
 # SPDX-License-Identifier: Apache-2.0
-# Builds the release artifacts of the host's Linux architecture (amd64 or arm64): the triage and
-# fakellm archives with their SBOMs (GoReleaser, .goreleaser.yaml narrowed to this architecture)
-# and the two images. triage needs CGO, so every architecture is built natively on its own host.
-#
-#   release-build.sh            archives into dist/release/, images built but not pushed
-#   release-build.sh --push     also push both images by digest; digests go to dist/release/digests/
-#   release-build.sh --snapshot snapshot version, no git tag needed (make release-dry)
-#
-# scripts/release-publish.sh merges the per-architecture outputs into the release.
+# Builds the release archives, SBOMs and images for the host's Linux architecture.
 set -euo pipefail
 cd "$(git rev-parse --show-toplevel)"
 
@@ -54,8 +46,6 @@ version="$(json '.version' dist/metadata.json)"
 mkdir -p "$out"
 cp dist/*.tar.gz dist/*.sbom.spdx.json "$out/"
 
-# Image build contexts: <ctx>/linux/<arch>/<binary> (TARGETPLATFORM layout of the release
-# Dockerfiles) and, for triage, the ONNX Runtime library with its license and notices.
 ctx=dist/image
 for img in triage fakellm; do
 	bin="$(json ".[] | select(.type == \"Binary\" and .extra.ID == \"$img\") | .path" dist/artifacts.json)"

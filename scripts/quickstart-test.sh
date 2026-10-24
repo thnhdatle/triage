@@ -1,8 +1,6 @@
 #!/usr/bin/env bash
 # SPDX-License-Identifier: Apache-2.0
-# Clones HEAD to a temp dir and runs the README quickstart commands verbatim,
-# except `git clone` (the clone is done here). The local images are used instead of the released ones.
-# Requires `make docker` to have built thnhdatle/triage:dev and thnhdatle/fakellm:dev.
+# Runs the README quickstart commands against the local images.
 set -euo pipefail
 root="$(git rev-parse --show-toplevel)"
 tmp="$(mktemp -d)"

@@ -1,8 +1,6 @@
 // SPDX-License-Identifier: Apache-2.0
 
-// Command piigen regenerates testdata/pii/labelled.jsonl and negatives.jsonl.
-//
-//	go run ./internal/adapter/piiregex/internal/gen/cmd/piigen -out testdata/pii
+// Command piigen regenerates the labeled PII data set.
 package main
 
 import (

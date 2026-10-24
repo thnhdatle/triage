@@ -11,7 +11,6 @@ import (
 	"os"
 )
 
-// Metadata keys written by research/build_bert_graph.py and export_bert.py.
 const (
 	MetaWeightsFile   = "triage.weights.file"
 	MetaWeightsSHA256 = "triage.weights.sha256"
@@ -19,11 +18,8 @@ const (
 	MetaVariant       = "triage.variant"
 )
 
-// ErrInvalidModel is returned for an ONNX file that cannot be parsed or whose
-// triage metadata is missing or inconsistent with the request.
 var ErrInvalidModel = errors.New("bert: invalid model file")
 
-// ONNX ModelProto field numbers and protobuf wire types used by the reader.
 const (
 	fieldMetadataProps = 14
 	fieldEntryKey      = 1
@@ -34,12 +30,9 @@ const (
 	wireLen    = 2
 	wireI32    = 5
 
-	// maxEntryLen bounds one metadata entry; real entries are below 200 bytes.
 	maxEntryLen = 1 << 20
 )
 
-// ReadMetadataFile returns the metadata_props of the ONNX model at path. The
-// file is streamed: the graph and initializers are skipped, never buffered.
 func ReadMetadataFile(path string) (map[string]string, error) {
 	f, err := os.Open(path) //nolint:gosec // G304: the path is operator configuration or the artifact cache.
 	if err != nil {
@@ -53,8 +46,6 @@ func ReadMetadataFile(path string) (map[string]string, error) {
 	return meta, nil
 }
 
-// ReadMetadata returns the metadata_props (ModelProto field 14) of a
-// serialised ONNX model. Later duplicates of a key win, as in onnx.
 func ReadMetadata(r io.Reader) (map[string]string, error) {
 	br := bufio.NewReader(r)
 	meta := map[string]string{}
@@ -139,7 +130,6 @@ func skipField(br *bufio.Reader, wt int) error {
 	return nil
 }
 
-// parseEntry decodes a StringStringEntryProto.
 func parseEntry(b []byte) (key, value string, err error) {
 	for len(b) > 0 {
 		tag, n := binary.Uvarint(b)
@@ -166,7 +156,6 @@ func parseEntry(b []byte) (key, value string, err error) {
 	return key, value, nil
 }
 
-// unexpected turns a bare EOF inside a field into io.ErrUnexpectedEOF.
 func unexpected(err error) error {
 	if errors.Is(err, io.EOF) {
 		return io.ErrUnexpectedEOF

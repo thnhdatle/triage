@@ -145,7 +145,6 @@ func TestSessionCreateErrors(t *testing.T) {
 			t.Parallel()
 			s, err := tc.create()
 			if err == nil {
-				// ORT checks output names at run time.
 				defer func() { assert.NoError(t, s.Close()) }()
 				_, err = s.Run(t.Context(), addInputs()...)
 			}

@@ -22,7 +22,7 @@ var (
 	_ provider.Stream     = (*stream)(nil)
 )
 
-// Complete implements provider.Provider.
+// Complete sends a chat completion request.
 func (c *Client) Complete(ctx context.Context, req chat.Request) (chat.Response, error) {
 	body, err := encodeRequest(req, false)
 	if err != nil {
@@ -35,8 +35,7 @@ func (c *Client) Complete(ctx context.Context, req chat.Request) (chat.Response,
 	return decodeResponse(data, status)
 }
 
-// Stream implements provider.Provider. The response headers must arrive within
-// the client timeout; afterwards the stream is bounded by ctx only.
+// Stream sends a streaming chat completion request.
 func (c *Client) Stream(ctx context.Context, req chat.Request) (provider.Stream, error) {
 	body, err := encodeRequest(req, true)
 	if err != nil {
@@ -67,8 +66,7 @@ type wireEmbedResponse struct {
 	Usage *wireUsage `json:"usage"`
 }
 
-// Embed implements provider.Provider. Vectors are returned in input order;
-// base64-encoded vectors are decoded.
+// Embed sends an embeddings request.
 func (c *Client) Embed(ctx context.Context, req provider.EmbedRequest) (provider.EmbedResponse, error) {
 	body, err := json.Marshal(wireEmbedRequest{
 		Model: req.Model, Input: req.Input, Dimensions: req.Dimensions, User: req.User,
@@ -102,8 +100,6 @@ func (c *Client) Embed(ctx context.Context, req provider.EmbedRequest) (provider
 	return provider.EmbedResponse{Model: w.Model, Vectors: vecs, Usage: w.Usage.usage()}, nil
 }
 
-// decodeVector accepts a float array or a base64 string of little-endian
-// float32 values.
 func decodeVector(raw json.RawMessage) ([]float32, bool) {
 	var v []float32
 	if json.Unmarshal(raw, &v) == nil {
@@ -124,7 +120,7 @@ func decodeVector(raw json.RawMessage) ([]float32, bool) {
 	return v, true
 }
 
-// Models implements provider.Provider: the ids listed by GET {base}/models.
+// Models lists the model ids the backend serves.
 func (c *Client) Models(ctx context.Context) ([]string, error) {
 	data, status, err := c.call(ctx, http.MethodGet, "/models", "", nil)
 	if err != nil {
@@ -145,15 +141,12 @@ func (c *Client) Models(ctx context.Context) ([]string, error) {
 	return names, nil
 }
 
-// Embedder adapts a Client to the difficulty.Embedder port (mf strategy).
 type Embedder struct {
 	c *Client
 }
 
-// Embedder returns the difficulty.Embedder view of c.
 func (c *Client) Embedder() Embedder { return Embedder{c: c} }
 
-// Embed implements difficulty.Embedder.
 func (e Embedder) Embed(ctx context.Context, model string, dimensions int, texts []string) ([][]float32, error) {
 	resp, err := e.c.Embed(ctx, provider.EmbedRequest{Model: model, Input: texts, Dimensions: dimensions})
 	if err != nil {

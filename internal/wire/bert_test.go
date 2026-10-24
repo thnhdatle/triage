@@ -19,9 +19,6 @@ import (
 	pinned "github.com/thnhdatle/triage/models"
 )
 
-// bertCache lays out a models.cache_dir with the bert-tiny fixture (FP32
-// graph + weights and INT8) and the XLM-R tokenizer cached by make
-// bootstrap; a missing tokenizer fails the test, never skips it.
 func bertCache(t *testing.T, withINT8 bool) string {
 	t.Helper()
 	dir := os.Getenv("TRIAGE_TOKENIZER_DIR")
@@ -72,8 +69,6 @@ routes:
 	assert.Contains(t, string(full.body), `"variant":"int8"`)
 	assert.NotContains(t, string(full.body), "error->", "scored without on_error")
 
-	// A reload with only a threshold change keeps the strategy; a variant
-	// change builds a new session; both serve.
 	cfg := baseConfig(f, strings.Replace(routes, "threshold: 0.5", "threshold: 0.7", 1))
 	require.NoError(t, os.WriteFile(tr.cfgPath, []byte(cfg), 0o600))
 	require.Equal(t, http.StatusOK, tr.call(t, http.MethodPost, tr.admin+"/v1/admin/reload", nil).status)
