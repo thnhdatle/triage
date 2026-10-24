@@ -1,0 +1,203 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Triage — LLM Request Router</title>
+<script>
+  // Edit these.
+  const SITE = "https://your-site.example";
+  const PROJECT = "triage";
+  const REPO = "https://github.com/thnhdatle/triage";
+</script>
+<style>
+  :root {
+    color-scheme: dark;
+    --bg: #0e1117; --panel: #161b24; --line: #2a313c; --text: #e6edf3; --muted: #8b96a5;
+    --b: #2dd4bf; --a: #818cf8; --stall: #ef4444; --track: #0b0e14;
+    --big: 1.75rem; --body: 1rem; --small: .8125rem;
+    --jb: color-mix(in srgb, var(--b) 20%, transparent);
+    --ja: color-mix(in srgb, var(--a) 16%, transparent); --la: color-mix(in srgb, var(--a) 60%, transparent);
+  }
+  * { box-sizing: border-box; }
+  html, body { margin: 0; background: var(--bg); color: var(--text); }
+  body { font: 16px/1.5 -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif; }
+  .wrap { max-width: 760px; margin: 0 auto; padding: 2.2rem 16px 3rem; }
+  .top { display: flex; justify-content: space-between; align-items: center; margin-bottom: 1.7rem; }
+  .btn { display: inline-flex; align-items: center; color: var(--text); text-decoration: none;
+    font: 600 var(--small)/1 -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif; padding: .68rem 1rem;
+    border: 1px solid var(--line); border-radius: 999px; background: color-mix(in srgb, var(--text) 4%, transparent);
+    cursor: pointer; transition: transform .16s ease, border-color .16s ease; }
+  .btn:hover { border-color: currentColor; }
+  .back:hover { transform: translateX(-2px); }
+  h1 { margin: 0 0 .25rem; font-size: var(--big); line-height: 1.2; letter-spacing: -.01em; }
+  h1 span { color: var(--b); }
+  .sub { margin: 0 0 1.8rem; color: var(--muted); font-size: var(--body); }
+  .card { background: var(--panel); border: 1px solid var(--line); border-radius: 14px; padding: 1.5rem 1.4rem; margin-bottom: 1.4rem; }
+  h2 { margin: 0 0 1.3rem; font-size: var(--small); text-transform: uppercase; letter-spacing: .12em; color: var(--muted); font-weight: 600; }
+  .lbl { font-size: var(--small); font-weight: 700; margin-bottom: .5rem; }
+  .box { border: 1.5px solid var(--line); border-radius: 10px; padding: .6rem .7rem; font-size: var(--small);
+    display: grid; gap: .45rem; align-content: start; }
+  .mid { display: flex; flex-direction: column; align-items: center; gap: .5rem; color: var(--muted); }
+  .flow { display: flex; align-items: center; gap: .5rem; }
+  .hub { border: 1.5px solid var(--b); color: var(--b); border-radius: 10px; padding: .6rem .8rem; font-weight: 700; font-size: var(--body); }
+  .verdict { position: relative; height: 1.5em; width: 9rem; text-align: center; font-size: var(--small); font-weight: 700; }
+  .verdict span { position: absolute; left: 0; right: 0; opacity: 0; }
+  .found { display: flex; flex-wrap: wrap; justify-content: center; gap: 4px; width: 9rem; min-height: 1.5em; }
+  .tag { font-size: var(--small); color: var(--stall); border: 1px solid var(--stall); border-radius: 4px; padding: 0 .35rem; opacity: 0; }
+  .msg { border: 1.5px solid var(--line); border-radius: 8px; padding: .3rem .5rem; line-height: 1.5; opacity: 0; }
+  .msg.in { border-color: var(--la); background: var(--ja); }
+  .msg.out { border-color: var(--b); background: var(--jb); }
+  .pii { color: var(--stall); font-weight: 600; }
+  .ph { color: var(--b); font-weight: 700; }
+  .rv { font-weight: 700; }
+  .outs { display: grid; gap: .8rem; }
+  .step { position: relative; height: 1.6em; margin-top: 1.2rem; font-size: var(--body); }
+  .step p { position: absolute; inset: 0; margin: 0; opacity: 0; }
+  .step p b { color: var(--b); }
+  .step p span { color: var(--muted); margin-right: .4rem; }
+  .scene { display: grid; grid-template-columns: 1fr auto 1fr; gap: 1rem; align-items: center; }
+
+  /* 0-25% easy prompt to local, 25-50% hard prompt scanned, 50-75% masked copy to cloud, 75-100% answer restored */
+  .live .a1 { animation: a1 10s linear infinite; } .live .l1 { animation: l1 10s linear infinite; }
+  .live .a2 { animation: a2 10s linear infinite; } .live .c2 { animation: c2 10s linear infinite; }
+  .live .cr { animation: cr 10s linear infinite; } .live .ar2 { animation: ar2 10s linear infinite; }
+  .live .v1 { animation: v1 10s linear infinite; } .live .v2 { animation: v2 10s linear infinite; }
+  .live .tag { animation: tg 10s linear infinite; }
+  .live .tag:nth-child(2) { animation-name: tg2; } .live .tag:nth-child(3) { animation-name: tg3; }
+  .live .hub { animation: hub 10s linear infinite; }
+  .live .t1 { animation: t1 10s linear infinite; } .live .t2 { animation: t2 10s linear infinite; }
+  .live .t3 { animation: t3 10s linear infinite; } .live .t4 { animation: t4 10s linear infinite; }
+  @keyframes a1 { 0%, 2% { opacity: 0; transform: translateY(-6px); } 5%, 97% { opacity: 1; transform: none; } 100% { opacity: 0; } }
+  @keyframes l1 { 0%, 14% { opacity: 0; transform: translateX(-10px); } 17%, 97% { opacity: 1; transform: none; } 100% { opacity: 0; } }
+  @keyframes a2 { 0%, 26% { opacity: 0; transform: translateY(-6px); } 29%, 97% { opacity: 1; transform: none; } 100% { opacity: 0; } }
+  @keyframes c2 { 0%, 51% { opacity: 0; transform: translateX(-10px); } 54%, 97% { opacity: 1; transform: none; } 100% { opacity: 0; } }
+  @keyframes cr { 0%, 77% { opacity: 0; transform: translateY(6px); } 80%, 97% { opacity: 1; transform: none; } 100% { opacity: 0; } }
+  @keyframes ar2 { 0%, 85% { opacity: 0; transform: translateX(10px); } 88%, 97% { opacity: 1; transform: none; } 100% { opacity: 0; } }
+  @keyframes v1 { 0%, 8% { opacity: 0; } 10%, 24% { opacity: 1; } 26%, 100% { opacity: 0; } }
+  @keyframes v2 { 0%, 32% { opacity: 0; } 34%, 74% { opacity: 1; } 76%, 100% { opacity: 0; } }
+  @keyframes tg { 0%, 37% { opacity: 0; } 39%, 74% { opacity: 1; } 76%, 100% { opacity: 0; } }
+  @keyframes tg2 { 0%, 40% { opacity: 0; } 42%, 74% { opacity: 1; } 76%, 100% { opacity: 0; } }
+  @keyframes tg3 { 0%, 43% { opacity: 0; } 45%, 74% { opacity: 1; } 76%, 100% { opacity: 0; } }
+  @keyframes hub { 0%, 7%, 14%, 31%, 48%, 100% { box-shadow: none; } 9%, 12%, 33%, 46% { box-shadow: 0 0 0 4px var(--jb); } }
+  @keyframes t1 { 0%, 23% { opacity: 1; } 25%, 100% { opacity: 0; } }
+  @keyframes t2 { 0%, 25% { opacity: 0; } 27%, 48% { opacity: 1; } 50%, 100% { opacity: 0; } }
+  @keyframes t3 { 0%, 50% { opacity: 0; } 52%, 73% { opacity: 1; } 75%, 100% { opacity: 0; } }
+  @keyframes t4 { 0%, 75% { opacity: 0; } 77%, 98% { opacity: 1; } 100% { opacity: 0; } }
+
+  .q { font-size: var(--body); font-weight: 600; margin: 0 0 1rem; }
+  .fact { display: flex; justify-content: space-between; align-items: center; gap: 1rem; padding: .9rem 0; border-top: 1px solid var(--line); }
+  .fact .name { font-size: var(--small); color: var(--muted); }
+  .fact .name b { display: block; color: var(--text); font-size: var(--body); }
+  .val { font-size: var(--big); font-weight: 700; line-height: 1; color: var(--b); white-space: nowrap; font-variant-numeric: tabular-nums; }
+  .live .val { animation: pop 6s ease-out infinite; }
+  @keyframes pop { 0% { opacity: 0; transform: translateY(6px); } 12%, 100% { opacity: 1; transform: none; } }
+  .note { font-size: var(--small); color: var(--muted); margin: .6rem 0 0; }
+  .ctl { display: flex; justify-content: flex-end; }
+
+  .paused * { animation-play-state: paused !important; }
+  .still * { animation-delay: -9.5s !important; animation-play-state: paused !important; }
+  .still .res * { animation-delay: -5.9s !important; }
+
+  @media (max-width: 560px) {
+    :root { --big: 1.4rem; }
+    .scene { grid-template-columns: 1fr; gap: .8rem; }
+    .flow .ar { transform: rotate(90deg); }
+    .step { height: 3em; }
+  }
+</style>
+</head>
+<body>
+<div class="wrap" id="demo">
+  <div class="top">
+    <a class="btn back" id="back" href="#">← back to project</a>
+    <a class="btn" id="code" href="#">code</a>
+  </div>
+
+  <h1><span>Triage</span> — picks a local or cloud model for each LLM request</h1>
+  <p class="sub">Easy prompts go to your local model. Hard ones go to the cloud with personal data hidden, all in under 2&nbsp;ms.</p>
+
+  <section class="card idea">
+    <h2>How it works</h2>
+    <div class="scene">
+      <div>
+        <div class="lbl">Your app</div>
+        <div class="box">
+          <div class="msg in a1">What is 2 + 2?</div>
+          <div class="msg in a2">Analyze this 40-page contract. Email <span class="pii">ana@example.com</span>, call <span class="pii">+84 912 345 678</span>, card <span class="pii">4111 1111 1111 1111</span></div>
+          <div class="msg out ar2">Done. I emailed <span class="rv">ana@example.com</span>.</div>
+        </div>
+      </div>
+      <div class="mid">
+        <div class="verdict"><span class="v1" style="color:var(--a)">easy → local</span><span class="v2" style="color:var(--b)">hard → cloud</span></div>
+        <div class="flow"><span class="ar">→</span><div class="hub">Triage</div><span class="ar">→</span></div>
+        <div class="found"><span class="tag">email</span><span class="tag">phone</span><span class="tag">card</span></div>
+      </div>
+      <div class="outs">
+        <div>
+          <div class="lbl">Local model</div>
+          <div class="box"><div class="msg in l1">What is 2 + 2?</div></div>
+        </div>
+        <div>
+          <div class="lbl">Cloud model</div>
+          <div class="box">
+            <div class="msg out c2">Analyze this 40-page contract. Email <span class="ph">[[EMAIL_1]]</span>, call <span class="ph">[[PHONE_1]]</span>, card <span class="ph">[[CREDIT_CARD_1]]</span></div>
+            <div class="msg cr">Done. I emailed <span class="ph">[[EMAIL_1]]</span>.</div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="step">
+      <p class="t1"><span>1</span>A short, easy prompt goes to your <b>local model</b>.</p>
+      <p class="t2"><span>2</span>A long, hard prompt arrives. Triage also finds an email, a phone and a card number.</p>
+      <p class="t3"><span>3</span>It goes to the <b>cloud model</b>, which only sees placeholders.</p>
+      <p class="t4"><span>4</span>As the answer streams back, Triage puts the real values back in.</p>
+    </div>
+  </section>
+
+  <section class="card res">
+    <h2>The result</h2>
+    <p class="q">What does routing and the privacy check cost?</p>
+    <div class="fact">
+      <div class="name"><b>Extra time per request</b>difficulty by prompt length, masking included, at 500 requests per second</div>
+      <div class="val">1.7 ms</div>
+    </div>
+    <div class="fact">
+      <div class="name"><b>Highest steady load</b>99% answered within 6.2 ms</div>
+      <div class="val">7,999 req/s</div>
+    </div>
+    <p class="note">Extra time for 99% of requests, measured against an instant fake model.</p>
+  </section>
+
+  <div class="ctl"><button class="btn" id="play" type="button">❚❚ pause</button></div>
+</div>
+<script>
+  document.getElementById("back").href = SITE.replace(/\/$/, "") + "/projects/" + PROJECT + "/";
+  document.getElementById("code").href = REPO;
+
+  const demo = document.getElementById("demo");
+  const btn = document.getElementById("play");
+  let running = false;
+
+  function start() {
+    demo.classList.remove("still", "paused");
+    demo.classList.add("live");
+    running = true;
+    btn.textContent = "❚❚ pause";
+  }
+  function pause() {
+    running = false;
+    demo.classList.add("paused");
+    btn.textContent = "▶ play";
+  }
+  btn.addEventListener("click", function () { running ? pause() : start(); });
+
+  if (matchMedia("(prefers-reduced-motion: reduce)").matches) {
+    demo.classList.add("live", "still");
+    btn.textContent = "▶ play";
+  } else {
+    start();
+  }
+</script>
+</body>
+</html>
