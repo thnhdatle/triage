@@ -71,8 +71,8 @@ recorded with its reason, so you can see why a request went where it did.
 ## Install
 
 ```sh
-docker run --rm ghcr.io/thnhdatle/triage:v0.1.0 version      # router in Docker, ONNX Runtime included
-go install github.com/thnhdatle/triage/cmd/triage@v0.1.0      # from source, needs cgo
+docker run --rm ghcr.io/thnhdatle/triage:v0.1.1 version      # router in Docker, ONNX Runtime included
+go install github.com/thnhdatle/triage/cmd/triage@v0.1.1      # from source, needs cgo
 ```
 
 Prebuilt binaries for Linux (amd64, arm64) are on the [releases page](https://github.com/thnhdatle/triage/releases).

@@ -7,6 +7,23 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [0.1.1] - 2026-10-25
+
+### Added
+
+- Interactive demo page in `docs/demo`.
+
+### Fixed
+
+- `serve` names the empty environment variable or file when `auth.keys_env` or
+  `auth.keys_file` holds no API key.
+
+### Removed
+
+- Acceptance, benchmark and mutation-testing code and their Makefile targets; benchmark
+  results stay in the README.
+- Research scripts that only served the evaluation reference.
+
 ## [0.1.0] - 2026-10-21
 
 First public release.
@@ -57,5 +74,6 @@ First public release.
 - Privacy protection covers detectable formats only; NER is English only and off by default.
 - Deferred scope is listed in `ROADMAP.md`.
 
-[Unreleased]: https://github.com/thnhdatle/triage/compare/v0.1.0...HEAD
+[Unreleased]: https://github.com/thnhdatle/triage/compare/v0.1.1...HEAD
+[0.1.1]: https://github.com/thnhdatle/triage/compare/v0.1.0...v0.1.1
 [0.1.0]: https://github.com/thnhdatle/triage/releases/tag/v0.1.0
