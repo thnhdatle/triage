@@ -96,8 +96,13 @@ func (e Env) authKeys(file, envName string) ([]string, error) {
 			keys = append(keys, k)
 		}
 	}
-	if len(keys) == 0 {
-		return nil, errors.New("auth is enabled but no API key is configured (auth.keys_file or auth.keys_env)")
+	switch {
+	case len(keys) > 0:
+		return keys, nil
+	case file != "":
+		return nil, fmt.Errorf("auth.keys_file %s holds no API key", file)
+	case envName != "":
+		return nil, fmt.Errorf("auth.keys_env: environment variable %s is empty or not set", envName)
 	}
-	return keys, nil
+	return nil, errors.New("auth is enabled but no API key is configured (auth.keys_file or auth.keys_env)")
 }
