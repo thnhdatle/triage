@@ -19,7 +19,7 @@ require (
 	github.com/stretchr/testify v1.12.1
 	github.com/sugarme/tokenizer v0.3.0
 	github.com/testcontainers/testcontainers-go v0.44.0
-	github.com/yalue/onnxruntime_go v1.36.0
+	github.com/yalue/onnxruntime_go v1.38.0
 	go.opentelemetry.io/otel v1.47.0
 	go.opentelemetry.io/otel/exporters/otlp/otlptrace/otlptracegrpc v1.47.0
 	go.opentelemetry.io/otel/exporters/otlp/otlptrace/otlptracehttp v1.47.0
